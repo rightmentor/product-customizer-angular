@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
+import { $ } from 'protractor';
 
 declare var window: any;
 
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
   constructor() {
-
+    this.checkJavascript();
   }
 
   ngOnInit() {
@@ -158,34 +159,14 @@ export class AppComponent implements OnInit {
   }
 
   checkJavascript() {
-    // create a variable for the parent window. We will assign it once we get the first message.
     let parent = null;
+    window.addEventListener("message", ({ data, source }) => {
+        if (parent === null) {
+          parent = source;
+        }
+        // alert(JSON.stringify(data));
+        document.getElementById("test_show").innerHTML =  JSON.stringify(data);
+      });
 
-    // add an event listener to send messages when the button is clicked
-    // button.addEventListener("click", () => {
-    //   if (parent === null) {
-    //     return;
-    //   }
-    //   const text = field.value;
-    //   parent.postMessage(text);
-    // });
-
-    // add an event listener to run when a message is received
-    window.addEventListener('message', ({ data, source }) => {
-      // if we don't have a reference to the parent window yet, set it now
-      if (parent === null) {
-        parent = source;
-      }
-
-      // now we can do whatever we want with the message data.
-      // in this case, displaying it, and then sending it back
-      // wrapped in an object
-      alert(JSON.stringify(data));
-      // const response = {
-      //   success: true,
-      //   request: { data },
-      // };
-      // parent.postMessage(response);
-    });
   }
 }
