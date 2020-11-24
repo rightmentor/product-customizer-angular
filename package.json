@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve angular-editor-fabric-js-app",
+    "start-ng": "ng serve angular-editor-fabric-js-app --host 0.0.0.0 --disableHostCheck true",
     "build": "ng build angular-editor-fabric-js-app",
     "build:prod": "ng build --prod --base-href=/product-customizer/ angular-editor-fabric-js-app",
     "build:lib": "ng-packagr -p projects/angular-editor-fabric-js/package.json",

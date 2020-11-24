@@ -1,15 +1,25 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
+
+declare var window: any;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'angular-editor-fabric-js';
 
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
+
+  constructor() {
+
+  }
+
+  ngOnInit() {
+    this.checkJavascript();
+  }
 
   public rasterize() {
     this.canvas.rasterize();
@@ -145,5 +155,37 @@ export class AppComponent {
 
   public undo() {
     this.canvas.undoCanvas();
+  }
+
+  checkJavascript() {
+    // create a variable for the parent window. We will assign it once we get the first message.
+    let parent = null;
+
+    // add an event listener to send messages when the button is clicked
+    // button.addEventListener("click", () => {
+    //   if (parent === null) {
+    //     return;
+    //   }
+    //   const text = field.value;
+    //   parent.postMessage(text);
+    // });
+
+    // add an event listener to run when a message is received
+    window.addEventListener('message', ({ data, source }) => {
+      // if we don't have a reference to the parent window yet, set it now
+      if (parent === null) {
+        parent = source;
+      }
+
+      // now we can do whatever we want with the message data.
+      // in this case, displaying it, and then sending it back
+      // wrapped in an object
+      alert(JSON.stringify(data));
+      // const response = {
+      //   success: true,
+      //   request: { data },
+      // };
+      // parent.postMessage(response);
+    });
   }
 }
