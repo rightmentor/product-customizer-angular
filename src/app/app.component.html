@@ -148,7 +148,9 @@
                             <i class="fa fa-undo" aria-hidden="true"></i>
                         </button>
                         <button data-toggle="tooltip" data-placement="bottom" title="Redo" type="button"
-                            class="btn btn-outline-primary" [disabled]="canvas.canvasSteps.length === 0 || canvas.currentIndex === (canvas.canvasSteps.length - 1)" (click)="redo();">
+                            class="btn btn-outline-primary"
+                            [disabled]="canvas.canvasSteps.length === 0 || canvas.currentIndex === (canvas.canvasSteps.length - 1)"
+                            (click)="redo();">
                             <i class="fa fa-repeat" aria-hidden="true"></i>
                         </button>
 
@@ -197,15 +199,15 @@
             <div class="card">
                 <div class="card-header">Custom</div>
                 <div class="card-body">
-                    <div class="custom-item" *ngIf="canvas.selected  && canvas.selected.type == 'group'">Group Selected
-                    </div>
+                    <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type == 'group'">Group Selected
+                    </div> -->
                     <div class="custom-item" *ngIf="!canvas.selected">No items selected</div>
-                    <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
+                    <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
                         <div class="custom-item-title">ID</div>
                         <div class="custom-item-body">
                             <input type="text" class="form-control" [(ngModel)]="canvas.props.id" (keyup)="setId()">
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
                         <div class="custom-item-title">Opacity</div>
                         <div class="custom-item-body">
@@ -246,6 +248,29 @@
                             </select>
                         </div>
                     </div>
+                    <div class="custom-item" *ngIf="canvas.selected">
+                        <div class="custom-item-title">Align Selection</div>
+                        <div class="custom-item-body text-center">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('left')">
+                                    Left
+                                </button>
+                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('right')">
+                                    Right
+                                </button>
+                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('top')">
+                                    Top
+                                </button>
+                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('bottom')">
+                                    Bottom
+                                </button>
+                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('center')">
+                                    Center
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
                         <div class="custom-item-title">Text Align</div>
                         <div class="custom-item-body text-center">
@@ -306,19 +331,32 @@
                     <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
                         <div class="custom-item-title">Font Size</div>
                         <div class="custom-item-body">
+                            <input type="number" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()" (keyup)="setFontSize()">&nbsp; px
+                        </div>
+                        <div class="custom-item-body">
                             <input type="range" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()" step="1"
-                                min="1" max="120">{{canvas.props.fontSize}}</div>
+                                min="1" max="300">{{canvas.props.fontSize}}
+                        </div>
                     </div>
                     <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
                         <div class="custom-item-title">Line Height</div>
                         <div class="custom-item-body">
-                            <input type="range" [(ngModel)]="canvas.props.lineHeight" (change)="setLineHeight()"
-                                step="0.1" min="0" max="10">{{canvas.props.lineHeight}}</div>
+                            <input type="number" step="0.01" min="0.1" [(ngModel)]="canvas.props.lineHeight"
+                                (keyup)="setLineHeight()">&nbsp;
+                            px
+                        </div>
+                        <div class="custom-item-body">
+                            <input type="range" [(ngModel)]="canvas.props.lineHeight" (change)="setLineHeight()" (change)="setLineHeight()"
+                                step="0.1" min="0.1" max="10">{{canvas.props.lineHeight}}</div>
                     </div>
                     <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
                         <div class="custom-item-title">Char Spacing</div>
                         <div class="custom-item-body">
-                            <input type="range" [(ngModel)]="canvas.props.charSpacing" (change)="setCharSpacing()"
+                            <input type="number" [(ngModel)]="canvas.props.charSpacing"
+                                (keyup)="setCharSpacing()">&nbsp; px
+                        </div>
+                        <div class="custom-item-body">
+                            <input type="range" [(ngModel)]="canvas.props.charSpacing" (change)="setCharSpacing()" (change)="setCharSpacing()"
                                 step="10" min="-200" max="800">{{canvas.props.charSpacing}}</div>
                     </div>
                 </div>

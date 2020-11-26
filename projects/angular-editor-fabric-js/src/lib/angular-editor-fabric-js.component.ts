@@ -154,6 +154,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
         fontFamily: 'helvetica',
         angle: 0,
         fill: '#000000',
+        fontSize: 40,
         scaleX: 0.5,
         scaleY: 0.5,
         fontWeight: '',
@@ -230,24 +231,23 @@ export class FabricjsEditorComponent implements AfterViewInit {
     switch (figure) {
       case 'rectangle':
         add = new fabric.Rect({
-          width: 200, height: 100, left: 10, top: 10, angle: 0,
-          fill: '#3f51b5'
+          width: 200, height: 100, left: 10, top: 10, angle: 0, fill: 'rgba(0,0,0,0)', hasBorders: true,
+          stroke: 'yellow'
         });
         break;
       case 'square':
         add = new fabric.Rect({
-          width: 100, height: 100, left: 10, top: 10, angle: 0,
-          fill: '#4caf50'
+          width: 100, height: 100, left: 10, top: 10, angle: 0
         });
         break;
       case 'triangle':
         add = new fabric.Triangle({
-          width: 100, height: 100, left: 10, top: 10, fill: '#2196f3'
+          width: 100, height: 100, left: 10, top: 10
         });
         break;
       case 'circle':
         add = new fabric.Circle({
-          radius: 50, left: 10, top: 10, fill: '#ff5722'
+          radius: 50, left: 10, top: 10
         });
         break;
     }
@@ -265,6 +265,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
   selectItemAfterAdded(obj) {
     this.canvas.discardActiveObject().renderAll();
     this.canvas.setActiveObject(obj);
+    console.log(obj)
   }
 
   setCanvasFill() {
@@ -368,8 +369,44 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
     object.setCoords();
     this.canvas.renderAll();
+    this.modifyCanvas(null);
   }
 
+  processAlign(val) {
+    const object = this.canvas.getActiveObject();
+    if (!object) { return ''; }
+
+    switch (val) {
+      case 'left':
+        object.set({
+          left: 0
+        });
+        break;
+      case 'right':
+        object.set({
+          left: this.canvas.getWidth() - (object.width * object.scaleX)
+        });
+        break;
+      case 'top':
+        object.set({
+          top: 0
+        });
+        break;
+      case 'bottom':
+        object.set({
+          top: this.canvas.getHeight() - (object.height * object.scaleY)
+        });
+        break;
+      case 'center':
+        object.set({
+          left: (this.canvas.getWidth() / 2) - ((object.width * object.scaleX) / 2)
+        });
+        break;
+    }
+
+    object.setCoords();
+    this.canvas.renderAll();
+  }
 
   getActiveProp(name) {
     const object = this.canvas.getActiveObject();

@@ -118,6 +118,10 @@ export class AppComponent implements OnInit {
     this.canvas.setTextAlign(value);
   }
 
+  public setObjectAlign(value) {
+    this.canvas.processAlign(value);
+  }
+
   public setBold() {
     this.canvas.setBold();
   }
@@ -161,12 +165,11 @@ export class AppComponent implements OnInit {
   checkJavascript() {
     let parent = null;
     window.addEventListener("message", ({ data, source }) => {
-        if (parent === null) {
-          parent = source;
-        }
-        // alert(JSON.stringify(data));
-        document.getElementById("test_show").innerHTML =  JSON.stringify(data);
-      });
-
+      if (parent === null) {
+        parent = source;
+      }
+      // alert(JSON.stringify(data));
+      document.getElementById("test_show").innerHTML = JSON.stringify(data);
+    });
   }
 }
