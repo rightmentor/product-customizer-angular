@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
 import { $ } from 'protractor';
+import { ApiService } from './services/api.service';
 
 declare var window: any;
 
@@ -11,15 +12,18 @@ declare var window: any;
 })
 export class AppComponent implements OnInit {
   title = 'angular-editor-fabric-js';
+  productOptions = [];
+  selectedOptionId;
 
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
-  constructor() {
+  constructor(private apiService: ApiService) {
     this.checkJavascript();
   }
 
   ngOnInit() {
     this.checkJavascript();
+    this.getProductOptions('112');
   }
 
   public rasterize() {
@@ -164,12 +168,60 @@ export class AppComponent implements OnInit {
 
   checkJavascript() {
     let parent = null;
+    const currentObject = this;
     window.addEventListener("message", ({ data, source }) => {
       if (parent === null) {
         parent = source;
       }
-      // alert(JSON.stringify(data));
-      document.getElementById("test_show").innerHTML = JSON.stringify(data);
+
+      if (data.productID) {
+        var newcontent = document.createElement('div');
+        newcontent.innerHTML = JSON.stringify(data);
+        document.getElementById("test_show").appendChild(newcontent);
+
+        currentObject.getProductOptions(data.productID);
+      }
     });
+  }
+
+  getProductOptions(productID) {
+    console.log('calling getProductOptions');
+    this.apiService.getProductOptions(productID).subscribe((res: any) => {
+      // this.apiService.getTokens().subscribe((res: any) => {
+      console.log('res', res);
+      this.productOptions = res.data[0].option_values;
+      this.selectedOptionId = this.productOptions[0].id;
+      this.sizeChangeHandler();
+      console.log('reproductOptionss', this.productOptions);
+      var newcontent = document.createElement('div');
+      newcontent.innerHTML = JSON.stringify(res);
+      document.getElementById("test_show_0").appendChild(newcontent);
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+  sizeChangeHandler() {
+    console.log('size changed', this.selectedOptionId);
+
+    const selectedOption = this.productOptions.filter(opt => parseInt(opt.id, 10) === parseInt(this.selectedOptionId, 10));
+    console.log('selectedOption', selectedOption)
+    const label = selectedOption[0].label;
+    // 1mm =  3.779527559px
+    let s = label.substring(label.indexOf("(") + 1);
+    s = s.substring(0, s.indexOf(")"));
+    const height = s.substring(0, s.indexOf("mm"));
+    if (height) {
+      this.canvas.size.height = Math.round((height * 3.779527559) * 10) / 10;
+    }
+    let width = s.substring(s.indexOf("x") + 1);
+    if (width) {
+      width = width.substring(0, width.indexOf("mm"));
+      if (width) {
+        this.canvas.size.width = Math.round((width * 3.779527559) * 10) / 10;
+      }
+    }
+
+    this.changeSize();
   }
 }

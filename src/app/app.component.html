@@ -31,7 +31,11 @@
             <div class="card">
                 <div class="card-header">Size</div>
                 <div class="card-body">
-                    <div class="form-group">
+                    <select [(ngModel)]="selectedOptionId" class="size-select" (change)="sizeChangeHandler()">
+                        <option *ngFor="let option of productOptions" [value]="option.id">{{option.label}}</option>
+                    </select>
+
+                    <!-- <div class="form-group">
                         <div class="input-group">
                             <input type="text" class="form-control" [(ngModel)]="canvas.size.width"
                                 (keyup)="changeSize()">
@@ -52,7 +56,7 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <br />
@@ -331,7 +335,8 @@
                     <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
                         <div class="custom-item-title">Font Size</div>
                         <div class="custom-item-body">
-                            <input type="number" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()" (keyup)="setFontSize()">&nbsp; px
+                            <input type="number" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()"
+                                (keyup)="setFontSize()">&nbsp; px
                         </div>
                         <div class="custom-item-body">
                             <input type="range" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()" step="1"
@@ -346,8 +351,9 @@
                             px
                         </div>
                         <div class="custom-item-body">
-                            <input type="range" [(ngModel)]="canvas.props.lineHeight" (change)="setLineHeight()" (change)="setLineHeight()"
-                                step="0.1" min="0.1" max="10">{{canvas.props.lineHeight}}</div>
+                            <input type="range" [(ngModel)]="canvas.props.lineHeight" (change)="setLineHeight()"
+                                (change)="setLineHeight()" step="0.1" min="0.1" max="10">{{canvas.props.lineHeight}}
+                        </div>
                     </div>
                     <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
                         <div class="custom-item-title">Char Spacing</div>
@@ -356,8 +362,9 @@
                                 (keyup)="setCharSpacing()">&nbsp; px
                         </div>
                         <div class="custom-item-body">
-                            <input type="range" [(ngModel)]="canvas.props.charSpacing" (change)="setCharSpacing()" (change)="setCharSpacing()"
-                                step="10" min="-200" max="800">{{canvas.props.charSpacing}}</div>
+                            <input type="range" [(ngModel)]="canvas.props.charSpacing" (change)="setCharSpacing()"
+                                (change)="setCharSpacing()" step="10" min="-200" max="800">{{canvas.props.charSpacing}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -381,3 +388,5 @@
     <br>
 </div>
 <div id="test_show"></div>
+
+<div id="test_show_0"></div>

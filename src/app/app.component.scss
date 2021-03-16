@@ -43,3 +43,15 @@
   overflow: auto;
   max-height: 300px;
 }
+
+.size-select{
+  width: 100%;
+  text-overflow: ellipsis;
+  padding: 6px 25px 6px 6px;
+  border: 1px solid #ced4da;
+  border-radius: .4rem;
+  color: #5a5a5a;
+  background: url('/assets/img/arrow-down.svg') no-repeat right #fff;
+  background-position-x: calc(100% - 5px);
+  -webkit-appearance: none;
+}
