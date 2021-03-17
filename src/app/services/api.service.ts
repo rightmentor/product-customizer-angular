@@ -26,10 +26,9 @@ export class ApiService {
 
 
     getProductOptions(productId): Observable<any> {
-        const url = `https://cors-anywhere.herokuapp.com/https://api.bigcommerce.com/stores/xvqlnelhjw/v3/catalog/products/${productId}/options`;
+        const url = `https://trackstatus.net/product-customizer/api/testapi.php?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
-            'X-Auth-Token': 'lz9p76fspi44jzp1m68ky81ur3x0lbj'
         });
         
         return this.http.get(url, { headers: apiHeaders })

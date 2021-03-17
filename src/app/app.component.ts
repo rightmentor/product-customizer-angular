@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.checkJavascript();
-    this.getProductOptions('112');
+    // this.getProductOptions('112');
   }
 
   public rasterize() {
@@ -173,7 +173,8 @@ export class AppComponent implements OnInit {
       if (parent === null) {
         parent = source;
       }
-
+      console.log('data', data);
+      
       if (data.productID) {
         var newcontent = document.createElement('div');
         newcontent.innerHTML = JSON.stringify(data);
