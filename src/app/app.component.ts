@@ -176,13 +176,14 @@ export class AppComponent implements OnInit {
         parent = source;
       }
       console.log('data', data);
+      console.log('data', data[0].productID);
       
-      if (data.productID) {
+      if (data[0].productID) {
         var newcontent = document.createElement('div');
         newcontent.innerHTML = JSON.stringify(data);
-        document.getElementById("test_show").appendChild(newcontent);
+        //document.getElementById("test_show").appendChild(newcontent);
 
-        currentObject.getProductOptions(data.productID);
+        currentObject.getProductOptions(data[0].productID);
       }
     });
   }
@@ -198,7 +199,7 @@ export class AppComponent implements OnInit {
       console.log('reproductOptionss', this.productOptions);
       var newcontent = document.createElement('div');
       newcontent.innerHTML = JSON.stringify(res);
-      document.getElementById("test_show_0").appendChild(newcontent);
+      // document.getElementById("test_show_0").appendChild(newcontent);
     }, error => {
       console.error('error', error);
     });
