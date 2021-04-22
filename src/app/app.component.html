@@ -23,117 +23,126 @@
                         <i class="fa fa-ban" aria-hidden="true"></i> Clean</button>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xl-12 ">
+                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('size-model')">Size</button>
+                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('text-modal')">Add text</button>
+                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-image-model')">Add Image</button>
+                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('upload-image-model')">Upload Image</button>
+                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-figure-model')">Add Figure</button>
+                </div>
+            </div>
         </div>
     </div>
     <hr>
     <div class="row">
-        <div class="col-xl-3">
-            <div class="card">
-                <div class="card-header">Size</div>
-                <div class="card-body">
-                    <select [(ngModel)]="selectedOptionId" class="size-select" (change)="sizeChangeHandler()">
-                        <option *ngFor="let option of productOptions" [value]="option.id">{{option.label}}</option>
-                    </select>
+        <!-- <div class="col-xl-3"> -->
+            <!-- <div class="card"> -->
+                <!-- <div class="card-header">Size</div> -->
+                <!-- <div class="card-body"> -->
+                    <!-- <select [(ngModel)]="selectedOptionId" class="size-select" (change)="sizeChangeHandler()"> -->
+                        <!-- <option *ngFor="let option of productOptions" [value]="option.id">{{option.label}}</option> -->
+                    <!-- </select> -->
 
-                    <!-- <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" [(ngModel)]="canvas.size.width"
-                                (keyup)="changeSize()">
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    Width
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" [(ngModel)]="canvas.size.height"
-                                (keyup)="changeSize()">
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    Height
-                                </span>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
-            </div>
-            <br />
-            <div class="card">
-                <div class="card-header">Add text</div>
-                <div class="card-body">
-                    <div class="input-group">
+                    <!-- <!-- <div class="form-group"> -->
+                        <!-- <div class="input-group"> -->
+                            <!-- <input type="text" class="form-control" [(ngModel)]="canvas.size.width" -->
+                                <!-- (keyup)="changeSize()"> -->
+                            <!-- <div class="input-group-append"> -->
+                                <!-- <span class="input-group-text"> -->
+                                    <!-- Width -->
+                                <!-- </span> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- <div class="form-group"> -->
+                        <!-- <div class="input-group mb-3"> -->
+                            <!-- <input type="text" class="form-control" [(ngModel)]="canvas.size.height" -->
+                                <!-- (keyup)="changeSize()"> -->
+                            <!-- <div class="input-group-append"> -->
+                                <!-- <span class="input-group-text"> -->
+                                    <!-- Height -->
+                                <!-- </span> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
+                    <!-- </div> --> 
+                <!-- </div> -->
+            <!-- </div> -->
+            <!-- <br /> -->
+            <!-- <div class="card"> -->
+                <!-- <div class="card-header">Add text</div> -->
+                <!-- <div class="card-body"> -->
+                    <!-- <div class="input-group"> -->
                         <!-- <input type="text" class="form-control" [(ngModel)]="canvas.textString"> -->
-                        <textarea class="form-control" [(ngModel)]="canvas.textString"></textarea>
-                        <div class="input-group-append">
-                            <span class="input-group-text">
-                                <button id="add-text" data-toggle="tooltip" data-placement="bottom" title="Add text"
-                                    class="btn btn-primary" (click)="addText()">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="card">
-                <div class="card-header">Add images</div>
-                <div class="card-body max-height">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/pikachu.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/squirtle.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/bullbasaur.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/charmander.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/bellsprout.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/caterpie.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/dratini.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/eevee.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/jigglypuff.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/mankey.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/meowth.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/pidgey.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/psyduck.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/rattata.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/abra.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/snorlax.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/zubat.svg">
-                </div>
-            </div>
-            <br />
-            <div class="card">
-                <div class="card-header">Upload image</div>
-                <div class="card-body text-center">
-                    <img id="testImage" *ngIf="canvas.url" class="images-item-upload" [src]="canvas.url"
-                        (click)="addImageOnCanvas(canvas.url);">
-                    <input type="file" (change)="readUrl($event);">
-                    <br />
-                    <br />
-                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-danger btn-sm"
-                                (click)="removeWhite(canvas.url);">
-                                <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="card">
-                <div class="card-header">Add figure</div>
-                <div class="card-body text-center max-height">
-                    <div class="btn-group btn-group-vertical" role="group" aria-label="...">
-                        <button type="button" class="btn btn-primary"
-                            (click)="addFigure('rectangle');">Rectangle</button>
-                        <button type="button" class="btn btn-primary" (click)="addFigure('square');">Square</button>
-                        <button type="button" class="btn btn-primary" (click)="addFigure('triangle');">Triangle</button>
-                        <button type="button" class="btn btn-primary" (click)="addFigure('circle');">Circle</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6">
-            <div class="overflow-auto">
+                        <!-- <textarea class="form-control" [(ngModel)]="canvas.textString"></textarea> -->
+                        <!-- <div class="input-group-append"> -->
+                            <!-- <span class="input-group-text"> -->
+                                <!-- <button id="add-text" data-toggle="tooltip" data-placement="bottom" title="Add text" -->
+                                    <!-- class="btn btn-primary" (click)="addText()"> -->
+                                    <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
+                                <!-- </button> -->
+                            <!-- </span> -->
+                        <!-- </div> -->
+                    <!-- </div> -->
+                <!-- </div> -->
+            <!-- </div> -->
+            <!-- <br /> -->
+            <!-- <div class="card"> -->
+                <!-- <div class="card-header">Add images</div> -->
+                <!-- <div class="card-body max-height"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/pikachu.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/squirtle.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/bullbasaur.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/charmander.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/bellsprout.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/caterpie.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/dratini.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/eevee.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/jigglypuff.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/mankey.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/meowth.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/pidgey.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/psyduck.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/rattata.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/abra.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/snorlax.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/zubat.svg"> -->
+                <!-- </div> -->
+            <!-- </div> -->
+            <!-- <br /> -->
+            <!-- <div class="card"> -->
+                <!-- <div class="card-header">Upload image</div> -->
+                <!-- <div class="card-body text-center"> -->
+                    <!-- <img id="testImage" *ngIf="canvas.url" class="images-item-upload" [src]="canvas.url" -->
+                        <!-- (click)="addImageOnCanvas(canvas.url);"> -->
+                    <!-- <input type="file" (change)="readUrl($event);"> -->
+                    <!-- <br /> -->
+                    <!-- <br /> -->
+                    <!-- <div class="btn-group btn-group-justified" role="group" aria-label="..."> -->
+                        <!-- <div class="btn-group" role="group"> -->
+                            <!-- <button type="button" class="btn btn-outline-danger btn-sm" -->
+                                <!-- (click)="removeWhite(canvas.url);"> -->
+                                <!-- <i class="fa fa-times" aria-hidden="true"></i> Remove</button> -->
+                        <!-- </div> -->
+                    <!-- </div> -->
+                <!-- </div> -->
+            <!-- </div> -->
+            <!-- <br /> -->
+            <!-- <div class="card"> -->
+                <!-- <div class="card-header">Add figure</div> -->
+                <!-- <div class="card-body text-center max-height"> -->
+                    <!-- <div class="btn-group btn-group-vertical" role="group" aria-label="..."> -->
+                        <!-- <button type="button" class="btn btn-primary" -->
+                            <!-- (click)="addFigure('rectangle');">Rectangle</button> -->
+                        <!-- <button type="button" class="btn btn-primary" (click)="addFigure('square');">Square</button> -->
+                        <!-- <button type="button" class="btn btn-primary" (click)="addFigure('triangle');">Triangle</button> -->
+                        <!-- <button type="button" class="btn btn-primary" (click)="addFigure('circle');">Circle</button> -->
+                    <!-- </div> -->
+                <!-- </div> -->
+            <!-- </div> -->
+        <!-- </div> -->
+        <div class="col-xl-9">
+            <div class="overflow-auto main-canvas ">
                 <angular-editor-fabric-js #canvas></angular-editor-fabric-js>
             </div>
         </div>
@@ -390,3 +399,88 @@
 <div id="test_show"></div>
 
 <div id="test_show_0"></div>
+
+<jw-modal id="size-model">
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('size-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="card-header">Size</div>
+    <div class="card-body">
+        <select [(ngModel)]="selectedOptionId" class="size-select" (change)="sizeChangeHandler()">
+            <option *ngFor="let option of productOptions" [value]="option.id">{{option.label}}</option>
+        </select>
+    </div>
+</jw-modal>
+
+<jw-modal id="text-modal">
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('text-modal');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="card-header">Add text</div>
+    <div class="card-body">
+        <div class="input-group">
+            <!-- <input type="text" class="form-control" [(ngModel)]="canvas.textString"> -->
+            <textarea class="form-control" [(ngModel)]="canvas.textString" placeholder="Click here to edit your text"></textarea>
+            <div class="input-group-append">
+                <span class="input-group-text">
+                    <button id="add-text" data-toggle="tooltip" data-placement="bottom" title="Add text"
+                        class="btn btn-primary" (click)="addText()">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</jw-modal>
+
+<jw-modal id="add-image-model">
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('add-image-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="card-header">Add images</div>
+                <div class="card-body max-height">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/pikachu.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/squirtle.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/bullbasaur.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/charmander.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/bellsprout.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/caterpie.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/dratini.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/eevee.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/jigglypuff.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/mankey.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/meowth.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/pidgey.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/psyduck.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/rattata.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/abra.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/snorlax.svg">
+                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/zubat.svg">
+    </div>
+</jw-modal>
+
+<jw-modal id="upload-image-model">            
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('upload-image-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="card-header">Upload image</div>
+    <div class="card-body text-center">
+        <img id="testImage" *ngIf="canvas.url" class="images-item-upload" [src]="canvas.url"
+            (click)="addImageOnCanvas(canvas.url);">
+        <input type="file" (change)="readUrl($event);">
+        <br />
+        <br />
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-danger btn-sm"
+                    (click)="removeWhite(canvas.url);">
+                    <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+            </div>
+        </div>
+    </div>
+</jw-modal>
+
+<jw-modal id="add-figure-model">            
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('add-figure-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="card-header">Add figure</div>
+    <div class="card-body text-center max-height">
+        <div class="btn-group btn-group-horizental" role="group" aria-label="...">
+            <button type="button" class="btn btn-primary btn-figure" (click)="addFigure('rectangle');">Rectangle</button>
+            <button type="button" class="btn btn-primary btn-figure" (click)="addFigure('square');">Square</button>
+            <button type="button" class="btn btn-primary btn-figure" (click)="addFigure('triangle');">Triangle</button>
+            <button type="button" class="btn btn-primary btn-figure" (click)="addFigure('circle');">Circle</button>
+        </div>
+    </div>
+</jw-modal>

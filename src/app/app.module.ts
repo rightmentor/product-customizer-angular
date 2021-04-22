@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './services/api.service';
+import { ModalModule } from './_modal/modal.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ApiService } from './services/api.service';
     HttpClientModule,
     FabricjsEditorModule,
     FormsModule,
-    ColorPickerModule
+    ColorPickerModule,
+    ModalModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

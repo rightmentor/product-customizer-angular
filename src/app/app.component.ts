@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
 import { $ } from 'protractor';
 import { ApiService } from './services/api.service';
+import { ModalService } from './_modal/modal.service';
 
 declare var window: any;
 
@@ -14,10 +15,11 @@ export class AppComponent implements OnInit {
   title = 'angular-editor-fabric-js';
   productOptions = [];
   selectedOptionId;
+  bodyText: string;
 
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private modalService: ModalService) {
     this.checkJavascript();
   }
 
@@ -211,18 +213,26 @@ export class AppComponent implements OnInit {
     // 1mm =  3.779527559px
     let s = label.substring(label.indexOf("(") + 1);
     s = s.substring(0, s.indexOf(")"));
-    const height = s.substring(0, s.indexOf("mm"));
+    const height = s.substring(0, s.indexOf("mm")) * 2;
     if (height) {
       this.canvas.size.height = Math.round((height * 3.779527559) * 10) / 10;
     }
     let width = s.substring(s.indexOf("x") + 1);
     if (width) {
-      width = width.substring(0, width.indexOf("mm"));
+      width = width.substring(0, width.indexOf("mm")) * 2;
       if (width) {
         this.canvas.size.width = Math.round((width * 3.779527559) * 10) / 10;
       }
     }
 
     this.changeSize();
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+}
+
+  closeModal(id: string) {
+      this.modalService.close(id);
   }
 }
