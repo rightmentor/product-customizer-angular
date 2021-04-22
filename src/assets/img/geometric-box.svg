@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:ns1="http://sozi.baierouge.fr"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    id="svg2"
+    sodipodi:docname="geometric_frame.svg"
+    viewBox="0 0 759.72 526.28"
+    version="1.1"
+    inkscape:version="0.48.1 "
+  >
+  <sodipodi:namedview
+      id="base"
+      fit-margin-left="0"
+      inkscape:showpageshadow="false"
+      inkscape:zoom="0.8422788"
+      borderopacity="1.0"
+      inkscape:current-layer="layer1"
+      inkscape:cx="271.51576"
+      inkscape:cy="369.31587"
+      inkscape:window-maximized="1"
+      showgrid="false"
+      fit-margin-right="0"
+      showguides="true"
+      bordercolor="#666666"
+      inkscape:window-x="-8"
+      inkscape:guide-bbox="true"
+      inkscape:window-y="-8"
+      fit-margin-bottom="0"
+      inkscape:window-width="1680"
+      inkscape:pageopacity="0.0"
+      inkscape:pageshadow="2"
+      pagecolor="#ffffff"
+      inkscape:document-units="px"
+      inkscape:window-height="1030"
+      showborder="false"
+      fit-margin-top="0"
+    >
+    <sodipodi:guide
+        id="guide3644"
+        position="-5001.8436,-33.6696"
+        orientation="1,0"
+    />
+    <inkscape:grid
+        id="grid4666"
+        enabled="true"
+        visible="true"
+        snapvisiblegridlinesonly="true"
+        type="xygrid"
+        empspacing="5"
+    />
+  </sodipodi:namedview
+  >
+  <g
+      id="layer1"
+      inkscape:label="Layer 1"
+      inkscape:groupmode="layer"
+      transform="translate(364.09 -314.63)"
+    >
+    <path
+        id="path3807"
+        style="fill:#000000"
+        d="m161.66 314.95-104.88 0.0937-19.406 19.625-19.656-20.011v10l19.688 19.824 22.281-22.25h94.75v94.469l-22.25 22.25 19.441 19.707 10.028 0.0114-19.688-19.656 19.656-19.406zm-98.938 14.031-20.5 20.25 4.875 4.9062 0.5 0.46875-0.0312 0.0312 14.781 14.781 44.781 0.0937 0.125 44.531 15.054 15.029s3.4124 3.6127 4.9775 5.0027l20.406-20.406-0.375-84.469zm59.648 109.98s-4.9763-4.9764-4.9722-4.9722l-17.262-17.289v-39.906l-40.438-0.25-17.031-17.031s-5.486-5.2205-5.5-5.2812l-19.438 19.426v10c0 0.4375 19.562-20 19.562-20 0.4375-0.0272 19.5 19.824 19.5 19.824h36.406v36.125l19.326 19.256-19.795 19.795 10.031 0.0114zm-104.64-104.35v29.562l14.781-14.781zm109.56 109.25-14.562 14.801h29z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3715-4"
+        style="fill:#000000"
+        d="m92.944 658.55 19.719 19.432-19.938 19.682h10l19.801-19.647-23.483-23.409-0.31823-76.099h-6zm11.72-7.9478 22.602 22.669 22.602-22.669-0.14334-72.094h-45zm7.9047 47.061h29.594l-14.781-14.832zm19.5-19.619 19.656 19.619h10l-19.781-19.588 19.82-19.848-3.0388-6.8606-4.0471 4.0794zm23.656-23.673 6 3.8774s0.0152-56.356 0-79.74h-6z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3715-8"
+        style="fill:#000000"
+        d="m161.51 497.37-19.719-19.642 19.938-19.895h-10l-19.801 19.86 23.483 23.663 0.31823 77.935h6zm-11.72 8.0339-22.602-22.914-22.602 22.914 0.14334 73.887h45zm-7.9047-47.571h-29.594l14.781 14.992zm-19.5 19.832-19.656-19.832h-10l19.781 19.8-19.82 20.062 3.0388 6.9349 4.0471-4.1236zm-23.656 23.929-6-3.9194s-0.0152 57.979 0 81.616h6z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3715-9"
+        style="fill:#000000"
+        d="m-22.887 383.45 20.471-19.719 20.735 19.938v-10l-20.698-19.801-24.662 23.483-80.17 0.31823v6zm-8.3731-11.72 23.881-22.602-23.881-22.602-75.951 0.14333v45zm49.579-7.9047v-29.594l-15.625 14.781zm-20.669-19.5 20.669-19.656v-10l-20.636 19.781-20.909-19.82-7.2277 3.0388 4.2977 4.0471zm-24.939-23.656 4.0848-6s-59.371-0.0152-84.006 0v6z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3715-5"
+        style="fill:#000000"
+        d="m-181.93 314.85-19.072 19.719-19.318-19.938v10l19.284 19.801 22.977-23.483 74.692-0.31823v-6zm7.801 11.72-22.25 22.602 22.25 22.602 70.761-0.14334v-45zm-46.17 7.8799-0.00004 29.45 14.536-14.612zm19.235 19.525-19.257 19.656v10l19.226-19.781 19.481 19.82 6.7338-3.0388-4.004-4.0471zm23.235 23.656-3.8057 6s55.315 0.0152 78.266 0v-6z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3807-5"
+        style="fill:#000000"
+        d="m-363.51 314.76 0.0937 104.88 19.625 19.406-20.011 19.656h10l19.824-19.688-22.25-22.281v-94.75h94.469l22.25 22.25 19.707-19.441 0.0114-10.028-19.656 19.688-19.406-19.656zm14.031 98.938 20.25 20.5 4.9062-4.875 0.46875-0.5 0.0312 0.0312 14.781-14.781 0.0937-44.781 44.531-0.125 15.029-15.054s3.6127-3.4124 5.0027-4.9775l-20.406-20.406-84.469 0.375zm109.98-59.64s-4.9764 4.9763-4.9722 4.9722l-17.289 17.262h-39.906l-0.25 40.438-17.031 17.031s-5.2205 5.486-5.2812 5.5l19.426 19.438h10c0.4375 0-20-19.562-20-19.562-0.0272-0.4375 19.824-19.5 19.824-19.5v-36.406h36.125l19.256-19.326 19.795 19.795 0.0114-10.031zm-104.36 104.64h29.562l-14.781-14.781zm109.25-109.56 14.76 14.889v-29.45z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3715-4-8"
+        style="fill:#000000"
+        d="m-363.83 658 19.719 19.513-19.938 19.764h10l19.801-19.729-23.483-23.507-0.31823-76.418h-6zm11.72-7.9812 22.602 22.764 22.602-22.764-0.14334-72.396h-45zm7.9047 47.258h29.594l-14.781-14.894zm19.5-19.702 19.656 19.702h10l-19.781-19.67 19.82-19.931-3.0388-6.8894-4.0471 4.0965zm23.656-23.772 6 3.8936s0.0152-56.592 0-80.074h-6z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3715-8-0"
+        style="fill:#000000"
+        d="m-295.27 497.34-19.719-19.406 19.938-19.656h-10l-19.801 19.621 23.483 23.379 0.31823 77h6zm-11.72 7.9375-22.602-22.639-22.602 22.639 0.14334 73h45zm-7.9047-47h-29.594l14.781 14.812zm-19.5 19.594-19.656-19.594h-10l19.781 19.562-19.82 19.822 3.0388 6.8517 4.0471-4.0741zm-23.656 23.642-6-3.8723s-0.0152 57.283 0 80.636h6z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3807-0"
+        style="fill:#000000"
+        d="m161.41 840.59-104.87-0.0937-19.406-19.625-19.656 20.011v-10l19.688-19.824 22.281 22.25h94.75v-94.469l-22.25-22.25 19.441-19.707 10.028-0.0114-19.687 19.656 19.656 19.406zm-98.937-14.031-20.5-20.25 4.875-4.9062 0.5-0.46875-0.0312-0.0312 14.781-14.781 44.781-0.0937 0.125-44.531 15.054-15.029s3.4124-3.6127 4.9775-5.0027l20.406 20.406-0.375 84.469zm59.637-109.99s-4.9763 4.9764-4.9722 4.9722l-17.262 17.289v39.906l-40.438 0.25-17.031 17.031s-5.486 5.2205-5.5 5.2812l-19.438-19.426v-10c0-0.4375 19.562 20 19.562 20 0.4375 0.0272 19.5-19.824 19.5-19.824h36.406v-36.125l19.326-19.256-19.795-19.795 10.031-0.0114zm-104.64 104.36v-29.562l14.781 14.781zm109.56-109.25-14.562-14.801h29z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3715-9-4"
+        style="fill:#000000"
+        d="m-21.702 772.09 19.787 19.719 20.042-19.938v10l-20.006 19.801-23.837-23.483-77.49-0.31823v-6zm-8.0931 11.72 23.083 22.602-23.083 22.602-73.412-0.14333v-45zm47.922 7.9047v29.594l-15.104-14.78zm-19.978 19.5 19.978 19.656v10l-19.946-19.781-20.21 19.82-6.986-3.0388 4.154-4.0471zm-24.106 23.656 3.9483 6s-57.387 0.0152-81.198 0v-6z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3715-5-8"
+        style="fill:#000000"
+        d="m-181.4 840.69-19.46-19.719-19.71 19.938v-10l19.675-19.801 23.443 23.483 76.209 0.31823v6zm7.9593-11.72-22.701-22.602 22.701-22.602 72.198 0.14334v45zm-47.108-7.8799-0.00004-29.45 14.831 14.612zm19.626-19.525-19.648-19.656v-10l19.616 19.781 19.876-19.82 6.8705 3.0388-4.0853 4.0471zm23.707-23.656-3.883-6s56.438-0.0152 79.855 0v6z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="cccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+    <path
+        id="path3807-5-8"
+        style="fill:#000000"
+        d="m-363.76 840.77 0.0937-104.88 19.625-19.406-20.011-19.656h10l19.824 19.688-22.25 22.281v94.75h94.469l22.25-22.25 19.707 19.441 0.0114 10.028-19.656-19.688-19.406 19.656zm14.031-98.938 20.25-20.5 4.9062 4.875 0.46875 0.5 0.0312-0.0312 14.781 14.781 0.0937 44.781 44.531 0.125 15.029 15.054s3.6127 3.4124 5.0027 4.9775l-20.406 20.406-84.469-0.375zm109.98 59.64s-4.9764-4.9763-4.9722-4.9722l-17.289-17.262h-39.906l-0.25-40.438-17.031-17.031s-5.2205-5.486-5.2812-5.5l19.426-19.438h10c0.4375 0-20 19.562-20 19.562-0.0272 0.4375 19.824 19.5 19.824 19.5v36.406h36.125l19.256 19.326 19.795-19.795 0.0114 10.031zm-104.36-104.64h29.562l-14.781 14.781zm109.25 109.56 14.76-14.889v29.45z"
+        inkscape:export-ydpi="77.589996"
+        sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        inkscape:export-filename="C:\Users\Daniel Fowler\Documents\AndriodDocs\NinePatch\frame.png"
+        inkscape:connector-curvature="0"
+        inkscape:export-xdpi="77.589996"
+    />
+  </g
+  >
+  <metadata
+    >
+    <rdf:RDF
+      >
+      <cc:Work
+        >
+        <dc:format
+          >image/svg+xml</dc:format
+        >
+        <dc:type
+            rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+        />
+        <cc:license
+            rdf:resource="http://creativecommons.org/licenses/publicdomain/"
+        />
+        <dc:publisher
+          >
+          <cc:Agent
+              rdf:about="http://openclipart.org/"
+            >
+            <dc:title
+              >Openclipart</dc:title
+            >
+          </cc:Agent
+          >
+        </dc:publisher
+        >
+        <dc:title
+          >Geometric Box Frame or Border</dc:title
+        >
+        <dc:date
+          >2011-09-10T16:12:45</dc:date
+        >
+        <dc:description
+          >A simple geometric black and white border for use as a box or frame.</dc:description
+        >
+        <dc:source
+          >https://openclipart.org/detail/159841/geometric-box-frame-or-border-by-gr8dan</dc:source
+        >
+        <dc:creator
+          >
+          <cc:Agent
+            >
+            <dc:title
+              >GR8DAN</dc:title
+            >
+          </cc:Agent
+          >
+        </dc:creator
+        >
+        <dc:subject
+          >
+          <rdf:Bag
+            >
+            <rdf:li
+              >angular</rdf:li
+            >
+            <rdf:li
+              >black</rdf:li
+            >
+            <rdf:li
+              >border</rdf:li
+            >
+            <rdf:li
+              >box</rdf:li
+            >
+            <rdf:li
+              >diamond</rdf:li
+            >
+            <rdf:li
+              >frame</rdf:li
+            >
+            <rdf:li
+              >geometric</rdf:li
+            >
+            <rdf:li
+              >plain</rdf:li
+            >
+            <rdf:li
+              >points</rdf:li
+            >
+            <rdf:li
+              >sharpe</rdf:li
+            >
+            <rdf:li
+              >simple</rdf:li
+            >
+            <rdf:li
+              >white</rdf:li
+            >
+          </rdf:Bag
+          >
+        </dc:subject
+        >
+      </cc:Work
+      >
+      <cc:License
+          rdf:about="http://creativecommons.org/licenses/publicdomain/"
+        >
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#Reproduction"
+        />
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#Distribution"
+        />
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#DerivativeWorks"
+        />
+      </cc:License
+      >
+    </rdf:RDF
+    >
+  </metadata
+  >
+</svg
+>

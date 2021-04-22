@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<svg
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:ns1="http://sozi.baierouge.fr"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    id="Layer_1"
+    enable-background="new 0 0 286.561 283.247"
+    sodipodi:docname="kitchen-plate.svg"
+    xml:space="preserve"
+    viewBox="0 0 286.561 283.247"
+    version="1.0"
+    y="0px"
+    x="0px"
+    inkscape:version="0.48.2 r9819"
+  ><sodipodi:namedview
+      id="namedview243"
+      bordercolor="#666666"
+      inkscape:pageshadow="2"
+      guidetolerance="10"
+      pagecolor="#ffffff"
+      gridtolerance="10"
+      inkscape:window-maximized="0"
+      inkscape:zoom="0.83319503"
+      objecttolerance="10"
+      borderopacity="1"
+      inkscape:current-layer="Layer_1"
+      inkscape:cx="143.2805"
+      inkscape:cy="141.6235"
+      inkscape:window-y="0"
+      inkscape:window-x="0"
+      inkscape:window-width="646"
+      showgrid="false"
+      inkscape:pageopacity="0"
+      inkscape:window-height="480"
+  />
+<g
+      id="plate"
+    >
+	<path
+        id="path237"
+        d="m286.56 141.62c0 78.215-64.148 141.62-143.28 141.62-79.133 0.01-143.28-63.4-143.28-141.62 0-78.214 64.147-141.62 143.28-141.62 79.13 0 143.28 63.406 143.28 141.62z"
+        fill="#231F20"
+    />
+	<ellipse
+        id="ellipse239"
+        rx="114.62"
+        ry="113.3"
+        cy="141.62"
+        cx="143.28"
+        fill="#FFFFFF"
+    />
+	<path
+        id="path241"
+        d="m64.639 212.3c-17.076-19.217-27.637-44.795-27.648-70.684 0.05-51.715 42.207-99.188 94.829-99.289 1.725 0 3.124 1.4 3.124 3.124 0 1.728-1.399 3.127-3.124 3.127-24.354 0-46.47 11.084-62.558 28.317-16.085 17.229-26.025 40.554-26.02 64.72-0.012 24.17 9.956 48.422 26.069 66.525 16.12 18.117 38.235 30.016 62.508 30.01v0.004c1.725 0 3.124 1.396 3.124 3.123 0 1.729-1.399 3.129-3.124 3.129-26.38 0.01-50.112-12.9-67.181-32.1z"
+        fill="#231F20"
+    />
+</g
+  >
+<metadata
+    ><rdf:RDF
+      ><cc:Work
+        ><dc:format
+          >image/svg+xml</dc:format
+        ><dc:type
+            rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+        /><cc:license
+            rdf:resource="http://creativecommons.org/licenses/publicdomain/"
+        /><dc:publisher
+          ><cc:Agent
+              rdf:about="http://openclipart.org/"
+            ><dc:title
+              >Openclipart</dc:title
+            ></cc:Agent
+          ></dc:publisher
+        ><dc:title
+          >Kitchen Icon - Plate</dc:title
+        ><dc:date
+          >2012-05-07T12:11:53</dc:date
+        ><dc:description
+          >Kitchen dinner plate.</dc:description
+        ><dc:source
+          >https://openclipart.org/detail/169919/kitchen-icon---plate-by-studiofibonacci</dc:source
+        ><dc:creator
+          ><cc:Agent
+            ><dc:title
+              >StudioFibonacci</dc:title
+            ></cc:Agent
+          ></dc:creator
+        ><dc:subject
+          ><rdf:Bag
+            ><rdf:li
+              >dinner</rdf:li
+            ><rdf:li
+              >icon</rdf:li
+            ><rdf:li
+              >kitchen</rdf:li
+            ><rdf:li
+              >plate</rdf:li
+            ><rdf:li
+              >silhouette</rdf:li
+            ></rdf:Bag
+          ></dc:subject
+        ></cc:Work
+      ><cc:License
+          rdf:about="http://creativecommons.org/licenses/publicdomain/"
+        ><cc:permits
+            rdf:resource="http://creativecommons.org/ns#Reproduction"
+        /><cc:permits
+            rdf:resource="http://creativecommons.org/ns#Distribution"
+        /><cc:permits
+            rdf:resource="http://creativecommons.org/ns#DerivativeWorks"
+        /></cc:License
+      ></rdf:RDF
+    ></metadata
+  ></svg
+>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns1="http://sozi.baierouge.fr" id="svg4277" viewBox="0 0 125 125" version="1.0" y="0" x="0" inkscape:version="0.91 r13725">
+  <g id="g4284" transform="matrix(1.1303 0 0 1.1303 -1.0282 -.85104)">
+    <path id="path4349" style="stroke:#000000;stroke-width:2.5;fill-rule:evenodd" transform="matrix(.95466 0 0 .95466 47.021 1.9294)" d="m60.446 55.537a50.718 50.718 0 1 0 -101.44 0 50.718 50.718 0 1 0 101.44 0z"/>
+    <path id="path2518" style="fill:#ffffff" d="m57.372 27.763c-7.681-2.133-9.096-11.256-0.892-14.262 11.744-4.303 17.151 12.081 9.649 19.239-8.744 8.343-24.909 4.631-27.658-7.609-1.251-5.573 2.487-12.91 6.808-16.076-27.569 7.361-37.941 31.676-35.887 51.175 3.591-5.204 6.02-10.096 12.185-12.853 15.039-6.725 30.066 5.052 44.742-5.257 13.842-9.722 10.092-32.323-8.947-32.134-12.949 0.128-20.004 20.586-5.366 22.854 5.148 0.798 11.345-0.927 13.543-6.034 1.959-4.552-1.976-10.615-7.265-10.005-6.894 0.795-3.231 7.841-0.912 10.962z"/>
+    <path id="path2576" style="fill:#ffffff" d="m73.215 10.899c4.533 3.272 7.205 9.127 7.259 14.018 0.197 17.959-19.477 27.211-16.569 46.506 2.407 15.976 24.222 21.586 32.341 6.13 6.584-12.535-10.65-27.231-19.179-13.989-2.564 3.98-2.622 10.389 1.09 13.723 3.405 3.057 10.143 2.219 11.745-2.436 2.236-6.499-5.315-6.559-9.264-5.183 4.133-5.109 12.974-4.4 13.328 3.51 0.653 14.592-21.645 11.409-22.993-1.755-1.687-19.352 26.307-24.592 29.947-1.2 7.87-22.935-2.793-49.429-27.705-59.324z"/>
+    <path id="path4350" style="fill:#ffffff" d="m29.794 66.777c4.485 4.375-0.219 11.028-6.261 10.237-14.612-1.915-6.23-24.422 8.05-20.198 11.996 3.549 16.882 17.795 5.817 26.681-5.977 4.122-12.876 4.844-18.012 0.85 15.491 20.333 48.435 24.783 69.068 5.051-6.157 1.853-17.633 2.225-24.564-5.085-10.222-10.781-9.482-26.051-25.15-32.493-16.593-6.823-34.354 11.403-21.727 26.199 8.799 10.309 28.776 0.608 20.181-12.106-2.744-4.059-8.585-6.808-13.497-4.749-3.759 1.576-5.174 8.208-2.19 11.103 4.384 4.252 7.994-1.721 8.285-5.49z"/>
+  </g>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>celtic triskell 01</dc:title>
+        <dc:date>2010-05-20T03:03:12</dc:date>
+        <dc:description>originally uploaded by Olivier from OCAL 0.18</dc:description>
+        <dc:source>https://openclipart.org/detail/61309/celtic-triskell-01-by-anonymous</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Anonymous</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>breizh</rdf:li>
+            <rdf:li>celtic</rdf:li>
+            <rdf:li>design</rdf:li>
+            <rdf:li>pattern</rdf:li>
+            <rdf:li>triskell</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

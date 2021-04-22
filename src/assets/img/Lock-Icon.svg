@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:ns1="http://sozi.baierouge.fr"
+    xmlns:cc="http://web.resource.org/cc/"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    id="Layer_1"
+    enable-background="new 0 0 360 360"
+    xml:space="preserve"
+    viewBox="0 0 360 360"
+    version="1.0"
+    y="0px"
+    x="0px"
+  >
+<g
+    >
+	<g
+      >
+		<path
+          d="m359 323.2c0 19.77-16.03 35.8-35.8 35.8h-286.4c-19.771 0-35.8-16.03-35.8-35.8v-286.4c0-19.771 16.029-35.8 35.802-35.8h286.4c19.77 0 35.8 16.029 35.8 35.802v286.4z"
+          fill="#FFFFFF"
+      />
+		<path
+          d="m323.2 360h-286.4c-20.294 0-36.8-16.51-36.8-36.8v-286.4c0-20.294 16.506-36.8 36.795-36.8h286.41c20.29 0 36.8 16.506 36.8 36.795v286.41c0 20.29-16.51 36.8-36.8 36.8zm34.8-323.19c0-19.224-15.58-34.807-34.81-34.807h-286.38c-19.227 0-34.81 15.583-34.81 34.807v286.39c0 19.22 15.583 34.8 34.807 34.8h286.39c19.22 0 34.8-15.58 34.8-34.81v-286.38z"
+      />
+	</g
+    >
+	<path
+        d="m263.92 113.79c-1.312-23.149-10.313-42.714-26.267-56.837-15.27-13.51-35.74-20.953-57.65-20.953-21.907 0-42.38 7.443-57.648 20.957-15.953 14.123-24.954 33.688-26.267 56.837-9.867 3.98-16.883 13.61-16.883 24.82v158.62c0 14.73 12.096 26.77 26.88 26.77h147.84c14.785 0 26.88-12.044 26.88-26.768v-158.62c0-11.21-7.02-20.84-16.88-24.82zm-64.53 149.06c0.807 4.731-2.477 8.605-7.297 8.605h-24.177c-4.823 0-8.106-3.874-7.299-8.605l6.362-37.277c-6.568-4.253-10.92-11.609-10.92-19.993 0-13.168 10.721-23.843 23.944-23.843 13.224 0 23.943 10.675 23.943 23.843 0 8.384-4.351 15.74-10.917 19.993l6.38 37.27zm-88.2-151.01c3.771-41.816 37.412-60.972 68.808-60.972 18.247 0 35.196 6.108 47.728 17.201 12.262 10.854 19.471 25.874 21.091 43.771h-137.63z"
+    />
+</g
+  >
+<metadata
+    ><rdf:RDF
+      ><cc:Work
+        ><dc:format
+          >image/svg+xml</dc:format
+        ><dc:type
+            rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+        /><cc:license
+            rdf:resource="http://creativecommons.org/licenses/publicdomain/"
+        /><dc:publisher
+          ><cc:Agent
+              rdf:about="http://openclipart.org/"
+            ><dc:title
+              >Openclipart</dc:title
+            ></cc:Agent
+          ></dc:publisher
+        ></cc:Work
+      ><cc:License
+          rdf:about="http://creativecommons.org/licenses/publicdomain/"
+        ><cc:permits
+            rdf:resource="http://creativecommons.org/ns#Reproduction"
+        /><cc:permits
+            rdf:resource="http://creativecommons.org/ns#Distribution"
+        /><cc:permits
+            rdf:resource="http://creativecommons.org/ns#DerivativeWorks"
+        /></cc:License
+      ></rdf:RDF
+    ></metadata
+  ></svg
+>
