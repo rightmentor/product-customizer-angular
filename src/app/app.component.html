@@ -29,7 +29,7 @@
                     <button class="btn btn-primary btn-canvas-action" (click)="openModal('text-modal')">Add text</button>
                     <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-image-model')">Add Image</button>
                     <button class="btn btn-primary btn-canvas-action" (click)="openModal('upload-image-model')">Upload Image</button>
-                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-figure-model')">Add Figure</button>
+                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-figure-model')">Add Shape</button>
                 </div>
             </div>
         </div>
@@ -545,7 +545,7 @@
 
 <jw-modal id="add-figure-model">            
     <button class="btn btn-danger modal-close-btn" (click)="closeModal('add-figure-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
-    <div class="card-header">Add figure</div>
+    <div class="card-header">Add Shape</div>
     <div class="card-body text-center max-height">
         <div class="btn-group btn-group-horizental" role="group" aria-label="...">
             <button type="button" class="btn btn-primary btn-figure" (click)="addFigure('rectangle');">Rectangle</button>
