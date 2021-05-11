@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   productOptions = [];
   selectedOptionId;
   bodyText: string;
+  private currentCanvas: fabric.Canvas;
 
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
@@ -260,5 +261,18 @@ export class AppComponent implements OnInit {
 
   closeModal(id: string) {
       this.modalService.close(id);
+  }
+
+  save() {
+    console.log(' Save func called ', this.canvas);    
+  }
+
+  cancel() {
+    console.log(' cancel func called ');
+    window.location = "/";
+  }
+
+  setAllElementColor(color) {
+    this.canvas.setAllElementColor(color);
   }
 }

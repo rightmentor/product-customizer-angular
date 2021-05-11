@@ -137,6 +137,18 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   /*------------------------Block elements------------------------*/
 
+  // Change all canvas elements color 
+
+  setAllElementColor(color) {
+    var objs = this.canvas.getObjects().map(function(o) {
+      return o.set('fill', color);
+    });
+    this.canvas.renderAll();
+  }
+
+
+  /*------------------------Block elements------------------------*/
+
   // Block "Size"
 
   changeSize() {

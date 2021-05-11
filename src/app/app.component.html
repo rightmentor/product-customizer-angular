@@ -23,13 +23,18 @@
                         <i class="fa fa-ban" aria-hidden="true"></i> Clean</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-12 ">
+            <div class="row secondary-nav">
+                <div class="col-xl-10 ">
                     <button class="btn btn-primary btn-canvas-action" (click)="openModal('size-model')">Size</button>
                     <button class="btn btn-primary btn-canvas-action" (click)="openModal('text-modal')">Add text</button>
                     <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-image-model')">Add Image</button>
                     <button class="btn btn-primary btn-canvas-action" (click)="openModal('upload-image-model')">Upload Image</button>
                     <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-figure-model')">Add Shape</button>
+                </div>
+                <div class="col-xl-2 text-right">
+                    <button class="btn btn-primary btn-canvas-action" (click)="save()">Save</button>
+                    <button class="btn btn-danger btn-canvas-action" (click)="cancel()">Cancel</button>
+                    
                 </div>
             </div>
         </div>
@@ -214,7 +219,16 @@
                 <div class="card-body">
                     <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type == 'group'">Group Selected
                     </div> -->
-                    <div class="custom-item" *ngIf="!canvas.selected">No items selected</div>
+                    <!-- <div class="custom-item" *ngIf="!canvas.selected">No items selected</div> -->
+                    <!-- <div class="custom-item" *ngIf="!canvas.selected">No items selected</div> -->
+                    <div class="custom-item" *ngIf="!canvas.selected">
+                        <div class="custom-item-title">Fill</div>
+                        <div class="custom-item-body">
+                            <input type="text" class="form-control" [cpPosition]="'bottom'"
+                                [(colorPicker)]="canvas.props.fill" [style.background]="canvas.props.fill"
+                                [value]="canvas.props.fill" (colorPickerChange)="setAllElementColor(canvas.props.fill)">
+                        </div>
+                    </div>
                     <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
                         <div class="custom-item-title">ID</div>
                         <div class="custom-item-body">
@@ -226,7 +240,7 @@
                         <div class="custom-item-body">
                             <input type="range" [(ngModel)]="canvas.props.opacity"
                                 (change)="setOpacity()">{{canvas.props.opacity}}</div>
-                    </div>
+                    </div> -->
                     <div class="custom-item"
                         *ngIf="canvas.selected && canvas.textEditor || canvas.selected && canvas.figureEditor">
                         <div class="custom-item-title">Fill</div>
@@ -235,7 +249,7 @@
                                 [(colorPicker)]="canvas.props.fill" [style.background]="canvas.props.fill"
                                 [value]="canvas.props.fill" (colorPickerChange)="setFill()">
                         </div>
-                    </div> -->
+                    </div>
                     <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
                         <div class="custom-item-title">Font family</div>
                         <div class="custom-item-body">
