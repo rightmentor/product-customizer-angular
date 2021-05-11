@@ -417,9 +417,14 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   setActiveProp(name, value) {
     const object = this.canvas.getActiveObject();
+    console.log('object', object)
     if (!object) { return; }
     object.set(name, value).setCoords();
-    this.canvas.renderAll();
+    console.log('object sdfsdf', object)
+    setTimeout(()=>{
+      this.canvas.renderAll();
+    }, 1000)
+    
   }
 
   clone() {
@@ -558,6 +563,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
   }
 
   setFontFamily() {
+    console.log('this.props.fontFamily', this.props.fontFamily);
     this.setActiveProp('fontFamily', this.props.fontFamily);
   }
 
