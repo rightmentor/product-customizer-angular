@@ -64,3 +64,18 @@
 .row.secondary-nav {
   margin-top: 10px;
 }
+
+.colorPicker {
+  width: 45px;
+  height: 45px;
+  padding: 6px;
+  border: 1px solid #DFDFDF;
+  border-radius: 3px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.colorPicker div {
+  width: 31px;
+  height: 32px;
+}

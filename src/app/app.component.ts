@@ -14,6 +14,7 @@ declare var window: any;
 export class AppComponent implements OnInit {
   title = 'angular-editor-fabric-js';
   productOptions = [];
+  colors = ["#000000", "#0329fe", "#ffffff",  "#009999", "#ff0000", "#e580ff" ]
   selectedOptionId;
   bodyText: string;
   private currentCanvas: fabric.Canvas;
@@ -273,6 +274,7 @@ export class AppComponent implements OnInit {
   }
 
   setAllElementColor(color) {
+    console.log(color);
     this.canvas.setAllElementColor(color);
   }
 }

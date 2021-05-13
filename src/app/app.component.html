@@ -224,9 +224,12 @@
                     <div class="custom-item" *ngIf="!canvas.selected">
                         <div class="custom-item-title">Fill</div>
                         <div class="custom-item-body">
-                            <input type="text" class="form-control" [cpPosition]="'bottom'"
+                            <!-- <input type="text" class="form-control" [cpPosition]="'bottom'"
                                 [(colorPicker)]="canvas.props.fill" [style.background]="canvas.props.fill"
-                                [value]="canvas.props.fill" (colorPickerChange)="setAllElementColor(canvas.props.fill)">
+                                [value]="canvas.props.fill" (colorPickerChange)="setAllElementColor(canvas.props.fill)"> -->
+                                <div *ngFor="let color of colors" class="colorPicker">
+                                        <div [style.background-color]="color" (click)="setAllElementColor(color)" ></div>
+                                </div>
                         </div>
                     </div>
                     <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
