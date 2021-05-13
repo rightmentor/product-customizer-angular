@@ -140,9 +140,22 @@ export class FabricjsEditorComponent implements AfterViewInit {
   // Change all canvas elements color 
 
   setAllElementColor(color) {
-    var objs = this.canvas.getObjects().map(function(o) {
-      return o.set('fill', color);
+    var objs = this.canvas.getObjects().map(function(o:any) {
+      if(o._objects){
+        o._objects.map(function(o1:any) {
+          console.log(o1.fill);
+          if(o1.fill == '#FFFFFF'){
+            return o1.set('fill', '#FFFFFF');
+          }else{
+            return o1.set('fill', color);
+          }
+        });
+      }else{
+        return o.set('fill', color);
+      }
     });
+
+    
     this.canvas.renderAll();
   }
 
