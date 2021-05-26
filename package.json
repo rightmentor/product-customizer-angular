@@ -7,6 +7,7 @@
     "start-ng": "ng serve angular-editor-fabric-js-app --host 0.0.0.0 --disableHostCheck true",
     "build": "ng build angular-editor-fabric-js-app",
     "build:prod": "ng build --prod --base-href=/product-customizer/ angular-editor-fabric-js-app",
+    "build:simon": "ng build --prod --base-href=/simonstamp/ angular-editor-fabric-js-app",
     "build:lib": "ng-packagr -p projects/angular-editor-fabric-js/package.json",
     "test": "ng test",
     "lint": "ng lint",
@@ -27,6 +28,7 @@
     "fabric": "^3.6.3",
     "font-awesome": "^4.7.0",
     "ngx-color-picker": "^9.1.0",
+    "ngx-cookie-service": "^12.0.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

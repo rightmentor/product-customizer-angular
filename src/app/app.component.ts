@@ -3,6 +3,7 @@ import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/p
 import { $ } from 'protractor';
 import { ApiService } from './services/api.service';
 import { ModalService } from './_modal/modal.service';
+import { CookieService } from 'ngx-cookie-service';
 
 declare var window: any;
 
@@ -14,20 +15,34 @@ declare var window: any;
 export class AppComponent implements OnInit {
   title = 'angular-editor-fabric-js';
   productOptions = [];
-  colors = ["#000000", "#0329fe", "#ffffff",  "#009999", "#ff0000", "#e580ff" ]
+  colors = ["#0000ff", "#009a85", "#ff0000",  "#cc66cc" ]
   selectedOptionId;
   bodyText: string;
   private currentCanvas: fabric.Canvas;
 
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
-  constructor(private apiService: ApiService, private modalService: ModalService) {
+  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService)  {
+    if(!this.cookieService.get('SIMON_GUID')){
+      this.cookieService.set( 'SIMON_GUID', this.getUniqueId(5) ); // To Set Cookie
+      console.log('cookie is set: ',this.cookieService.get('SIMON_GUID') );
+    }
     this.checkJavascript();
   }
 
   ngOnInit() {
     this.checkJavascript();
     // this.getProductOptions('112');
+  }
+
+  public getUniqueId(parts: number): string {
+    const stringArr = [];
+    for(let i = 0; i< parts; i++){
+      // tslint:disable-next-line:no-bitwise
+      const S4 = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+      stringArr.push(S4);
+    }
+    return stringArr.join('-');
   }
 
   public rasterize() {

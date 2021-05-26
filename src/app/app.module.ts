@@ -8,6 +8,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './services/api.service';
 import { ModalModule } from './_modal/modal.module';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { ModalModule } from './_modal/modal.module';
     ColorPickerModule,
     ModalModule
   ],
-  providers: [ApiService],
+  providers: [ApiService,CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
