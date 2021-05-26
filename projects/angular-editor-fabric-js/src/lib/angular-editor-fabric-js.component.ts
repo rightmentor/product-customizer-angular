@@ -1,6 +1,8 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { fabric } from 'fabric';
 
+import { CookieService } from 'ngx-cookie-service';
+
 @Component({
   selector: 'angular-editor-fabric-js',
   templateUrl: './angular-editor-fabric-js.component.html',
@@ -53,8 +55,12 @@ export class FabricjsEditorComponent implements AfterViewInit {
   private imageEditor = false;
   public figureEditor = false;
   public selected: any;
+  private guid: any;
 
-  constructor() { }
+  constructor(private cookieService: CookieService) { 
+    this.guid = this.cookieService.get('SIMON_GUID')
+    console.log('[this.guid] ',this.guid );
+  }
 
   ngAfterViewInit(): void {
 
@@ -663,16 +669,20 @@ export class FabricjsEditorComponent implements AfterViewInit {
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(this.canvas.toSVG());
   }
 
+  /************** */
   saveCanvasToJSON() {
+    let key = this.guid + "-" + this.getUniqueId(1);
+    console.log('key', key);
     const json = JSON.stringify(this.canvas);
-    localStorage.setItem('Kanvas', json);
+    localStorage.setItem(key, json);
     console.log('json');
     console.log(json);
 
   }
 
-  loadCanvasFromJSON() {
-    const CANVAS = localStorage.getItem('Kanvas');
+  loadCanvasFromJSON(key) {
+    console.log(key);
+    const CANVAS = localStorage.getItem(key);
     console.log('CANVAS');
     console.log(CANVAS);
 
@@ -689,6 +699,16 @@ export class FabricjsEditorComponent implements AfterViewInit {
       console.log(this.canvas);
     });
 
+  }
+
+  getUniqueId(parts: number): string {
+    const stringArr = [];
+    for(let i = 0; i< parts; i++){
+      // tslint:disable-next-line:no-bitwise
+      const S4 = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+      stringArr.push(S4);
+    }
+    return stringArr.join('-');
   }
 
   rasterizeJSON() {

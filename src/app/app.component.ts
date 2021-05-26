@@ -19,6 +19,8 @@ export class AppComponent implements OnInit {
   selectedOptionId;
   bodyText: string;
   private currentCanvas: fabric.Canvas;
+  localStorageKeys = [];
+  selectedKey;
 
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
@@ -58,7 +60,7 @@ export class AppComponent implements OnInit {
   }
 
   public loadCanvasFromJSON() {
-    this.canvas.loadCanvasFromJSON();
+    this.canvas.loadCanvasFromJSON(this.selectedKey);
   }
 
   public confirmClear() {
@@ -272,8 +274,12 @@ export class AppComponent implements OnInit {
   }
 
   openModal(id: string) {
+    if (id === 'load-library') {
+      this.localStorageKeys = Object.keys(localStorage);
+      console.log(this.localStorageKeys);
+    }
     this.modalService.open(id);
-}
+  }
 
   closeModal(id: string) {
       this.modalService.close(id);
