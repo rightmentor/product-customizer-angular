@@ -225,8 +225,8 @@
                     <div class="custom-item">
                         <div class="custom-item-title">Ink Color</div>
                         <div class="custom-item-body">
-                                <div *ngFor="let color of colors" class="colorPicker">
-                                        <div [style.background-color]="color" (click)="setAllElementColor(color)" ></div>
+                                <div *ngFor="let color of colors" class="colorPicker" [class.selected-color]="selectedColor===color">
+                                        <div [style.background-color]="color"  (click)="setAllElementColor(color)" ></div>
                                 </div>
                         </div>
                     </div>

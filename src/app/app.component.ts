@@ -15,7 +15,8 @@ declare var window: any;
 export class AppComponent implements OnInit {
   title = 'angular-editor-fabric-js';
   productOptions = [];
-  colors = ["#0000ff", "#009a85", "#ff0000",  "#cc66cc" ]
+  colors = ["#0000ff", "#009a85", "#ff0000",  "#cc66cc" ];
+  selectedColor = "#000000";
   selectedOptionId;
   bodyText: string;
   private currentCanvas: fabric.Canvas;
@@ -72,11 +73,11 @@ export class AppComponent implements OnInit {
   }
 
   public addText() {
-    this.canvas.addText();
+    this.canvas.addText({fill: this.selectedColor});
   }
 
   public getImgPolaroid(event) {
-    this.canvas.getImgPolaroid(event);
+    this.canvas.getImgPolaroid(event, this.selectedColor);
   }
 
   public addImageOnCanvas(url) {
@@ -296,6 +297,7 @@ export class AppComponent implements OnInit {
 
   setAllElementColor(color) {
     console.log(color);
+    this.selectedColor = color;
     this.canvas.setAllElementColor(color);
   }
 }

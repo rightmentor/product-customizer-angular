@@ -160,8 +160,9 @@ export class FabricjsEditorComponent implements AfterViewInit {
         return o.set('fill', color);
       }
     });
-
-    
+    console.log(this.canvas);
+    this.setActiveStyle('fill', color, null);
+    console.log('[ this.canvas ]' ,this.canvas);
     this.canvas.renderAll();
   }
 
@@ -177,14 +178,36 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   // Block "Add text"
 
-  addText() {
+  // addText() {
+  //   if (this.textString) {
+  //     const text = new fabric.IText(this.textString, {
+  //       left: 10,
+  //       top: 10,
+  //       fontFamily: 'helvetica',
+  //       angle: 0,
+  //       fill: '#000000',
+  //       fontSize: 40,
+  //       scaleX: 0.5,
+  //       scaleY: 0.5,
+  //       fontWeight: '',
+  //       hasRotatingPoint: true
+  //     });
+
+  //     this.extend(text, this.randomId());
+  //     this.canvas.add(text);
+  //     this.selectItemAfterAdded(text);
+  //     this.textString = '';
+  //   }
+  // }
+
+  addText(attr) {
     if (this.textString) {
       const text = new fabric.IText(this.textString, {
         left: 10,
         top: 10,
         fontFamily: 'helvetica',
         angle: 0,
-        fill: '#000000',
+        fill: attr.fill,
         fontSize: 40,
         scaleX: 0.5,
         scaleY: 0.5,
@@ -201,7 +224,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   // Block "Add images"
 
-  getImgPolaroid(event: any) {
+  getImgPolaroid(event: any, color: string) {
     const el = event.target;
     fabric.loadSVGFromURL(el.src, (objects, options) => {
       const image = fabric.util.groupSVGElements(objects, options);
@@ -213,6 +236,26 @@ export class FabricjsEditorComponent implements AfterViewInit {
         cornerSize: 10,
         hasRotatingPoint: true,
       });
+      // image.fill=color;
+
+      var objs = objects.map(function(o:any) {
+        
+        if(o.group){
+
+          o.group._objects.map(function(o1:any) {
+
+            if(o1.fill == '#FFFFFF'){
+              return o1.set('fill', '#FFFFFF');
+            }else{
+              return o1.set('fill', color);
+            }
+          });
+        }else{
+
+          return o.set('fill', color);
+        }
+      });
+
       this.extend(image, this.randomId());
       this.canvas.add(image);
       this.selectItemAfterAdded(image);
