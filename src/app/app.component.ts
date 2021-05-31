@@ -93,7 +93,7 @@ export class AppComponent implements OnInit {
   }
 
   public addFigure(figure) {
-    this.canvas.addFigure(figure);
+    this.canvas.addFigure(figure, this.selectedColor);
   }
 
   public removeSelected() {

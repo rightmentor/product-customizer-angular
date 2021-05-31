@@ -147,9 +147,9 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   setAllElementColor(color) {
     var objs = this.canvas.getObjects().map(function(o:any) {
+      console.log('canvas object: ', o);
       if(o._objects){
         o._objects.map(function(o1:any) {
-          console.log(o1.fill);
           if(o1.fill == '#FFFFFF'){
             return o1.set('fill', '#FFFFFF');
           }else{
@@ -160,9 +160,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
         return o.set('fill', color);
       }
     });
-    console.log(this.canvas);
     this.setActiveStyle('fill', color, null);
-    console.log('[ this.canvas ]' ,this.canvas);
     this.canvas.renderAll();
   }
 
@@ -300,28 +298,32 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   // Block "Add figure"
 
-  addFigure(figure) {
+  addFigure(figure, color: string) {
     let add: any;
+    console.log(color);
     switch (figure) {
       case 'rectangle':
         add = new fabric.Rect({
           width: 200, height: 100, left: 10, top: 10, angle: 0, fill: 'rgba(0,0,0,0)', hasBorders: true,
-          stroke: 'yellow'
+          stroke: color
         });
         break;
       case 'square':
         add = new fabric.Rect({
-          width: 100, height: 100, left: 10, top: 10, angle: 0
+          width: 100, height: 100, left: 10, top: 10, angle: 0, fill: 'rgba(0,0,0,0)', hasBorders: true,
+          stroke: color
         });
         break;
       case 'triangle':
         add = new fabric.Triangle({
-          width: 100, height: 100, left: 10, top: 10
+          width: 100, height: 100, left: 10, top: 10, fill: 'rgba(0,0,0,0)', hasBorders: true,
+          stroke: color
         });
         break;
       case 'circle':
         add = new fabric.Circle({
-          radius: 50, left: 10, top: 10
+          radius: 50, left: 10, top: 10, fill: 'rgba(0,0,0,0)', hasBorders: true,
+          stroke: color
         });
         break;
     }
