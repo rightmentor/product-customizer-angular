@@ -147,7 +147,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   setAllElementColor(color) {
     var objs = this.canvas.getObjects().map(function(o:any) {
-      console.log('canvas object: ', o);
+      // console.log('canvas object: ', o);
       if(o._objects){
         o._objects.map(function(o1:any) {
           if(o1.fill == '#FFFFFF'){
@@ -156,8 +156,10 @@ export class FabricjsEditorComponent implements AfterViewInit {
             return o1.set('fill', color);
           }
         });
-      }else{
+      } else if (o.stroke === null || o.stroke === '') {
         return o.set('fill', color);
+      } else if (o.stroke !== null || o.stroke !== '') {
+        return o.set('stroke', color);
       }
     });
     this.setActiveStyle('fill', color, null);
@@ -232,8 +234,10 @@ export class FabricjsEditorComponent implements AfterViewInit {
         angle: 0,
         padding: 10,
         cornerSize: 10,
-        hasRotatingPoint: true,
+        hasRotatingPoint: true
       });
+      image.scaleToWidth(100);
+      // image.scaleToHeight(100);
       // image.fill=color;
 
       var objs = objects.map(function(o:any) {
