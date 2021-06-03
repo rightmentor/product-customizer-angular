@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   colors = ["#0000ff", "#009a85", "#ff0000",  "#cc66cc" ];
   selectedColor = "#000000";
   selectedOptionId;
+  currentProductID: any = 0;
   bodyText: string;
   private currentCanvas: fabric.Canvas;
   localStorageKeys = [];
@@ -195,6 +196,7 @@ export class AppComponent implements OnInit {
     var product_id = QueryString['product_id'];
     var customer_id = QueryString['customer_id'];
     if (product_id){
+      this.currentProductID = product_id;
       currentObject.getProductOptions(product_id);
     }else{
       window.history.back();
@@ -287,7 +289,56 @@ export class AppComponent implements OnInit {
   }
 
   save() {
-    console.log(' Save func called ', this.canvas);    
+    console.log(' Save func called ', this.canvas); 
+    var mapForm = document.createElement("form");
+    // mapForm.target = "_blank";
+    mapForm.method = "POST"; // or "post" if appropriate
+    mapForm.action = "https://simonstampcom.mybigcommerce.com/cart.php";
+    var attributes = [
+      {
+        name: 'attribute[113]',
+        value: '98'
+      },
+      {
+        name: 'attribute[114]',
+        value: '102'
+      },
+      {
+        name: 'attribute[132]',
+        value: '638'
+      },
+      {
+        name: 'attribute[133]',
+        value: 'eda4-10d0-f8ec-a6bd-38e8'
+      },
+      {
+        name: 'qty[]',
+        value: '1'
+      }
+    ];
+
+    var actionInput = document.createElement("input");
+        actionInput.type = "hidden";
+        actionInput.name = "action";
+        actionInput.setAttribute("value", "add");
+        mapForm.appendChild(actionInput);
+
+    var productIdInput = document.createElement("input");
+      productIdInput.type = "hidden";
+      productIdInput.name = "product_id";
+      productIdInput.setAttribute("value", this.currentProductID);
+      mapForm.appendChild(productIdInput);        
+        
+    attributes.forEach(function(attr){
+      var mapInput = document.createElement("input");
+      mapInput.type = "hidden";
+      mapInput.name = attr.name;
+      mapInput.setAttribute("value", attr.value);
+      mapForm.appendChild(mapInput);
+    });
+    
+    document.body.appendChild(mapForm);
+    mapForm.submit();   
   }
 
   cancel() {
