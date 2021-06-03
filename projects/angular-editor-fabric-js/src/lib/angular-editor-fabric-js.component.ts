@@ -68,7 +68,8 @@ export class FabricjsEditorComponent implements AfterViewInit {
     this.canvas = new fabric.Canvas(this.htmlCanvas.nativeElement, {
       hoverCursor: 'pointer',
       selection: true,
-      selectionBorderColor: 'blue'
+      selectionBorderColor: 'blue',
+      preserveObjectStacking: true
     });
 
     this.canvas.on({
@@ -162,7 +163,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
         return o.set('stroke', color);
       }
     });
-    this.setActiveStyle('fill', color, null);
+    // this.setActiveStyle('fill', color, null);
     this.canvas.renderAll();
   }
 
@@ -308,25 +309,25 @@ export class FabricjsEditorComponent implements AfterViewInit {
     switch (figure) {
       case 'rectangle':
         add = new fabric.Rect({
-          width: 200, height: 100, left: 10, top: 10, angle: 0, fill: 'rgba(0,0,0,0)', hasBorders: true,
+          width: 200, height: 100, left: 10, top: 10, angle: 0, fill: 'rgba(0,0,0,0)', hasBorders: true, strokeWidth: 1, noScaleCache: false, strokeUniform: true,
           stroke: color
         });
         break;
       case 'square':
         add = new fabric.Rect({
-          width: 100, height: 100, left: 10, top: 10, angle: 0, fill: 'rgba(0,0,0,0)', hasBorders: true,
+          width: 100, height: 100, left: 10, top: 10, angle: 0, fill: 'rgba(0,0,0,0)', hasBorders: true, strokeWidth: 1, noScaleCache: false, strokeUniform: true,
           stroke: color
         });
         break;
       case 'triangle':
         add = new fabric.Triangle({
-          width: 100, height: 100, left: 10, top: 10, fill: 'rgba(0,0,0,0)', hasBorders: true,
+          width: 100, height: 100, left: 10, top: 10, fill: 'rgba(0,0,0,0)', hasBorders: true, strokeWidth: 1, noScaleCache: false, strokeUniform: true,
           stroke: color
         });
         break;
       case 'circle':
         add = new fabric.Circle({
-          radius: 50, left: 10, top: 10, fill: 'rgba(0,0,0,0)', hasBorders: true,
+          radius: 50, left: 10, top: 10, fill: 'rgba(0,0,0,0)', hasBorders: true, strokeWidth: 1, noScaleCache: false, strokeUniform: true,
           stroke: color
         });
         break;
@@ -334,6 +335,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
     this.extend(add, this.randomId());
     this.canvas.add(add);
     this.selectItemAfterAdded(add);
+    
   }
 
   /*Canvas*/
