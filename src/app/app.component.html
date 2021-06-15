@@ -13,8 +13,11 @@
                         class="btn btn-primary" (click)="rasterizeSVG();">
                         <i class="fa fa-download" aria-hidden="true"></i> Export to SVG</button>
                     <button data-toggle="tooltip" data-placement="bottom" title="Save in localStorage" type="button"
-                        class="btn btn-primary" (click)="saveCanvasToJSON();">
+                        class="btn btn-primary" (click)="openModal('save-local')">
                         <i class="fa fa-save" aria-hidden="true"></i> Save local</button>
+                    <!-- <button data-toggle="tooltip" data-placement="bottom" title="Save in localStorage" type="button"
+                        class="btn btn-primary" (click)="saveCanvasToJSON();">
+                        <i class="fa fa-save" aria-hidden="true"></i> Save local</button> -->
                     <!-- <button data-toggle="tooltip" data-placement="bottom" title="Load from localStorage" type="button"
                         class="btn btn-primary" (click)="loadCanvasFromJSON();">
                         <i class="fa fa-save" aria-hidden="true"></i> Load local</button> -->
@@ -575,8 +578,25 @@
     <button class="btn btn-danger modal-close-btn" (click)="closeModal('load-library');"><i class="fa fa-times" aria-hidden="true"></i></button>
     <div class="card-header">Library</div>
     <div class="card-body">
-        <select [(ngModel)]="selectedKey" class="size-select" (change)="loadCanvasFromJSON()">
+        <!-- <select [(ngModel)]="selectedKey" class="size-select" (change)="loadCanvasFromJSON()">
             <option *ngFor="let key of localStorageKeys" [value]="key">{{key}}</option>
-        </select>
+        </select> -->
+        <div class="canvas-list" *ngFor="let item of savedLibraries">
+            <img [src]="item.image" (click)="loadCanvas(item.json)" />
+        </div> 
+    </div>
+</jw-modal>
+
+<jw-modal id="save-local">  
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('save-local');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="card-header">Save local</div>
+    <div class="card-body ">
+        <input class="form-control" [(ngModel)]="saveLocalData.name" placeholder="Name" />
+        <textarea class="form-control" [(ngModel)]="saveLocalData.description" placeholder="Description"></textarea>
+        <input class="form-control" [(ngModel)]="saveLocalData.keyword" placeholder="Keyword" />
+        <button id="add-text" data-toggle="tooltip" data-placement="bottom" title="Add text"
+            class="btn btn-primary" (click)="saveJson()">
+            Save
+        </button>
     </div>
 </jw-modal>

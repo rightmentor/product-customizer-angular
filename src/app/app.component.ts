@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
 import { $ } from 'protractor';
 import { ApiService } from './services/api.service';
@@ -24,17 +24,28 @@ export class AppComponent implements OnInit {
   private currentCanvas: fabric.Canvas;
   localStorageKeys = [];
   selectedKey;
+  saveLocalData: any = {
+    name: '',
+    description: '',
+    keyword: '',
+    json: '',
+    image: ''
+  };
+  savedLibraries: any = [];
 
   productOptionID = '';
   productOptionValue = '';
   guestUserID = '';
   colorID; colorOptionsLabel; colorOptionsID;
 
+  @ViewChildren('myCanvas') myCanvas: FabricjsEditorComponent;
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
   constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService)  {
     
     this.checkJavascript();
+   // this.getSavedLibraies(12);
+   this.loadLibrary();
     if(!this.cookieService.get('SIMON_GUID')){
       this.cookieService.set( 'SIMON_GUID', this.getUniqueId(5) ); // To Set Cookie
       //console.log('cookie is set: ',this.cookieService.get('SIMON_GUID') );
@@ -67,10 +78,10 @@ export class AppComponent implements OnInit {
     this.canvas.rasterizeSVG();
   }
 
-  public saveCanvasToJSON() {
-    this.canvas.saveCanvasToJSON();
-    this.addUserLibraryData();
-  }
+  // public saveCanvasToJSON() {
+  //   this.canvas.saveCanvasToJSON();
+  //   this.addUserLibraryData();
+  // }
 
   public loadCanvasFromJSON() {
     this.canvas.loadCanvasFromJSON(this.selectedKey);
@@ -318,8 +329,9 @@ export class AppComponent implements OnInit {
 
   openModal(id: string) {
     if (id === 'load-library') {
-      this.localStorageKeys = Object.keys(localStorage);
-      console.log(this.localStorageKeys);
+      this.loadLibrary();
+      // this.localStorageKeys = Object.keys(localStorage);
+      // console.log(this.localStorageKeys);
     }
     this.modalService.open(id);
   }
@@ -396,4 +408,40 @@ export class AppComponent implements OnInit {
     this.canvas.setAllElementColor(color);
     this.getProductModifiersSwatch(this.currentProductID,split_hash);
   }
+
+  getSavedLibraies (guid) {
+    this.apiService.getSavedLibraries(guid).subscribe((res:any) => {
+      console.log('res', res);  
+      if (res.data.length > 0) {
+        this.savedLibraries = res.data;
+      }
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+  loadLibrary() {
+    var values = [],
+        keys = Object.keys(localStorage),
+        i = keys.length;
+
+    while ( i-- ) {
+        values.push( JSON.parse(localStorage.getItem(keys[i])) );
+    }
+    this.savedLibraries = values;
+    console.log(this.savedLibraries)
+  }
+
+  saveJson() {
+    this.saveLocalData.image = this.canvas.getCanvasSvg();
+    this.canvas.saveCanvasToJSON(this.saveLocalData);
+    console.log(this.saveLocalData);
+    //   this.addUserLibraryData();
+  }
+
+  loadCanvas(json) {
+    this.canvas.loadCanvas(json);
+  }
+
+  
 }

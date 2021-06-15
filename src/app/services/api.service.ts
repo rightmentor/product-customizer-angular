@@ -53,6 +53,16 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
+    getSavedLibraries(id) {
+        console.log('user ID', id);
+        // http://webspeedo.com/simonstamp/api/add_library_data.php?guid=12
+        const url = this.api_site_url+`add_library_data.php?guid=${id}`;
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
     addCurrentUserCookie(productId, guestId:string): Observable<any> {
         console.log('checl code', guestId);
         const url = this.api_site_url+`add_user_data.php?product_id=${productId}&api_token=availble&guid=${guestId}`;

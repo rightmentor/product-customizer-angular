@@ -711,6 +711,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
   rasterize() {
     const image = new Image();
     image.src = this.canvas.toDataURL({ format: 'png' });
+    console.log('image.src', image.src);
     const w = window.open('');
     w.document.write(image.outerHTML);
   }
@@ -722,11 +723,15 @@ export class FabricjsEditorComponent implements AfterViewInit {
   }
 
   /************** */
-  saveCanvasToJSON() {
+  getCanvasSvg() {
+    return this.canvas.toDataURL({ format: 'png' });
+  }
+
+  saveCanvasToJSON(data: any) {
     let key = this.guid + "-" + this.getUniqueId(1);
-    const json = JSON.stringify(this.canvas);
-    localStorage.setItem(key, json);
-    localStorage.setItem('lastsave', key);
+    data.json = JSON.stringify(this.canvas);
+    localStorage.setItem(key, JSON.stringify(data));
+    // localStorage.setItem('lastsave', key);
 
   }
 
@@ -742,7 +747,19 @@ export class FabricjsEditorComponent implements AfterViewInit {
       console.log('this.canvas.item(0).name');
       console.log(this.canvas);
     });
+  }
 
+  loadCanvas(json) {
+
+    // and load everything from the same json
+    this.canvas.loadFromJSON(json, () => {
+      // making sure to render canvas at the end
+      this.canvas.renderAll();
+
+      // and checking if object's "name" is preserved
+      console.log('this.canvas.item(0).name');
+      console.log(this.canvas);
+    });
   }
 
   getUniqueId(parts: number): string {
