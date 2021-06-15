@@ -1,0 +1,8 @@
+{
+    "/api/*": {
+        "target": "https://webspeedo.com/simonstamp",
+        "secure": false,
+        "changeOrigin":true,
+        "logLevel": "debug"
+    }
+}

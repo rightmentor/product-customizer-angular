@@ -53,7 +53,7 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
-    addCurrentUserCookie(productId, guestId:string) {
+    addCurrentUserCookie(productId, guestId:string): Observable<any> {
         console.log('checl code', guestId);
         const url = this.api_site_url+`add_user_data.php?product_id=${productId}&api_token=availble&guid=${guestId}`;
         console.log('checl url', url);
@@ -64,7 +64,7 @@ export class ApiService {
     }
 
     addUserLibraryData(): Observable<any> {
-        const url = this.api_site_url+`test_api.php`;
+        const url = this.api_site_url+`add_library_data.php`;
         
         const lastsave = localStorage.getItem('lastsave');
         const meta_value = localStorage.getItem(lastsave);
