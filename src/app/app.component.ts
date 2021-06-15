@@ -4,6 +4,7 @@ import { $ } from 'protractor';
 import { ApiService } from './services/api.service';
 import { ModalService } from './_modal/modal.service';
 import { CookieService } from 'ngx-cookie-service';
+import { exit } from 'node:process';
 
 declare var window: any;
 
@@ -15,7 +16,7 @@ declare var window: any;
 export class AppComponent implements OnInit {
   title = 'angular-editor-fabric-js';
   productOptions = [];
-  colors = ["#0000ff", "#009a85", "#ff0000",  "#cc66cc" ];
+  colors = ["#0A0A0A", "#0000FF", "#009A85",  "#FF0000", "#CC66CC" ];
   selectedColor = "#000000";
   selectedOptionId;
   currentProductID: any = 0;
@@ -24,14 +25,23 @@ export class AppComponent implements OnInit {
   localStorageKeys = [];
   selectedKey;
 
+  productOptionID = '';
+  productOptionValue = '';
+  guestUserID = '';
+  colorID; colorOptionsLabel; colorOptionsID;
+
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
   constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService)  {
+    
+    this.checkJavascript();
     if(!this.cookieService.get('SIMON_GUID')){
       this.cookieService.set( 'SIMON_GUID', this.getUniqueId(5) ); // To Set Cookie
-      console.log('cookie is set: ',this.cookieService.get('SIMON_GUID') );
+      //console.log('cookie is set: ',this.cookieService.get('SIMON_GUID') );
+      this.addCurrentUserCookie(this.currentProductID,this.cookieService.get('SIMON_GUID'))
+    }else{
+      this.guestUserID = this.cookieService.get('SIMON_GUID');
     }
-    this.checkJavascript();
   }
 
   ngOnInit() {
@@ -59,6 +69,7 @@ export class AppComponent implements OnInit {
 
   public saveCanvasToJSON() {
     this.canvas.saveCanvasToJSON();
+    this.addUserLibraryData();
   }
 
   public loadCanvasFromJSON() {
@@ -238,12 +249,11 @@ export class AppComponent implements OnInit {
   getProductOptions(productID) {
     console.log('calling getProductOptions');
     this.apiService.getProductOptions(productID).subscribe((res: any) => {
-      // this.apiService.getTokens().subscribe((res: any) => {
       console.log('res', res);
+      this.productOptionID = res.data[0].id;
       this.productOptions = res.data[0].option_values;
       this.selectedOptionId = this.productOptions[0].id;
       this.sizeChangeHandler();
-      console.log('reproductOptionss', this.productOptions);
       var newcontent = document.createElement('div');
       newcontent.innerHTML = JSON.stringify(res);
       // document.getElementById("test_show_0").appendChild(newcontent);
@@ -253,10 +263,8 @@ export class AppComponent implements OnInit {
   }
 
   sizeChangeHandler() {
-    console.log('size changed', this.selectedOptionId);
-
+    this.productOptionValue = this.selectedOptionId;
     const selectedOption = this.productOptions.filter(opt => parseInt(opt.id, 10) === parseInt(this.selectedOptionId, 10));
-    console.log('selectedOption', selectedOption)
     const label = selectedOption[0].label;
     // 1mm =  3.779527559px
     let s = label.substring(label.indexOf("(") + 1);
@@ -274,6 +282,38 @@ export class AppComponent implements OnInit {
     }
 
     this.changeSize();
+  }
+
+  getProductModifiersSwatch(productID,colorCode: string) {
+    console.log('calling getProductOptions',colorCode);
+    this.apiService.getProductModifiersSwatch(productID,colorCode).subscribe((res) => {
+      console.log('res', res[0].option_id);
+
+      this.colorID = res[0].id;
+      this.colorOptionsLabel = res[0].label;
+      this.colorOptionsID = res[0].option_id;
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+
+  addCurrentUserCookie(productID,guestId: string) {
+    this.apiService.addCurrentUserCookie(productID,guestId).subscribe((res) => {
+      console.log('res', res);
+      //var guid = res.id;
+      localStorage.setItem('DBUSERID', res.id);
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+  addUserLibraryData() {
+    this.apiService.addUserLibraryData().subscribe((res) => {
+      console.log('res', res);
+    }, error => {
+      console.error('error', error);
+    });
   }
 
   openModal(id: string) {
@@ -296,12 +336,12 @@ export class AppComponent implements OnInit {
     mapForm.action = "https://simonstampcom.mybigcommerce.com/cart.php";
     var attributes = [
       {
-        name: 'attribute[113]',
-        value: '98'
+        name: 'attribute['+this.productOptionID+']',
+        value: this.productOptionValue
       },
       {
-        name: 'attribute[114]',
-        value: '102'
+        name: 'attribute['+this.colorOptionsID+']',
+        value: this.colorID
       },
       {
         name: 'attribute[132]',
@@ -309,13 +349,16 @@ export class AppComponent implements OnInit {
       },
       {
         name: 'attribute[133]',
-        value: 'eda4-10d0-f8ec-a6bd-38e8'
+        value: this.guestUserID
       },
       {
         name: 'qty[]',
         value: '1'
       }
     ];
+
+    // console.log(attributes);
+
 
     var actionInput = document.createElement("input");
         actionInput.type = "hidden";
@@ -349,6 +392,8 @@ export class AppComponent implements OnInit {
   setAllElementColor(color) {
     console.log(color);
     this.selectedColor = color;
+    var split_hash = color.replace('#', '');
     this.canvas.setAllElementColor(color);
+    this.getProductModifiersSwatch(this.currentProductID,split_hash);
   }
 }

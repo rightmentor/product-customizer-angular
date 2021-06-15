@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { fabric } from 'fabric';
-
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -151,7 +150,8 @@ export class FabricjsEditorComponent implements AfterViewInit {
       // console.log('canvas object: ', o);
       if(o._objects){
         o._objects.map(function(o1:any) {
-          if(o1.fill == '#FFFFFF'){
+          if(o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff'){
+            o1.set('stroke', '#FFFFFF');
             return o1.set('fill', '#FFFFFF');
           }else{
             return o1.set('fill', color);
@@ -240,14 +240,15 @@ export class FabricjsEditorComponent implements AfterViewInit {
       image.scaleToWidth(100);
       // image.scaleToHeight(100);
       // image.fill=color;
-
+      console.log('on image load: ', objects);
       var objs = objects.map(function(o:any) {
         
         if(o.group){
 
           o.group._objects.map(function(o1:any) {
 
-            if(o1.fill == '#FFFFFF'){
+            if(o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff'){
+              o1.set('stroke', '#FFFFFF');
               return o1.set('fill', '#FFFFFF');
             }else{
               return o1.set('fill', color);
@@ -723,25 +724,17 @@ export class FabricjsEditorComponent implements AfterViewInit {
   /************** */
   saveCanvasToJSON() {
     let key = this.guid + "-" + this.getUniqueId(1);
-    console.log('key', key);
     const json = JSON.stringify(this.canvas);
     localStorage.setItem(key, json);
-    console.log('json');
-    console.log(json);
+    localStorage.setItem('lastsave', key);
 
   }
 
   loadCanvasFromJSON(key) {
-    console.log(key);
     const CANVAS = localStorage.getItem(key);
-    console.log('CANVAS');
-    console.log(CANVAS);
 
     // and load everything from the same json
     this.canvas.loadFromJSON(CANVAS, () => {
-      console.log('CANVAS untar');
-      console.log(CANVAS);
-
       // making sure to render canvas at the end
       this.canvas.renderAll();
 

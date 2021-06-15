@@ -7,7 +7,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
     providedIn: 'root'
 })
 export class ApiService {
-
+    api_site_url = 'https://webspeedo.com/simonstamp/api/'
     constructor(
         private http: HttpClient
     ) { }
@@ -26,22 +26,65 @@ export class ApiService {
 
 
     getProductOptions(productId): Observable<any> {
-        const url = `https://trackstatus.net/product-customizer/api/testapi.php?product_id=${productId}`;
+        const url = this.api_site_url+`product_options.php?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
         });
         
         return this.http.get(url, { headers: apiHeaders })
+    }
 
-        // const url = 'https://simonstampcom.mybigcommerce.com/graphql';
+    getProductModifiers(productId): Observable<any> {
+        const url = this.api_site_url+`product_modifiers.php?product_id=${productId}`;
 
-        // const apiHeaders = new HttpHeaders({
-        //     'Content-Type': 'application/json',
-        //     'Origin': 'https://developer.bigcommerce.com',
-        //     'Authorization': 'Bearer {{settings.storefront_api.token}}'
-        // });
-        // const query = JSON.stringify({ query: '{site {products(entityIds:[112], first: 5) {edges {node {name variants(first: 25) {   edges {     node {       sku       defaultImage {         url(width: 1000)       }     }   } } productOptions(first: 5) {   edges {     node {       entityId       displayName       isRequired       ... on CheckboxOption {         checkedByDefault       }       ... on MultipleChoiceOption {         values(first: 10) {           edges {             node {               entityId               label               isDefault               ... on SwatchOptionValue {hexColors imageUrl(width: 200)}}}}}}}}}}}}}' });
-        // return this.http.post(url, query, { headers: apiHeaders })
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
+    getProductModifiersSwatch(productId, colorCode:string) {
+        console.log('checl code', colorCode);
+        const url = this.api_site_url+`product_modifiers_colors.php?product_id=${productId}&color_code=${colorCode}`;
+        console.log('checl url', url);
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
+    addCurrentUserCookie(productId, guestId:string) {
+        console.log('checl code', guestId);
+        const url = this.api_site_url+`add_user_data.php?product_id=${productId}&api_token=availble&guid=${guestId}`;
+        console.log('checl url', url);
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
+    addUserLibraryData(): Observable<any> {
+        const url = this.api_site_url+`test_api.php`;
+        
+        const lastsave = localStorage.getItem('lastsave');
+        const meta_value = localStorage.getItem(lastsave);
+        var canvasId = localStorage.getItem('DBUSERID');
+
+        const apiHeaders = new HttpHeaders({
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+        });
+        
+        const body = {
+            'api_token' : 'avlable',
+            'guid' : canvasId,
+            'meta_key' : lastsave,
+            'meta_value' : meta_value
+        };
+
+        console.log(body);
+
+        return this.http.post<any>(url, body, { headers: apiHeaders })
     }
 
     getTokens(): Observable<any> {
