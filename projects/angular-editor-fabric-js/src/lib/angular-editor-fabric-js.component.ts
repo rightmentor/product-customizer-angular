@@ -731,7 +731,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
     let key = this.guid + "-" + this.getUniqueId(1);
     data.json = JSON.stringify(this.canvas);
     localStorage.setItem(key, JSON.stringify(data));
-    // localStorage.setItem('lastsave', key);
+    localStorage.setItem('lastsave', key);
 
   }
 

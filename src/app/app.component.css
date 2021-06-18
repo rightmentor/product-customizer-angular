@@ -7,8 +7,8 @@
   .images-item {
     width: 48%;
     cursor: pointer;
-    -webkit-transition: .5s ease;
-    -webkit-transition: .5s ease;
+    /* -webkit-transition: .5s ease;
+    -webkit-transition: .5s ease; */
     padding: 3px;
     max-width: 120px;
   }
@@ -21,8 +21,8 @@
     width: 80%;
     cursor: pointer;
     padding-bottom: 10px;
-    -webkit-transition: .5s ease;
-    -webkit-transition: .5s ease;
+    /* -webkit-transition: .5s ease;
+    -webkit-transition: .5s ease; */
   }
   
   .images-item-upload:hover {
@@ -45,5 +45,14 @@
   .max-height{
     overflow: auto;
     max-height: 300px;
+  }
+
+  .body-img-lib{
+    display: flex;
+  }
+
+  .canvas-img-lib{
+    max-width: 30%;
+    margin: 10px;
   }
   

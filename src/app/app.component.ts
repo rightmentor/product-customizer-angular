@@ -435,6 +435,14 @@ export class AppComponent implements OnInit {
   saveJson() {
     this.saveLocalData.image = this.canvas.getCanvasSvg();
     this.canvas.saveCanvasToJSON(this.saveLocalData);
+    this.closeModal("save-local");
+    this.saveLocalData =  {
+      name: '',
+      description: '',
+      keyword: '',
+      json: '',
+      image: ''
+    };
     console.log(this.saveLocalData);
     //   this.addUserLibraryData();
   }
