@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -7,7 +7,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
     providedIn: 'root'
 })
 export class ApiService {
-    api_site_url = 'https://webspeedo.com/simonstamp/api/'
+    api_site_url = 'https://webspeedo.com/simonstamp/api/';
+    @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
     constructor(
         private http: HttpClient
     ) { }
@@ -24,6 +25,36 @@ export class ApiService {
     //       );
     //   }
 
+    //Login function start
+    userlogin(username, password) {
+        const url = this.api_site_url+`login.php`;
+        return this.http.post<any>(url, { username, password }).pipe(tap(Usermodule => {
+                this.setToken(Usermodule[0].guid);
+                this.getLoggedInName.emit(true);
+                return Usermodule;
+            }));
+    }
+
+    setToken(token: string) {
+        localStorage.setItem('token', token);
+    }
+       
+    getToken() {
+        return localStorage.getItem('token');
+    }
+    
+    deleteToken() {
+        localStorage.removeItem('token');
+    }
+    
+    isLoggedIn() {
+        const usertoken = this.getToken();
+        if (usertoken != null) {
+            return true
+        }
+        return false;
+    }
+    //login function end
 
     getProductOptions(productId): Observable<any> {
         const url = this.api_site_url+`product_options.php?product_id=${productId}`;
@@ -53,10 +84,14 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
-    getSavedLibraries(id) {
+    getSavedLibraries(id): Observable<any> {
         console.log('user ID', id);
-        // http://webspeedo.com/simonstamp/api/add_library_data.php?guid=12
-        const url = this.api_site_url+`add_library_data.php?guid=${id}`;
+        if(this.isLoggedIn())
+        {
+            id = 1;
+            console.log("loggedin");
+        }
+        const url = this.api_site_url+`get_library_data.php?guid=${id}&auid=1`;
         const apiHeaders = new HttpHeaders({
         });
         
@@ -73,12 +108,19 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
-    addUserLibraryData(): Observable<any> {
+    addUserLibraryData(data: any): Observable<any> {
         const url = this.api_site_url+`add_library_data.php`;
-        
+        const lastname = data.name;
+        const lastdesc = data.description;
+        const lastkeyw = data.keyword;
         const lastsave = localStorage.getItem('lastsave');
         const meta_value = localStorage.getItem(lastsave);
+        //console.log(meta_value);
         var canvasId = localStorage.getItem('DBUSERID');
+        if(this.isLoggedIn())
+        {
+            canvasId = '1';
+        }
 
         const apiHeaders = new HttpHeaders({
             'cache-control': 'no-cache',
@@ -88,6 +130,9 @@ export class ApiService {
         const body = {
             'api_token' : 'avlable',
             'guid' : canvasId,
+            'name' : lastname,
+            'description' : lastdesc,
+            'keywords' : lastkeyw,
             'meta_key' : lastsave,
             'meta_value' : meta_value
         };

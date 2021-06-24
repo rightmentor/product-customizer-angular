@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { first } from 'rxjs/operators';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
 import { $ } from 'protractor';
 import { ApiService } from './services/api.service';
@@ -13,7 +15,12 @@ declare var window: any;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit {
+  
+  loginbtn:boolean;
+  logoutbtn:boolean;
+
   title = 'angular-editor-fabric-js';
   productOptions = [];
   colors = ["#0A0A0A", "#0000FF", "#009A85",  "#FF0000", "#CC66CC" ];
@@ -36,29 +43,89 @@ export class AppComponent implements OnInit {
   productOptionID = '';
   productOptionValue = '';
   guestUserID = '';
+  dbUserID = '1';
   colorID; colorOptionsLabel; colorOptionsID;
+
+  registerForm: FormGroup;
+  submitted = false;
 
   @ViewChildren('myCanvas') myCanvas: FabricjsEditorComponent;
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
-  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService)  {
+  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService, private formBuilder: FormBuilder)  {
+
+    //Admin Login case
+    //this.apiService.getLoggedInName.subscribe(name => this.changeName(name));
+    if(this.apiService.isLoggedIn())
+    {
+      console.log("loggedin");
+      this.loginbtn=false;
+      this.logoutbtn=true
+    }else{
+      this.loginbtn=true;
+      this.logoutbtn=false
+    }
     
     this.checkJavascript();
-   // this.getSavedLibraies(12);
-   this.loadLibrary();
+
+    //set cookie for new user guid
     if(!this.cookieService.get('SIMON_GUID')){
       this.cookieService.set( 'SIMON_GUID', this.getUniqueId(5) ); // To Set Cookie
-      //console.log('cookie is set: ',this.cookieService.get('SIMON_GUID') );
       this.addCurrentUserCookie(this.currentProductID,this.cookieService.get('SIMON_GUID'))
     }else{
       this.guestUserID = this.cookieService.get('SIMON_GUID');
+      //this.dbUserID = localStorage.getItem('DBUSERID');
     }
+
+    
+
   }
 
   ngOnInit() {
     this.checkJavascript();
-    // this.getProductOptions('112');
+    this.registerForm = this.formBuilder.group({
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6) ]]
+    });
   }
+
+  private changeName(name: boolean): void {
+    this.logoutbtn = name;
+    this.loginbtn = !name;
+  }
+  
+  logout()
+  {
+    this.apiService.deleteToken();
+    window.location.href = window.location.href;
+  }
+
+  get f() { return this.registerForm.controls; }
+  
+  onSubmit() {
+      this.submitted = true;
+      // stop here if form is invalid
+      if (this.registerForm.invalid) {
+          return;
+      }
+      this.apiService.userlogin(this.registerForm.value.email,this.registerForm.value.password).pipe(first()).subscribe( data => {
+        console.log('you are login to my site');
+        this.closeModal("login-local");
+      },
+      error => {
+          alert("User name or password is incorrect")
+      });
+      
+      // if(this.submitted)
+      // {
+        
+      // }
+    
+  }
+  
+  get email() { return this.registerForm.get('email'); }
+  get password() { return this.registerForm.get('password'); }
+      
 
   public getUniqueId(parts: number): string {
     const stringArr = [];
@@ -296,10 +363,7 @@ export class AppComponent implements OnInit {
   }
 
   getProductModifiersSwatch(productID,colorCode: string) {
-    console.log('calling getProductOptions',colorCode);
     this.apiService.getProductModifiersSwatch(productID,colorCode).subscribe((res) => {
-      console.log('res', res[0].option_id);
-
       this.colorID = res[0].id;
       this.colorOptionsLabel = res[0].label;
       this.colorOptionsID = res[0].option_id;
@@ -311,16 +375,15 @@ export class AppComponent implements OnInit {
 
   addCurrentUserCookie(productID,guestId: string) {
     this.apiService.addCurrentUserCookie(productID,guestId).subscribe((res) => {
-      console.log('res', res);
-      //var guid = res.id;
       localStorage.setItem('DBUSERID', res.id);
+        this.dbUserID = res.id;
     }, error => {
       console.error('error', error);
     });
   }
 
-  addUserLibraryData() {
-    this.apiService.addUserLibraryData().subscribe((res) => {
+  addUserLibraryData(data: any) {
+    this.apiService.addUserLibraryData(data).subscribe((res) => {
       console.log('res', res);
     }, error => {
       console.error('error', error);
@@ -330,8 +393,6 @@ export class AppComponent implements OnInit {
   openModal(id: string) {
     if (id === 'load-library') {
       this.loadLibrary();
-      // this.localStorageKeys = Object.keys(localStorage);
-      // console.log(this.localStorageKeys);
     }
     this.modalService.open(id);
   }
@@ -411,9 +472,27 @@ export class AppComponent implements OnInit {
 
   getSavedLibraies (guid) {
     this.apiService.getSavedLibraries(guid).subscribe((res:any) => {
-      console.log('res', res);  
+      var values = [];  
       if (res.data.length > 0) {
-        this.savedLibraries = res.data;
+        //this.savedLibraries = JSON.parse(res.data);
+        res.data.map(function(o1:any) {
+          console.log('res-get-libraies', o1);
+          //const o2 = JSON.parse( o1.meta_value );
+          //console.log("ORFLDKJF", o2.name);
+          /*this.saveLocalData =  {
+            name: o2.name,
+            description: o2.description,
+            keyword: o2.keyword,
+            json: o2.json,
+            image: o2.image
+          };*/
+          localStorage.setItem( o1.meta_key, o1.meta_value );
+          //values.push( JSON.stringify( o1.meta_value ) );
+          values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
+        });
+        this.savedLibraries = values;
+        console.log(this.savedLibraries)
+        return res.data;
       }
     }, error => {
       console.error('error', error);
@@ -421,20 +500,23 @@ export class AppComponent implements OnInit {
   }
 
   loadLibrary() {
-    var values = [],
-        keys = Object.keys(localStorage),
-        i = keys.length;
+    // var values = [],
+    //     keys = Object.keys(localStorage),
+    //     i = keys.length;
+    this.getSavedLibraies(this.dbUserID);
 
-    while ( i-- ) {
-        values.push( JSON.parse(localStorage.getItem(keys[i])) );
-    }
-    this.savedLibraries = values;
-    console.log(this.savedLibraries)
+    // while ( i-- ) {
+    //   console.log("keysss: ", keys[i]);
+    //     //values.push( JSON.parse(localStorage.getItem(keys[i])) );
+    // }
+    //this.savedLibraries = values;
+    
   }
 
   saveJson() {
     this.saveLocalData.image = this.canvas.getCanvasSvg();
     this.canvas.saveCanvasToJSON(this.saveLocalData);
+    this.addUserLibraryData(this.saveLocalData);
     this.closeModal("save-local");
     this.saveLocalData =  {
       name: '',
@@ -443,7 +525,7 @@ export class AppComponent implements OnInit {
       json: '',
       image: ''
     };
-    console.log(this.saveLocalData);
+    // console.log(this.saveLocalData);
     //   this.addUserLibraryData();
   }
 
