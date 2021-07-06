@@ -750,7 +750,6 @@ export class FabricjsEditorComponent implements AfterViewInit {
   }
 
   loadCanvas(json) {
-
     // and load everything from the same json
     this.canvas.loadFromJSON(json, () => {
       // making sure to render canvas at the end

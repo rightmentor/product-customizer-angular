@@ -108,7 +108,7 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
-    addUserLibraryData(data: any): Observable<any> {
+    addUserLibraryData(data: any, option_id): Observable<any> {
         const url = this.api_site_url+`add_library_data.php`;
         const lastname = data.name;
         const lastdesc = data.description;
@@ -131,10 +131,28 @@ export class ApiService {
             'api_token' : 'avlable',
             'guid' : canvasId,
             'name' : lastname,
+            'canvas_size' : option_id,
             'description' : lastdesc,
             'keywords' : lastkeyw,
             'meta_key' : lastsave,
             'meta_value' : meta_value
+        };
+
+        console.log(body);
+
+        return this.http.post<any>(url, body, { headers: apiHeaders })
+    }
+
+    addToCartData(data: any): Observable<any> {
+        const url = this.api_site_url+`add_library_data.php`;
+        const apiHeaders = new HttpHeaders({
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+        });
+        
+        const body = {
+            'auth' : 'avlabs',
+            'data' : data
         };
 
         console.log(body);

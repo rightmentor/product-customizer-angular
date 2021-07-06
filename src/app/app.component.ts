@@ -74,10 +74,8 @@ export class AppComponent implements OnInit {
       this.addCurrentUserCookie(this.currentProductID,this.cookieService.get('SIMON_GUID'))
     }else{
       this.guestUserID = this.cookieService.get('SIMON_GUID');
-      //this.dbUserID = localStorage.getItem('DBUSERID');
+      this.dbUserID = localStorage.getItem('DBUSERID');
     }
-
-    
 
   }
 
@@ -115,12 +113,6 @@ export class AppComponent implements OnInit {
       error => {
           alert("User name or password is incorrect")
       });
-      
-      // if(this.submitted)
-      // {
-        
-      // }
-    
   }
   
   get email() { return this.registerForm.get('email'); }
@@ -290,23 +282,7 @@ export class AppComponent implements OnInit {
     }else{
       window.history.back();
     }
-    
-    /*
-    window.addEventListener("message", ({ data, source }) => {
-      if (parent === null) {
-        parent = source;
-      }
-      console.log('data', data);
-      console.log('data', data[0].productID);
-      
-      if (data[0].productID) {
-        var newcontent = document.createElement('div');
-        newcontent.innerHTML = JSON.stringify(data);
-        //document.getElementById("test_show").appendChild(newcontent);
 
-        currentObject.getProductOptions(data[0].productID);
-      }
-    });*/
   }
 
   getParma(name){
@@ -322,7 +298,7 @@ export class AppComponent implements OnInit {
         r[decodeURIComponent(s2[0]).toLowerCase()] = decodeURIComponent(s2[1]);
     }
     return r;
-};
+  };
 
   getProductOptions(productID) {
     console.log('calling getProductOptions');
@@ -334,7 +310,6 @@ export class AppComponent implements OnInit {
       this.sizeChangeHandler();
       var newcontent = document.createElement('div');
       newcontent.innerHTML = JSON.stringify(res);
-      // document.getElementById("test_show_0").appendChild(newcontent);
     }, error => {
       console.error('error', error);
     });
@@ -375,6 +350,7 @@ export class AppComponent implements OnInit {
 
   addCurrentUserCookie(productID,guestId: string) {
     this.apiService.addCurrentUserCookie(productID,guestId).subscribe((res) => {
+      console.log(res);
       localStorage.setItem('DBUSERID', res.id);
         this.dbUserID = res.id;
     }, error => {
@@ -382,8 +358,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  addUserLibraryData(data: any) {
-    this.apiService.addUserLibraryData(data).subscribe((res) => {
+  addUserLibraryData(data: any, option_id) {
+    this.apiService.addUserLibraryData(data, option_id).subscribe((res) => {
       console.log('res', res);
     }, error => {
       console.error('error', error);
@@ -430,8 +406,7 @@ export class AppComponent implements OnInit {
       }
     ];
 
-    // console.log(attributes);
-
+    console.log(attributes);
 
     var actionInput = document.createElement("input");
         actionInput.type = "hidden";
@@ -454,7 +429,7 @@ export class AppComponent implements OnInit {
     });
     
     document.body.appendChild(mapForm);
-    mapForm.submit();   
+    //mapForm.submit();   
   }
 
   cancel() {
@@ -474,20 +449,9 @@ export class AppComponent implements OnInit {
     this.apiService.getSavedLibraries(guid).subscribe((res:any) => {
       var values = [];  
       if (res.data.length > 0) {
-        //this.savedLibraries = JSON.parse(res.data);
         res.data.map(function(o1:any) {
           console.log('res-get-libraies', o1);
-          //const o2 = JSON.parse( o1.meta_value );
-          //console.log("ORFLDKJF", o2.name);
-          /*this.saveLocalData =  {
-            name: o2.name,
-            description: o2.description,
-            keyword: o2.keyword,
-            json: o2.json,
-            image: o2.image
-          };*/
           localStorage.setItem( o1.meta_key, o1.meta_value );
-          //values.push( JSON.stringify( o1.meta_value ) );
           values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
         });
         this.savedLibraries = values;
@@ -500,23 +464,13 @@ export class AppComponent implements OnInit {
   }
 
   loadLibrary() {
-    // var values = [],
-    //     keys = Object.keys(localStorage),
-    //     i = keys.length;
-    this.getSavedLibraies(this.dbUserID);
-
-    // while ( i-- ) {
-    //   console.log("keysss: ", keys[i]);
-    //     //values.push( JSON.parse(localStorage.getItem(keys[i])) );
-    // }
-    //this.savedLibraries = values;
-    
+    this.getSavedLibraies(this.dbUserID); 
   }
 
   saveJson() {
     this.saveLocalData.image = this.canvas.getCanvasSvg();
     this.canvas.saveCanvasToJSON(this.saveLocalData);
-    this.addUserLibraryData(this.saveLocalData);
+    this.addUserLibraryData(this.saveLocalData,this.selectedOptionId);
     this.closeModal("save-local");
     this.saveLocalData =  {
       name: '',
@@ -525,8 +479,39 @@ export class AppComponent implements OnInit {
       json: '',
       image: ''
     };
-    // console.log(this.saveLocalData);
-    //   this.addUserLibraryData();
+  }
+
+  saveOnAddToCart() {
+    this.saveLocalData.image = this.canvas.getCanvasSvg();
+    this.canvas.saveCanvasToJSON(this.saveLocalData);
+    this.addUserLibraryData(this.saveLocalData,this.selectedOptionId);
+
+    var attributes = [
+      {
+        name: this.productOptionID,
+        value: this.productOptionValue
+      },
+      {
+        name: this.colorOptionsID,
+        value: this.colorID
+      },
+      {
+        name: '132',
+        value: '638'
+      },
+      {
+        name: '133',
+        value: this.guestUserID
+      }
+    ];
+
+    this.saveLocalData =  {
+      name: '',
+      description: '',
+      keyword: '',
+      json: '',
+      image: ''
+    };
   }
 
   loadCanvas(json) {
