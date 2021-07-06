@@ -144,7 +144,7 @@ export class ApiService {
     }
 
     addToCartData(data: any): Observable<any> {
-        const url = this.api_site_url+`add_library_data.php`;
+        const url = this.api_site_url+`get_product_variants.php`;
         const apiHeaders = new HttpHeaders({
             'cache-control': 'no-cache',
             'content-type': 'application/json',
@@ -152,7 +152,7 @@ export class ApiService {
         
         const body = {
             'auth' : 'avlabs',
-            'data' : data
+            'data' : JSON.stringify(data)
         };
 
         console.log(body);

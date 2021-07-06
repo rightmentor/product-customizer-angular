@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class FabricjsEditorComponent implements AfterViewInit {
   @ViewChild('htmlCanvas') htmlCanvas: ElementRef;
 
-  private canvas: fabric.Canvas;
+  public canvas: fabric.Canvas;
   public props = {
     canvasFill: '#ffffff',
     canvasImage: '',

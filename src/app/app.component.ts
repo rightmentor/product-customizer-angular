@@ -369,6 +369,11 @@ export class AppComponent implements OnInit {
   openModal(id: string) {
     if (id === 'load-library') {
       this.loadLibrary();
+    } else if (id === 'save-local') {
+      if (this.canvas.canvas._objects.length === 0) {
+        alert('Canvas is empty');
+        return false;
+      }
     }
     this.modalService.open(id);
   }
@@ -378,58 +383,50 @@ export class AppComponent implements OnInit {
   }
 
   save() {
+    if (this.canvas.canvas._objects.length === 0) {
+      alert('Canvas is empty');
+      return false;
+    }
+
+    if (this.colorID === undefined || this.colorOptionsID === undefined) {
+      alert('Please select Ink Color');
+      return false;
+    }
+
     console.log(' Save func called ', this.canvas); 
-    var mapForm = document.createElement("form");
-    // mapForm.target = "_blank";
-    mapForm.method = "POST"; // or "post" if appropriate
-    mapForm.action = "https://simonstampcom.mybigcommerce.com/cart.php";
-    var attributes = [
-      {
-        name: 'attribute['+this.productOptionID+']',
-        value: this.productOptionValue
-      },
-      {
-        name: 'attribute['+this.colorOptionsID+']',
-        value: this.colorID
-      },
-      {
-        name: 'attribute[132]',
-        value: '638'
-      },
-      {
-        name: 'attribute[133]',
-        value: this.guestUserID
-      },
-      {
-        name: 'qty[]',
-        value: '1'
-      }
-    ];
+    this.saveLocalData.name = "addtocart";
+    this.saveLocalData.description = "addtocart";
+    this.saveLocalData.keyword = "addtocart";
+    this.saveJson();
+    this.saveLocalData = JSON.parse(localStorage.getItem(localStorage.getItem('lastsave')));
 
-    console.log(attributes);
-
-    var actionInput = document.createElement("input");
-        actionInput.type = "hidden";
-        actionInput.name = "action";
-        actionInput.setAttribute("value", "add");
-        mapForm.appendChild(actionInput);
-
-    var productIdInput = document.createElement("input");
-      productIdInput.type = "hidden";
-      productIdInput.name = "product_id";
-      productIdInput.setAttribute("value", this.currentProductID);
-      mapForm.appendChild(productIdInput);        
-        
-    attributes.forEach(function(attr){
-      var mapInput = document.createElement("input");
-      mapInput.type = "hidden";
-      mapInput.name = attr.name;
-      mapInput.setAttribute("value", attr.value);
-      mapForm.appendChild(mapInput);
-    });
+    var attributes = {
+      quantity: 1,
+      product_id: this.currentProductID,
+      variant_id: '',
+      modifire_id: this.productOptionID,
+      modifire_value: this.productOptionValue,
+      option_selections: [
+        {
+          option_id: this.colorOptionsID,
+          option_value: this.colorID
+        },
+        {
+          option_id: 132,
+          option_value: 638
+        },
+        {
+          option_id: 133,
+          option_value: localStorage.getItem('lastsave')
+        }
+      ]
+    }
     
-    document.body.appendChild(mapForm);
-    //mapForm.submit();   
+    this.apiService.addToCartData(attributes).subscribe((res: any) => {
+      console.log('res', res);
+         }, error => {
+      console.error('error', error);
+    });
   }
 
   cancel() {
