@@ -84,14 +84,14 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
-    getSavedLibraries(id): Observable<any> {
+    getSavedLibraries( id, productid ): Observable<any>  {
         console.log('user ID', id);
         if(this.isLoggedIn())
         {
             id = 1;
             console.log("loggedin");
         }
-        const url = this.api_site_url+`get_library_data.php?guid=${id}&auid=1`;
+        const url = this.api_site_url+`get_library_data.php?guid=${id}&product_id=${productid}&auid=1`;
         const apiHeaders = new HttpHeaders({
         });
         
