@@ -8,6 +8,7 @@
     "build": "ng build angular-editor-fabric-js-app",
     "build:prod": "ng build --prod --base-href=/product-customizer/ angular-editor-fabric-js-app",
     "build:simon": "ng build --prod --base-href=/simonstamp/ angular-editor-fabric-js-app",
+    "build:subdomain": "ng build --prod --base-href=/ angular-editor-fabric-js-app",
     "build:lib": "ng-packagr -p projects/angular-editor-fabric-js/package.json",
     "test": "ng test",
     "lint": "ng lint",

@@ -7,7 +7,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
     providedIn: 'root'
 })
 export class ApiService {
-    api_site_url = 'https://webspeedo.com/simonstamp/api/';
+    // api_site_url = 'https://webspeedo.com/simonstamp/api/';
+    api_site_url = 'http://simonstamp.webspeedo.com/api/';
     @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
     constructor(
         private http: HttpClient
@@ -58,6 +59,15 @@ export class ApiService {
 
     getProductOptions(productId): Observable<any> {
         const url = this.api_site_url+`product_options.php?product_id=${productId}`;
+
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
+    getProductOptionsColor(productId): Observable<any> {
+        const url = this.api_site_url+`get_all_color_swatch.php?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
         });

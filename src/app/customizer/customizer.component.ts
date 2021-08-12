@@ -96,6 +96,7 @@ export class CustomizerComponent implements OnInit {
         password: ['', [Validators.required, Validators.minLength(6) ]]
     });
     this.getProductModifiersOptions(this.currentProductID);
+    this.getProductOptionsColor(this.currentProductID);
   }
 
   setupComponent(someParam) {
@@ -329,7 +330,12 @@ export class CustomizerComponent implements OnInit {
       //set selected lib data in the canvas
       var keyData =  JSON.parse( localStorage.getItem(this.selectedKey) );
       console.log('keyData',keyData.cansize);
-      this.loadCanvas(keyData.json,keyData.cansize);
+      // this.loadCanvas(keyData.json,keyData.cansize);
+      if(keyData.cansize == '108'){
+        this.loadCanvas(keyData.json,this.selectedOptionId);
+      }else{
+        this.loadCanvas(keyData.json,keyData.cansize);
+      }
       
     }, error => {
       console.error('error', error);
@@ -380,6 +386,15 @@ export class CustomizerComponent implements OnInit {
     });
   }
 
+  getProductOptionsColor(productID) {
+    this.apiService.getProductOptionsColor(productID).subscribe((res) => {
+      console.log('customizeProductColor: ',res);
+      this.colors = res;
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
   addCurrentUserCookie(productID,guestId: string) {
     this.apiService.addCurrentUserCookie(productID,guestId).subscribe((res) => {
       console.log(res);
@@ -420,13 +435,12 @@ export class CustomizerComponent implements OnInit {
       return false;
     }
     
-
-    // if (this.colorID === undefined || this.colorOptionsID === undefined) {
-    //   alert('Please select Ink Color');
-    //   return false;
-    // }
-
-    if (this.colorID === undefined || this.colorOptionsID === undefined) {
+    if(this.colors.length > 0){
+      if (this.colorID === undefined || this.colorOptionsID === undefined) {
+        alert('Please select Ink Color');
+        return false;
+      }
+    }else{
       this.colorID = '0';
       this.colorOptionsID = '0';
     }
@@ -434,9 +448,9 @@ export class CustomizerComponent implements OnInit {
     console.log(' Save func called ', this.canvas); 
     this.saveLocalData.productid = this.currentProductID;
     this.saveLocalData.cansize = this.selectedOptionId;
-    this.saveLocalData.name = "addtocart";
-    this.saveLocalData.description = "addtocart";
-    this.saveLocalData.keyword = "addtocart";
+    this.saveLocalData.name = "added-to-cart-"+localStorage.getItem('lastsave');
+    this.saveLocalData.description = "added-to-cart-"+localStorage.getItem('lastsave');
+    this.saveLocalData.keyword = "added-to-cart-"+localStorage.getItem('lastsave');
     this.saveJson();
     this.saveLocalData = JSON.parse(localStorage.getItem(localStorage.getItem('lastsave')));
 
@@ -559,6 +573,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   loadCanvas(json,size) {
+    console.log("size is define as:",size);
     this.selectedOptionId = size;
     this.sizeChangeHandler();
     this.canvas.loadCanvas(json);

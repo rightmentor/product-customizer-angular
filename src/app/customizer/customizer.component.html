@@ -235,7 +235,7 @@
                     </div> -->
                     <!-- <div class="custom-item" *ngIf="!canvas.selected">No items selected</div> -->
                     <!-- <div class="custom-item" *ngIf="!canvas.selected">No items selected</div> -->
-                    <div class="custom-item">
+                    <div class="custom-item" *ngIf="colors?.length > 0">
                         <div class="custom-item-title">Ink Color</div>
                         <div class="custom-item-body">
                                 <div *ngFor="let color of colors" class="colorPicker" [class.selected-color]="selectedColor===color">

@@ -24,6 +24,8 @@ export class LibraryComponent{
 
   constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router) {
     activateRoute.params.subscribe(params => {
+      console.log(params['id']);
+      this.currentProductID = params['id'];
       this.setupComponent(params['id']);
     });
     this.loadLibrary();
@@ -36,8 +38,10 @@ export class LibraryComponent{
   }
 
   getSavedLibraies (guid) {
+    console.log('productID',this.currentProductID);
     this.apiService.getSavedLibraries( guid, this.currentProductID ).subscribe((res:any) => {
-      var values = [];  
+      var values = []; 
+      var productID = this.currentProductID; 
       if (res.data.length > 0) {
         res.data.map(function(o1:any) {
           console.log('res-get-libraies', o1);
@@ -45,8 +49,7 @@ export class LibraryComponent{
           var valueData = [];
           valueData.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
           valueData.push( o1.meta_key );
-          valueData.push( o1.product_id );
-
+          valueData.push( productID );
           values.push( valueData );
           // values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
         });
