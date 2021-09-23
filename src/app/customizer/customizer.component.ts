@@ -23,6 +23,7 @@ export class CustomizerComponent implements OnInit {
   logoutbtn:boolean;
 
   title = 'angular-editor-fabric-js';
+  showFiller: boolean = true;
   productOptions = [];
   colors = ["#0A0A0A", "#0000FF", "#009A85",  "#FF0000", "#CC66CC" ];
   selectedColor = "#000000";
@@ -97,6 +98,10 @@ export class CustomizerComponent implements OnInit {
     });
     this.getProductModifiersOptions(this.currentProductID);
     this.getProductOptionsColor(this.currentProductID);
+  }
+
+  showFillerEvent(){
+    this.showFiller = !this.showFiller;       
   }
 
   setupComponent(someParam) {
@@ -208,6 +213,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   public clone() {
+    console.log('active object');
     this.canvas.clone();
   }
 
@@ -287,7 +293,7 @@ export class CustomizerComponent implements OnInit {
     this.canvas.undoCanvas();
   }
 
-  checkJavascript() {
+  checkJavascript() {   
     let parent = null;
     const currentObject = this;
     // var QueryString = currentObject.getRequestsParam();
@@ -484,7 +490,7 @@ export class CustomizerComponent implements OnInit {
 
   cancel() {
     console.log(' cancel func called ');
-    window.location = "/";
+    window.location = "https://simonstampcom.mybigcommerce.com/";
   }
 
   setAllElementColor(color) {

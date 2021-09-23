@@ -30,8 +30,10 @@
     "fabric": "^3.6.3",
     "font-awesome": "^4.7.0",
     "imagetracerjs": "^1.2.6",
+    "jquery": "^3.6.0",
     "ngx-color-picker": "^9.1.0",
     "ngx-cookie-service": "^12.0.0",
+    "popper.js": "^1.16.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

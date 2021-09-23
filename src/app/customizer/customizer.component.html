@@ -1,440 +1,356 @@
-<div class="w-100 px-2">
-    <div class="row">
-        <!-- <div class="col-xl-12 main-title">
-          <h4>Github: <a href="https://github.com/kevoj/angular-editor-fabric-js">angular-editor-fabric-js</a></h4>
-      </div> -->
-        <div class="col-xl-12">
-            <div class="row">
-                <div class="col-xl-6 text-left">
-                    <ul class="navbar-nav mr-auto">
-                         <li class="nav-item">
-                            <button class="btn btn-primary  btn-canvas-action" *ngIf="loginbtn" routerLink="login" routerLinkActive="active" (click)="openModal('login-local')">Login</button>
-                          </li>
-                          <li class="nav-item">
-                            <button type="button" *ngIf="logoutbtn" class="btn btn-danger  btn-canvas-action" (click)="logout()">logout</button>
-                          </li>
-                    </ul>
-                </div>
-                <div class="col-xl-6 text-right">
-                    <button data-toggle="tooltip" data-placement="bottom" title="Export to image" type="button"
-                        class="btn btn-primary" (click)="rasterize();">
-                        <i class="fa fa-download" aria-hidden="true"></i> Export to image</button>
-                    <button data-toggle="tooltip" data-placement="bottom" title="Export to SVG" type="button"
-                        class="btn btn-primary" (click)="rasterizeSVG();">
-                        <i class="fa fa-download" aria-hidden="true"></i> Export to SVG</button>
-                    <button data-toggle="tooltip" data-placement="bottom" title="Save in localStorage" type="button"
-                        class="btn btn-primary" (click)="openModal('save-local')">
-                        <i class="fa fa-save" aria-hidden="true"></i> Save local</button>
-                    <!-- <button data-toggle="tooltip" data-placement="bottom" title="Save in localStorage" type="button"
-                        class="btn btn-primary" (click)="saveCanvasToJSON();">
-                        <i class="fa fa-save" aria-hidden="true"></i> Save local</button> -->
-                    <!-- <button data-toggle="tooltip" data-placement="bottom" title="Load from localStorage" type="button"
-                        class="btn btn-primary" (click)="loadCanvasFromJSON();">
-                        <i class="fa fa-save" aria-hidden="true"></i> Load local</button> -->
-                    <button data-toggle="tooltip" data-placement="bottom" title="Clean Canvas" type="button"
-                        class="btn btn-danger" (click)="confirmClear();">
-                        <i class="fa fa-ban" aria-hidden="true"></i> Clean</button>
-                </div>
-            </div>
-            <div class="row secondary-nav">
-                <div class="col-xl-10 ">
-                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('size-model')">Size</button>
-                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('text-modal')">Add text</button>
-                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-image-model')">Add Image</button>
-                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('upload-image-model')">Upload Image</button>
-                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('add-figure-model')">Add Shape</button>
-                    <button class="btn btn-primary btn-canvas-action" (click)="openModal('load-library')">Library</button>
-                </div>
-                <div class="col-xl-2 text-right">
-                    <button class="btn btn-primary btn-canvas-action" (click)="save()">Add to cart</button>
-                    <button class="btn btn-danger btn-canvas-action" (click)="cancel()">Cancel</button>
-                    
-                </div>
-            </div>
-        </div>
+<div class="d-flex" [ngClass]="showFiller ? '' : 'toggled'" id="wrapper">
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Simon Stamp </div>
+      <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action bg-light" *ngIf="loginbtn" routerLink="login" routerLinkActive="active" (click)="openModal('login-local')"><i class="fa fa-sign-in"></i> Login</a>
+        <a class="list-group-item list-group-item-action bg-light" *ngIf="logoutbtn" class="btn btn-danger  btn-canvas-action" (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('size-model')"><i class="fa fa-window-maximize"></i> Change Properties</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('text-modal')"><i class="fa fa-text-width"></i> Add Text</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('add-figure-model')"><i class="fa fa-square"></i> Add Shape</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('add-image-model')"><i class="fa fa-image"></i> Add Image</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('upload-image-model')"><i class="fa fa-image"></i> Upload Image</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="confirmClear();"><i class="fa fa-ban" aria-hidden="true"></i> Clear All</a>
+        <a class="list-group-item list-group-item-action bg-light"></a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="rasterize();"><i class="fa fa-download" aria-hidden="true"></i> Export to image</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="rasterizeSVG();"><i class="fa fa-download" aria-hidden="true"></i> Export to SVG</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('save-local')"><i class="fa fa-save"></i> Save to Library</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('load-library')"><i class="fa fa-book"></i> Load From Library</a>
+        <button class="btn btn-success btn-canvas-action" (click)="save()"><i class="fa fa-cart-plus"></i> Add to Cart</button>
+        <button class="btn btn-danger btn-canvas-action" (click)="cancel()"><i class="fa fa-times-circle"></i> Exit Without Saving</button>
+
+      </div>
     </div>
-    <hr>
-    <div class="row">
-        <!-- <div class="col-xl-3"> -->
-            <!-- <div class="card"> -->
-                <!-- <div class="card-header">Size</div> -->
-                <!-- <div class="card-body"> -->
-                    <!-- <select [(ngModel)]="selectedOptionId" class="size-select" (change)="sizeChangeHandler()"> -->
-                        <!-- <option *ngFor="let option of productOptions" [value]="option.id">{{option.label}}</option> -->
-                    <!-- </select> -->
-
-                    <!-- <!-- <div class="form-group"> -->
-                        <!-- <div class="input-group"> -->
-                            <!-- <input type="text" class="form-control" [(ngModel)]="canvas.size.width" -->
-                                <!-- (keyup)="changeSize()"> -->
-                            <!-- <div class="input-group-append"> -->
-                                <!-- <span class="input-group-text"> -->
-                                    <!-- Width -->
-                                <!-- </span> -->
-                            <!-- </div> -->
-                        <!-- </div> -->
-                    <!-- </div> -->
-                    <!-- <div class="form-group"> -->
-                        <!-- <div class="input-group mb-3"> -->
-                            <!-- <input type="text" class="form-control" [(ngModel)]="canvas.size.height" -->
-                                <!-- (keyup)="changeSize()"> -->
-                            <!-- <div class="input-group-append"> -->
-                                <!-- <span class="input-group-text"> -->
-                                    <!-- Height -->
-                                <!-- </span> -->
-                            <!-- </div> -->
-                        <!-- </div> -->
-                    <!-- </div> --> 
-                <!-- </div> -->
-            <!-- </div> -->
-            <!-- <br /> -->
-            <!-- <div class="card"> -->
-                <!-- <div class="card-header">Add text</div> -->
-                <!-- <div class="card-body"> -->
-                    <!-- <div class="input-group"> -->
-                        <!-- <input type="text" class="form-control" [(ngModel)]="canvas.textString"> -->
-                        <!-- <textarea class="form-control" [(ngModel)]="canvas.textString"></textarea> -->
-                        <!-- <div class="input-group-append"> -->
-                            <!-- <span class="input-group-text"> -->
-                                <!-- <button id="add-text" data-toggle="tooltip" data-placement="bottom" title="Add text" -->
-                                    <!-- class="btn btn-primary" (click)="addText()"> -->
-                                    <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
-                                <!-- </button> -->
-                            <!-- </span> -->
-                        <!-- </div> -->
-                    <!-- </div> -->
-                <!-- </div> -->
-            <!-- </div> -->
-            <!-- <br /> -->
-            <!-- <div class="card"> -->
-                <!-- <div class="card-header">Add images</div> -->
-                <!-- <div class="card-body max-height"> -->
-                    <!--  -->
-                    <!--  -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/bullbasaur.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/charmander.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/bellsprout.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/caterpie.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/dratini.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/eevee.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/jigglypuff.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/mankey.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/meowth.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/pidgey.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/psyduck.svg"> -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/rattata.svg"> -->
-                    <!--  -->
-                    <!--  -->
-                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/zubat.svg"> -->
-                <!-- </div> -->
-            <!-- </div> -->
-            <!-- <br /> -->
-            <!-- <div class="card"> -->
-                <!-- <div class="card-header">Upload image</div> -->
-                <!-- <div class="card-body text-center"> -->
-                    <!-- <img id="testImage" *ngIf="canvas.url" class="images-item-upload" [src]="canvas.url" -->
-                        <!-- (click)="addImageOnCanvas(canvas.url);"> -->
-                    <!-- <input type="file" (change)="readUrl($event);"> -->
-                    <!-- <br /> -->
-                    <!-- <br /> -->
-                    <!-- <div class="btn-group btn-group-justified" role="group" aria-label="..."> -->
-                        <!-- <div class="btn-group" role="group"> -->
-                            <!-- <button type="button" class="btn btn-outline-danger btn-sm" -->
-                                <!-- (click)="removeWhite(canvas.url);"> -->
-                                <!-- <i class="fa fa-times" aria-hidden="true"></i> Remove</button> -->
-                        <!-- </div> -->
-                    <!-- </div> -->
-                <!-- </div> -->
-            <!-- </div> -->
-            <!-- <br /> -->
-            <!-- <div class="card"> -->
-                <!-- <div class="card-header">Add figure</div> -->
-                <!-- <div class="card-body text-center max-height"> -->
-                    <!-- <div class="btn-group btn-group-vertical" role="group" aria-label="..."> -->
-                        <!-- <button type="button" class="btn btn-primary" -->
-                            <!-- (click)="addFigure('rectangle');">Rectangle</button> -->
-                        <!-- <button type="button" class="btn btn-primary" (click)="addFigure('square');">Square</button> -->
-                        <!-- <button type="button" class="btn btn-primary" (click)="addFigure('triangle');">Triangle</button> -->
-                        <!-- <button type="button" class="btn btn-primary" (click)="addFigure('circle');">Circle</button> -->
-                    <!-- </div> -->
-                <!-- </div> -->
-            <!-- </div> -->
-        <!-- </div> -->
-        <div class="col-xl-9">
-            <div class="overflow-auto main-canvas ">
-                <angular-editor-fabric-js #canvas></angular-editor-fabric-js>
-            </div>
+    <!-- /#sidebar-wrapper -->
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle" (click)="showFillerEvent()"><i class="fa fa-bars"></i></button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <button class="btn btn-success btn-canvas-action" (click)="save()"><i class="fa fa-cart-plus"></i> Add to cart</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-primary btn-canvas-action" *ngIf="loginbtn" routerLink="login" routerLinkActive="active" (click)="openModal('login-local')">Login</button>
+                    <button type="button" *ngIf="logoutbtn" class="btn btn-danger  btn-canvas-action" (click)="logout()">logout</button>
+                </li>
+            </ul>
         </div>
-        <div class="col-xl-3">
-            <div class="card">
-                <div class="card-header">Options</div>
-                <div class="card-body text-center">
-                    <div class="btn-group" role="group" aria-label="...">
-                        <button data-toggle="tooltip" data-placement="bottom" title="Delete element" type="button"
-                            class="btn btn-outline-danger" [disabled]="!canvas.selected" (click)="removeSelected();">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-
-                        <button data-toggle="tooltip" data-placement="bottom" title="Undo" type="button"
-                            class="btn btn-outline-primary" [disabled]="canvas.currentIndex === 0" (click)="undo();">
-                            <i class="fa fa-undo" aria-hidden="true"></i>
-                        </button>
-                        <button data-toggle="tooltip" data-placement="bottom" title="Redo" type="button"
-                            class="btn btn-outline-primary"
-                            [disabled]="canvas.canvasSteps.length === 0 || canvas.currentIndex === (canvas.canvasSteps.length - 1)"
-                            (click)="redo();">
-                            <i class="fa fa-repeat" aria-hidden="true"></i>
-                        </button>
-
-                        <button data-toggle="tooltip" data-placement="bottom" title="Send to back" type="button"
-                            class="btn btn-outline-primary" [disabled]="!canvas.selected" (click)="sendToBack();">
-                            <i class="fa fa-level-down" aria-hidden="true"></i>
-                        </button>
-                        <button data-toggle="tooltip" data-placement="bottom" title="Send to front" type="button"
-                            class="btn btn-outline-primary" [disabled]="!canvas.selected" (click)="bringToFront();">
-                            <i class="fa fa-level-up" aria-hidden="true"></i>
-                        </button>
-                        <button data-toggle="tooltip" data-placement="bottom" title="Clone" type="button"
-                            class="btn btn-outline-primary"
-                            [disabled]="!canvas.selected || canvas.selected.type == 'group'" (click)="clone();">
-                            <i class="fa fa-clone" aria-hidden="true"></i>
-                        </button>
-                        <button data-toggle="tooltip" data-placement="bottom" title="Unselect" type="button"
-                            class="btn btn-outline-primary" [disabled]="!canvas.selected" (click)="cleanSelect()">
-                            <i class="fa fa-remove" aria-hidden="true"></i>
-                        </button>
+      </nav>
+      <div class="container-fluid">
+        <div class="w-100 px-2">
+            <div class="row">
+                <div class="col-xl-9">
+                    <div class="overflow-auto main-canvas ">
+                        <angular-editor-fabric-js #canvas></angular-editor-fabric-js>
                     </div>
                 </div>
-            </div>
-            <br />
-            <!-- <div class="card" *ngIf="!canvas.selected">
-                <div class="card-header">Canvas</div>
-                <div class="card-body">
-                    <div class="custom-item" *ngIf="!canvas.props.canvasImage">
-                        <div class="custom-item-title">Background Color</div>
-                        <div class="custom-item-body">
-                            <input type="text" class="form-control" [cpPosition]="'bottom'"
-                                [(colorPicker)]="canvas.props.canvasFill" [style.background]="canvas.props.canvasFill"
-                                [value]="canvas.props.canvasFill" (colorPickerChange)="setCanvasFill()">
+                <div class="col-xl-3">
+                    <div class="card">
+                        <div class="card-header">Options</div>
+                        <div class="card-body text-center">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button data-toggle="tooltip" data-placement="bottom" title="Undo" type="button"
+                                    class="btn btn-outline-primary" [disabled]="canvas.currentIndex === 0" (click)="undo();">
+                                    <i class="fa fa-undo" aria-hidden="true"></i>
+                                </button>
+                                <button data-toggle="tooltip" data-placement="bottom" title="Redo" type="button"
+                                    class="btn btn-outline-primary"
+                                    [disabled]="canvas.canvasSteps.length === 0 || canvas.currentIndex === (canvas.canvasSteps.length - 1)"
+                                    (click)="redo();">
+                                    <i class="fa fa-repeat" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button data-toggle="tooltip" data-placement="bottom" title="Send to back" type="button"
+                                    class="btn btn-outline-primary" [disabled]="!canvas.selected" (click)="sendToBack();">
+                                    <i class="fa fa-level-down" aria-hidden="true"></i>
+                                </button>
+                                <button data-toggle="tooltip" data-placement="bottom" title="Send to front" type="button"
+                                    class="btn btn-outline-primary" [disabled]="!canvas.selected" (click)="bringToFront();">
+                                    <i class="fa fa-level-up" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button data-toggle="tooltip" data-placement="bottom" title="Clone" type="button"
+                                    class="btn btn-outline-primary"
+                                    [disabled]="!canvas.selected || canvas.selected.type == 'group'" (click)="clone();">
+                                    <i class="fa fa-clone" aria-hidden="true"></i>
+                                </button>
+                                <button data-toggle="tooltip" data-placement="bottom" title="Delete element" type="button"
+                                    class="btn btn-outline-danger" [disabled]="!canvas.selected" (click)="removeSelected();">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </div>
+
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button data-toggle="tooltip" data-placement="bottom" title="Unselect" type="button"
+                                    class="btn btn-outline-primary" [disabled]="!canvas.selected" (click)="cleanSelect()">
+                                    <i class="fa fa-remove" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-item" *ngIf="canvas.selected">
+                            <div class="custom-item-title">Align Selection</div>
+                            <div class="custom-item-body text-center">
+                                <div style="text-align:center;width:320px;" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-primary" (click)="setObjectAlign('top')">
+                                        <i class="fa fa-angle-double-up"></i>
+                                    </button>
+                                    <br>
+                                    <br>
+                                    <button type="button" class="btn btn-primary" (click)="setObjectAlign('left')">
+                                        <i class="fa fa-angle-double-left"></i>
+                                    </button>&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-primary" (click)="setObjectAlign('center')">
+                                        <i class="fa fa-circle"></i>
+                                    </button>&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-primary" (click)="setObjectAlign('right')">
+                                        <i class="fa fa-angle-double-right"></i>
+                                    </button>
+                                    <br>
+                                    <br>
+                                    <button type="button" class="btn btn-primary" (click)="setObjectAlign('bottom')">
+                                        <i class="fa fa-angle-double-down"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="custom-item">
-                        <div class="custom-item-title">Background Image (url)</div>
-                        <div class="custom-item-body">
-                            <input type="text" class="form-control" placeholder="http://example.jpg"
-                                [(ngModel)]="canvas.props.canvasImage" (keyup)="setCanvasImage()">
+                    <br />
+                    
+                    <!-- <div class="card" *ngIf="!canvas.selected">
+                        <div class="card-header">Canvas</div>
+                        <div class="card-body">
+                            <div class="custom-item" *ngIf="!canvas.props.canvasImage">
+                                <div class="custom-item-title">Background Color</div>
+                                <div class="custom-item-body">
+                                    <input type="text" class="form-control" [cpPosition]="'bottom'"
+                                        [(colorPicker)]="canvas.props.canvasFill" [style.background]="canvas.props.canvasFill"
+                                        [value]="canvas.props.canvasFill" (colorPickerChange)="setCanvasFill()">
+                                </div>
+                            </div>
+                            <div class="custom-item">
+                                <div class="custom-item-title">Background Image (url)</div>
+                                <div class="custom-item-body">
+                                    <input type="text" class="form-control" placeholder="http://example.jpg"
+                                        [(ngModel)]="canvas.props.canvasImage" (keyup)="setCanvasImage()">
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <br />
+                    <div class="card" *ngIf="canvas.selected && canvas.textEditor">
+                        <div class="card-header">Custom</div>
+                        <div class="card-body">
+                            <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type == 'group'">Group Selected
+                            </div> -->
+                            <!-- <div class="custom-item" *ngIf="!canvas.selected">No items selected</div> -->
+                            <!-- <div class="custom-item" *ngIf="!canvas.selected">No items selected</div> -->
+                            
+                            <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
+                                <div class="custom-item-title">ID</div>
+                                <div class="custom-item-body">
+                                    <input type="text" class="form-control" [(ngModel)]="canvas.props.id" (keyup)="setId()">
+                                </div>
+                            </div> -->
+                            <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
+                                <div class="custom-item-title">Opacity</div>
+                                <div class="custom-item-body">
+                                    <input type="range" [(ngModel)]="canvas.props.opacity"
+                                        (change)="setOpacity()">{{canvas.props.opacity}}</div>
+                            </div>
+                            <div class="custom-item"
+                                *ngIf="canvas.selected && canvas.textEditor || canvas.selected && canvas.figureEditor">
+                                <div class="custom-item-title">Fill</div>
+                                <div class="custom-item-body">
+                                    <input type="text" class="form-control" [cpPosition]="'bottom'"
+                                        [(colorPicker)]="canvas.props.fill" [style.background]="canvas.props.fill"
+                                        [value]="canvas.props.fill" (colorPickerChange)="setFill()">
+                                </div>
+                            </div> -->
+                            <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                                <div class="custom-item-title">Font family</div>
+                                <div class="custom-item-body">
+                                    <select [(ngModel)]="canvas.props.fontFamily" class="form-control"
+                                        (change)="setFontFamily()">
+                                        <option value="arial">Arial</option>
+                                        <option value="verdana">Verdana</option>
+                                        <option value="courier">Courier</option>
+                                        <option value="Roboto">Roboto</option>
+                                        <option value="Open Sans">Open Sans</option>
+                                        <option value="Zilla Slab">Zilla Slab</option>
+                                        <option value="Lato">Lato</option>
+                                        <option value="Bellefair">Bellefair</option>
+                                        <option value="Fresca">Fresca</option>
+                                        <option value="Raleway">Raleway</option>
+                                        <option value="Open Sans Condensed">Open Sans Condensed</option>
+                                        <option value="Indie Flower">Indie Flower</option>
+                                        <option value="Josefin Sans">Josefin Sans</option>
+                                        <option value="Inconsolata">Inconsolata</option>
+                                        <option value="Pacifico">Pacifico</option>
+                                        <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+        
+                            <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                                <div class="custom-item-title">Text Align</div>
+                                <div class="custom-item-body text-center">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-primary"
+                                            [ngClass]="{'active': canvas.props.textAlign == 'left' }"
+                                            (click)="setTextAlign('left')">
+                                            <i class="fa fa-align-left"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                            [ngClass]="{'active': canvas.props.textAlign == 'center' }"
+                                            (click)="setTextAlign('center')">
+                                            <i class="fa fa-align-center"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                            [ngClass]="{'active': canvas.props.textAlign == 'right' }"
+                                            (click)="setTextAlign('right')">
+                                            <i class="fa fa-align-right"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                            [ngClass]="{'active': canvas.props.textAlign == 'justify' }"
+                                            (click)="setTextAlign('justify')">
+                                            <i class="fa fa-align-justify"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                                <div class="custom-item-title">Style</div>
+                                <div class="custom-item-body text-center">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            [ngClass]="{'active': canvas.props.fontWeight }" (click)="setBold()">
+                                            <i class="fa fa-bold"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            [ngClass]="{'active': canvas.props.fontStyle }" (click)="setFontStyle()">
+                                            <i class="fa fa-italic"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            [ngClass]="{'active': hasTextDecoration('underline') }"
+                                            (click)="setTextDecoration('underline')">
+                                            <i class="fa fa-underline"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            [ngClass]="{'active': hasTextDecoration('overline') }"
+                                            (click)="setTextDecoration('overline')">
+                                            <i class="fa fa-underline fa-flip-vertical"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            [ngClass]="{'active': hasTextDecoration('line-through') }"
+                                            (click)="setTextDecoration('line-through')">
+                                            <i class="fa fa-strikethrough"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                                <div class="custom-item-title">Font Size</div>
+                                <div class="custom-item-body">
+                                    <input type="number" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()"
+                                        (keyup)="setFontSize()">&nbsp; px
+                                </div>
+                                <div class="custom-item-body">
+                                    <input type="range" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()" step="1"
+                                        min="1" max="300">{{canvas.props.fontSize}}
+                                </div>
+                            </div>
+                            <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                                <div class="custom-item-title">Line Height</div>
+                                <div class="custom-item-body">
+                                    <input type="number" step="0.01" min="0.1" [(ngModel)]="canvas.props.lineHeight"
+                                        (keyup)="setLineHeight()">&nbsp;
+                                    px
+                                </div>
+                                <div class="custom-item-body">
+                                    <input type="range" [(ngModel)]="canvas.props.lineHeight" (change)="setLineHeight()"
+                                        (change)="setLineHeight()" step="0.1" min="0.1" max="10">{{canvas.props.lineHeight}}
+                                </div>
+                            </div>
+                            <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                                <div class="custom-item-title">Char Spacing</div>
+                                <div class="custom-item-body">
+                                    <input type="number" [(ngModel)]="canvas.props.charSpacing"
+                                        (keyup)="setCharSpacing()">&nbsp; px
+                                </div>
+                                <div class="custom-item-body">
+                                    <input type="range" [(ngModel)]="canvas.props.charSpacing" (change)="setCharSpacing()"
+                                        (change)="setCharSpacing()" step="10" min="-200" max="800">{{canvas.props.charSpacing}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-xl-12">
+                    <br />
+                    <div class="card">
+                        <div class="card-header">
+                            <button type="button" class="btn btn-primary btn-sm" (click)="rasterizeJSON()">
+                                <i class="fa fa-refresh" aria-hidden="true"></i> Render to json</button>
+                        </div>
+                        <div class="card-body">
+                            <pre>{{canvas.json}}</pre>
                         </div>
                     </div>
                 </div>
             </div> -->
-            <br />
-            <div class="card">
-                <div class="card-header">Custom</div>
-                <div class="card-body">
-                    <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type == 'group'">Group Selected
-                    </div> -->
-                    <!-- <div class="custom-item" *ngIf="!canvas.selected">No items selected</div> -->
-                    <!-- <div class="custom-item" *ngIf="!canvas.selected">No items selected</div> -->
-                    <div class="custom-item" *ngIf="colors?.length > 0">
-                        <div class="custom-item-title">Ink Color</div>
-                        <div class="custom-item-body">
-                                <div *ngFor="let color of colors" class="colorPicker" [class.selected-color]="selectedColor===color">
-                                        <div [style.background-color]="color"  (click)="setAllElementColor(color)" ></div>
-                                </div>
-                        </div>
-                    </div>
-                    <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
-                        <div class="custom-item-title">ID</div>
-                        <div class="custom-item-body">
-                            <input type="text" class="form-control" [(ngModel)]="canvas.props.id" (keyup)="setId()">
-                        </div>
-                    </div> -->
-                    <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.selected.type != 'group'">
-                        <div class="custom-item-title">Opacity</div>
-                        <div class="custom-item-body">
-                            <input type="range" [(ngModel)]="canvas.props.opacity"
-                                (change)="setOpacity()">{{canvas.props.opacity}}</div>
-                    </div> -->
-                    <div class="custom-item"
-                        *ngIf="canvas.selected && canvas.textEditor || canvas.selected && canvas.figureEditor">
-                        <div class="custom-item-title">Fill</div>
-                        <div class="custom-item-body">
-                            <input type="text" class="form-control" [cpPosition]="'bottom'"
-                                [(colorPicker)]="canvas.props.fill" [style.background]="canvas.props.fill"
-                                [value]="canvas.props.fill" (colorPickerChange)="setFill()">
-                        </div>
-                    </div>
-                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
-                        <div class="custom-item-title">Font family</div>
-                        <div class="custom-item-body">
-                            <select [(ngModel)]="canvas.props.fontFamily" class="form-control"
-                                (change)="setFontFamily()">
-                                <option value="arial">Arial</option>
-                                <option value="helvetica" selected>Helvetica</option>
-                                <option value="verdana">Verdana</option>
-                                <option value="courier">Courier</option>
-                                <option value="Roboto">Roboto</option>
-                                <option value="Open Sans">Open Sans</option>
-                                <option value="Zilla Slab">Zilla Slab</option>
-                                <option value="Lato">Lato</option>
-                                <option value="Bellefair">Bellefair</option>
-                                <option value="Fresca">Fresca</option>
-                                <option value="Raleway">Raleway</option>
-                                <option value="Open Sans Condensed">Open Sans Condensed</option>
-                                <option value="Indie Flower">Indie Flower</option>
-                                <option value="Josefin Sans">Josefin Sans</option>
-                                <option value="Inconsolata">Inconsolata</option>
-                                <option value="Pacifico">Pacifico</option>
-                                <option value="Gloria Hallelujah">Gloria Hallelujah</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="custom-item" *ngIf="canvas.selected">
-                        <div class="custom-item-title">Align Selection</div>
-                        <div class="custom-item-body text-center">
-                            <div class="btn-group" role="group" aria-label="...">
-                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('left')">
-                                    Left
-                                </button>
-                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('right')">
-                                    Right
-                                </button>
-                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('top')">
-                                    Top
-                                </button>
-                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('bottom')">
-                                    Bottom
-                                </button>
-                                <button type="button" class="btn btn-primary" (click)="setObjectAlign('center')">
-                                    Center
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            <br>
+            <br>
+        </div>
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+  </div>
+  <!-- /#wrapper -->
 
-                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
-                        <div class="custom-item-title">Text Align</div>
-                        <div class="custom-item-body text-center">
-                            <div class="btn-group" role="group" aria-label="...">
-                                <button type="button" class="btn btn-primary"
-                                    [ngClass]="{'active': canvas.props.textAlign == 'left' }"
-                                    (click)="setTextAlign('left')">
-                                    <i class="fa fa-align-left"></i>
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                    [ngClass]="{'active': canvas.props.textAlign == 'center' }"
-                                    (click)="setTextAlign('center')">
-                                    <i class="fa fa-align-center"></i>
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                    [ngClass]="{'active': canvas.props.textAlign == 'right' }"
-                                    (click)="setTextAlign('right')">
-                                    <i class="fa fa-align-right"></i>
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                    [ngClass]="{'active': canvas.props.textAlign == 'justify' }"
-                                    (click)="setTextAlign('justify')">
-                                    <i class="fa fa-align-justify"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
-                        <div class="custom-item-title">Style</div>
-                        <div class="custom-item-body text-center">
-                            <div class="btn-group" role="group" aria-label="...">
-                                <button type="button" class="btn btn-primary btn-sm"
-                                    [ngClass]="{'active': canvas.props.fontWeight }" (click)="setBold()">
-                                    <i class="fa fa-bold"></i>
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm"
-                                    [ngClass]="{'active': canvas.props.fontStyle }" (click)="setFontStyle()">
-                                    <i class="fa fa-italic"></i>
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm"
-                                    [ngClass]="{'active': hasTextDecoration('underline') }"
-                                    (click)="setTextDecoration('underline')">
-                                    <i class="fa fa-underline"></i>
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm"
-                                    [ngClass]="{'active': hasTextDecoration('overline') }"
-                                    (click)="setTextDecoration('overline')">
-                                    <i class="fa fa-underline fa-flip-vertical"></i>
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm"
-                                    [ngClass]="{'active': hasTextDecoration('line-through') }"
-                                    (click)="setTextDecoration('line-through')">
-                                    <i class="fa fa-strikethrough"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
-                        <div class="custom-item-title">Font Size</div>
-                        <div class="custom-item-body">
-                            <input type="number" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()"
-                                (keyup)="setFontSize()">&nbsp; px
-                        </div>
-                        <div class="custom-item-body">
-                            <input type="range" [(ngModel)]="canvas.props.fontSize" (change)="setFontSize()" step="1"
-                                min="1" max="300">{{canvas.props.fontSize}}
-                        </div>
-                    </div>
-                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
-                        <div class="custom-item-title">Line Height</div>
-                        <div class="custom-item-body">
-                            <input type="number" step="0.01" min="0.1" [(ngModel)]="canvas.props.lineHeight"
-                                (keyup)="setLineHeight()">&nbsp;
-                            px
-                        </div>
-                        <div class="custom-item-body">
-                            <input type="range" [(ngModel)]="canvas.props.lineHeight" (change)="setLineHeight()"
-                                (change)="setLineHeight()" step="0.1" min="0.1" max="10">{{canvas.props.lineHeight}}
-                        </div>
-                    </div>
-                    <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
-                        <div class="custom-item-title">Char Spacing</div>
-                        <div class="custom-item-body">
-                            <input type="number" [(ngModel)]="canvas.props.charSpacing"
-                                (keyup)="setCharSpacing()">&nbsp; px
-                        </div>
-                        <div class="custom-item-body">
-                            <input type="range" [(ngModel)]="canvas.props.charSpacing" (change)="setCharSpacing()"
-                                (change)="setCharSpacing()" step="10" min="-200" max="800">{{canvas.props.charSpacing}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xl-12">
-            <br />
-            <div class="card">
-                <div class="card-header">
-                    <button type="button" class="btn btn-primary btn-sm" (click)="rasterizeJSON()">
-                        <i class="fa fa-refresh" aria-hidden="true"></i> Render to json</button>
-                </div>
-                <div class="card-body">
-                    <pre>{{canvas.json}}</pre>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <br>
-</div>
 <div id="test_show"></div>
 
 <div id="test_show_0"></div>
 
 <jw-modal id="size-model">
     <button class="btn btn-danger modal-close-btn" (click)="closeModal('size-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
-    <div class="card-header">Size</div>
+    <div class="card-header">Add Properties</div>
     <div class="card-body">
         <select [(ngModel)]="selectedOptionId" class="size-select" (change)="sizeChangeHandler()">
             <option *ngFor="let option of productOptions" [value]="option.id">{{option.label}}</option>
         </select>
+    </div>
+    
+    <div class="card-body ">
+        <input class="form-control" [(ngModel)]="saveLocalData.name" placeholder="Name" />
+    </div>
+    <div class="card-body ">
+        <textarea class="form-control" [(ngModel)]="saveLocalData.description" placeholder="Description"></textarea>
+    </div>
+    <div class="card-body ">
+        <input class="form-control" [(ngModel)]="saveLocalData.keyword" placeholder="Keyword" />
+    </div>
+
+    <div class="card-body">
+        <div class="custom-item" *ngIf="colors?.length > 0">
+            <div class="custom-item-title">Ink Color</div>
+            <div class="custom-item-body">
+                    <div *ngFor="let color of colors" class="colorPicker" [class.selected-color]="selectedColor===color">
+                            <div [style.background-color]="color"  (click)="setAllElementColor(color)" ></div>
+                    </div>
+            </div>
+        </div>
     </div>
 </jw-modal>
 

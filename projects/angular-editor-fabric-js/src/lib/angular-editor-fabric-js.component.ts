@@ -62,7 +62,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
+    
     // setup front side canvas
     this.canvas = new fabric.Canvas(this.htmlCanvas.nativeElement, {
       hoverCursor: 'pointer',
@@ -70,7 +70,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
       selectionBorderColor: 'blue',
       preserveObjectStacking: true
     });
-
+    
     this.canvas.on({
       'object:moving': (e) => {
       },
@@ -86,8 +86,8 @@ export class FabricjsEditorComponent implements AfterViewInit {
       'object:modified': (e) => {
         this.modifyCanvas(e);
       },
-      'object:selected': (e) => {
-
+      'selection:created': (e) => {
+        console.log('show canvas selected:',e);
         const selectedObject = e.target;
         this.selected = selectedObject;
         selectedObject.hasRotatingPoint = true;
@@ -507,13 +507,11 @@ export class FabricjsEditorComponent implements AfterViewInit {
     setTimeout(()=>{
       this.canvas.renderAll();
     }, 1000)
-    
   }
 
   clone() {
     const activeObject = this.canvas.getActiveObject();
     const activeGroup = this.canvas.getActiveObjects();
-
     if (activeObject) {
       let clone;
       switch (activeObject.type) {
