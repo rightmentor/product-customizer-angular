@@ -455,12 +455,16 @@
     <button class="btn btn-danger modal-close-btn" (click)="closeModal('upload-image-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
     <div class="card-header">Upload image</div>
     <div class="card-body text-center">
-        <img id="testImage" *ngIf="canvas.url" class="images-item-upload" [src]="canvas.url"
-            (click)="addImageOnCanvas(canvas.url);">
+        <img id="testImage" *ngIf="canvas.url" class="images-item-upload" [src]="canvas.url">
         <input type="file" (change)="readUrl($event);">
         <br />
         <br />
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary btn-sm"
+                    (click)="addImageOnCanvas(canvas.url);">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+            </div>
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-outline-danger btn-sm"
                     (click)="removeWhite(canvas.url);">

@@ -8,6 +8,7 @@ import { ModalService } from './../_modal/modal.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { exit } from 'node:process';
+import { bitmap2vector } from 'bitmap2vector';
 
 declare var window: any;
 
@@ -186,9 +187,12 @@ export class CustomizerComponent implements OnInit {
 
   public addImageOnCanvas(url) {
     this.canvas.addImageOnCanvas(url);
+    this.closeModal('upload-image-model');
   }
 
+
   public readUrl(event) {
+    const file = event.target.files[0];
     this.canvas.readUrl(event);
   }
 
