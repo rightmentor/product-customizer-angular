@@ -266,6 +266,51 @@ export class FabricjsEditorComponent implements AfterViewInit {
     });
   }
 
+  getImageSVGPolaroid(event: string, color: string){
+    var elem = document.getElementById(event),
+    svgStr = elem.innerHTML;
+    console.log('svgStr svgStr', svgStr)
+
+    fabric.loadSVGFromString(svgStr, function(objects, options) {
+      const image = fabric.util.groupSVGElements(objects, options);
+      image.set({
+        left: 10,
+        top: 10,
+        angle: 0,
+        padding: 10,
+        cornerSize: 10,
+        hasRotatingPoint: true
+      });
+      image.scaleToWidth(100);
+      // image.scaleToHeight(100);
+      // image.fill=color;
+      console.log('on image load: ', objects);
+      var objs = objects.map(function(o:any) {
+        
+        if(o.group){
+
+          o.group._objects.map(function(o1:any) {
+
+            if(o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff'){
+              o1.set('stroke', '#FFFFFF');
+              return o1.set('fill', '#FFFFFF');
+            }else{
+              return o1.set('fill', color);
+            }
+          });
+        }else{
+
+          return o.set('fill', color);
+        }
+      });
+
+      this.extend(image, this.randomId());
+      this.canvas.add(image);
+      this.selectItemAfterAdded(image);
+   })
+
+  }
+
   // Block "Upload Image"
 
   addImageOnCanvas(url) {

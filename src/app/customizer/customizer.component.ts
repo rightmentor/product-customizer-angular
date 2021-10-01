@@ -10,6 +10,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { exit } from 'node:process';
 import { bitmap2vector } from 'bitmap2vector';
 
+var imagetracerjs = require("imagetracerjs")
 declare var window: any;
 
 @Component({
@@ -57,6 +58,7 @@ export class CustomizerComponent implements OnInit {
 
   @ViewChildren('myCanvas') myCanvas: FabricjsEditorComponent;
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
+  @ViewChild('svgEl') svgEl;
 
   constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService, private formBuilder: FormBuilder, private activateRoute: ActivatedRoute)  {
     //set product id into the cutomizer
@@ -185,9 +187,31 @@ export class CustomizerComponent implements OnInit {
     this.canvas.getImgPolaroid(event, this.selectedColor);
   }
 
+  public getImageSVGPolaroid(event) {
+    this.canvas.getImageSVGPolaroid(event, this.selectedColor);
+  }
+
   public addImageOnCanvas(url) {
-    this.canvas.addImageOnCanvas(url);
-    this.closeModal('upload-image-model');
+    let ref = this;
+    imagetracerjs.imageToSVG(url, function (svgstr) { 
+      console.log('called'); 
+      // svgData = svgstr;
+      imagetracerjs.appendSVGString(svgstr,'svg-file-loac'); 
+      ref.canvas.getImageSVGPolaroid('svg-file-loac', ref.selectedColor);
+    }, "detailed" );
+    // console.log('urldata', imagetracerjs.imageToSVG(url, function (svgstr) { imagetracerjs.appendSVGString(svgstr,'svg-file-loac'); }, "detailed" ));
+
+    // var svgReturn = imagetracerjs.imageToSVG(url, function (svgstr) { return svgstr; }, "detailed" );
+    // console.log('svgReturn ', svgReturn);
+
+    var svgDiv = document.getElementById("svg-file-loac").innerHTML;
+    console.log('urldatas', svgDiv);
+
+    // this.canvas.getImageSVGPolaroid("svg-file-loac", this.selectedColor);
+    // console.log('urldata', imagetracerjs.imagedataToSVG(url, "detailed" ));`
+    
+    // this.canvas.addImageOnCanvas(url);
+    // this.closeModal('upload-image-model');
   }
 
 
