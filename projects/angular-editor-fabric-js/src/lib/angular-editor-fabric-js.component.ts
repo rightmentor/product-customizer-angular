@@ -266,11 +266,8 @@ export class FabricjsEditorComponent implements AfterViewInit {
     });
   }
 
-  getImageSVGPolaroid(event: string, color: string){
-    var elem = document.getElementById(event),
-    svgStr = elem.innerHTML;
-    console.log('svgStr svgStr', svgStr)
-
+  getImageSVGPolaroid(svgStr: string, color: string){
+    let ref = this;
     fabric.loadSVGFromString(svgStr, function(objects, options) {
       const image = fabric.util.groupSVGElements(objects, options);
       image.set({
@@ -304,9 +301,9 @@ export class FabricjsEditorComponent implements AfterViewInit {
         }
       });
 
-      this.extend(image, this.randomId());
-      this.canvas.add(image);
-      this.selectItemAfterAdded(image);
+      ref.extend(image, ref.randomId());
+      ref.canvas.add(image);
+      ref.selectItemAfterAdded(image);
    })
 
   }

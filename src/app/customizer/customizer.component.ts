@@ -194,24 +194,11 @@ export class CustomizerComponent implements OnInit {
   public addImageOnCanvas(url) {
     let ref = this;
     imagetracerjs.imageToSVG(url, function (svgstr) { 
-      console.log('called'); 
-      // svgData = svgstr;
-      imagetracerjs.appendSVGString(svgstr,'svg-file-loac'); 
-      ref.canvas.getImageSVGPolaroid('svg-file-loac', ref.selectedColor);
-    }, "detailed" );
-    // console.log('urldata', imagetracerjs.imageToSVG(url, function (svgstr) { imagetracerjs.appendSVGString(svgstr,'svg-file-loac'); }, "detailed" ));
+      ref.canvas.getImageSVGPolaroid(svgstr, ref.selectedColor);
+    }, "default" );
 
-    // var svgReturn = imagetracerjs.imageToSVG(url, function (svgstr) { return svgstr; }, "detailed" );
-    // console.log('svgReturn ', svgReturn);
-
-    var svgDiv = document.getElementById("svg-file-loac").innerHTML;
-    console.log('urldatas', svgDiv);
-
-    // this.canvas.getImageSVGPolaroid("svg-file-loac", this.selectedColor);
-    // console.log('urldata', imagetracerjs.imagedataToSVG(url, "detailed" ));`
-    
     // this.canvas.addImageOnCanvas(url);
-    // this.closeModal('upload-image-model');
+    this.closeModal('upload-image-model');
   }
 
 
