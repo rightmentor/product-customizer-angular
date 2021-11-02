@@ -5,10 +5,11 @@
       <div class="list-group list-group-flush">
         <a class="list-group-item list-group-item-action bg-light" *ngIf="loginbtn" routerLink="login" routerLinkActive="active" (click)="openModal('login-local')"><i class="fa fa-sign-in"></i> Login</a>
         <a class="list-group-item list-group-item-action bg-light" *ngIf="logoutbtn" class="btn btn-danger  btn-canvas-action" (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a>
-        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('size-model')"><i class="fa fa-window-maximize"></i> Change Properties</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('size-color-model')"><i class="fa fa-window-maximize"></i> Size & Color</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('properties-model')"><i class="fa fa-window-maximize"></i> Change Properties</a>
         <a class="list-group-item list-group-item-action bg-light" (click)="openModal('text-modal')"><i class="fa fa-text-width"></i> Add Text</a>
         <a class="list-group-item list-group-item-action bg-light" (click)="openModal('add-figure-model')"><i class="fa fa-square"></i> Add Shape</a>
-        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('add-image-model')"><i class="fa fa-image"></i> Add Image</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('add-image-model')"><i class="fa fa-image"></i> Add Clipart</a>
         <a class="list-group-item list-group-item-action bg-light" (click)="openModal('upload-image-model')"><i class="fa fa-image"></i> Upload Image</a>
         <a class="list-group-item list-group-item-action bg-light" (click)="confirmClear();"><i class="fa fa-ban" aria-hidden="true"></i> Clear All</a>
         <a class="list-group-item list-group-item-action bg-light"></a>
@@ -321,23 +322,13 @@
 
 <div id="test_show_0" style="display: none;"></div>
 
-<jw-modal id="size-model">
-    <button class="btn btn-danger modal-close-btn" (click)="closeModal('size-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
-    <div class="card-header">Add Properties</div>
+<jw-modal id="size-color-model">
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('size-color-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="card-header">Size & Color</div>
     <div class="card-body">
         <select [(ngModel)]="selectedOptionId" class="size-select" (change)="sizeChangeHandler()">
             <option *ngFor="let option of productOptions" [value]="option.id">{{option.label}}</option>
         </select>
-    </div>
-    
-    <div class="card-body ">
-        <input class="form-control" [(ngModel)]="saveLocalData.name" placeholder="Name" />
-    </div>
-    <div class="card-body ">
-        <textarea class="form-control" [(ngModel)]="saveLocalData.description" placeholder="Description"></textarea>
-    </div>
-    <div class="card-body ">
-        <input class="form-control" [(ngModel)]="saveLocalData.keyword" placeholder="Keyword" />
     </div>
 
     <div class="card-body">
@@ -350,6 +341,36 @@
             </div>
         </div>
     </div>
+</jw-modal>
+<jw-modal id="properties-model">
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('properties-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="card-header">Add Properties</div>
+    <!-- <div class="card-body">
+        <select [(ngModel)]="selectedOptionId" class="size-select" (change)="sizeChangeHandler()">
+            <option *ngFor="let option of productOptions" [value]="option.id">{{option.label}}</option>
+        </select>
+    </div> -->
+    
+    <div class="card-body ">
+        <input class="form-control" [(ngModel)]="saveLocalData.name" placeholder="Name" />
+    </div>
+    <div class="card-body ">
+        <textarea class="form-control" [(ngModel)]="saveLocalData.description" placeholder="Description"></textarea>
+    </div>
+    <div class="card-body ">
+        <input class="form-control" [(ngModel)]="saveLocalData.keyword" placeholder="Keyword" />
+    </div>
+
+    <!-- <div class="card-body">
+        <div class="custom-item" *ngIf="colors?.length > 0">
+            <div class="custom-item-title">Ink Color</div>
+            <div class="custom-item-body">
+                    <div *ngFor="let color of colors" class="colorPicker" [class.selected-color]="selectedColor===color">
+                            <div [style.background-color]="color"  (click)="setAllElementColor(color)" ></div>
+                    </div>
+            </div>
+        </div>
+    </div> -->
 </jw-modal>
 
 <jw-modal id="text-modal">
@@ -443,8 +464,8 @@
                     <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/storncloud.svg">
                     <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/sun-outline.svg">
                     <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/teeth.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/tree.svg">
-                    <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/tree2.svg">
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/tree.svg"> -->
+                    <!-- <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/tree2.svg"> -->
                     <img class="images-item" (click)="getImgPolaroid($event)" src="assets/img/ying-Yang.svg">
     </div>
 </jw-modal>
@@ -454,6 +475,8 @@
     <div class="card-header">Upload image</div>
     <div class="card-body text-center">
         <img id="testImage" *ngIf="canvas.url" class="images-item-upload" [src]="canvas.url">
+        <!-- <div [innerHTML]="uploadedImgSVG | safe"></div> -->
+        <!-- {{uploadedImgSVG}} -->
         <input type="file" (change)="readUrl($event);">
         <br />
         <br />
@@ -461,6 +484,7 @@
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-outline-primary btn-sm"
                     (click)="addImageOnCanvas(canvas.url);">
+                    <!-- (click)="addImageOnCanvas(canvas.url);"> -->
                     <i class="fa fa-plus" aria-hidden="true"></i> Add</button>
             </div>
             <div class="btn-group" role="group">

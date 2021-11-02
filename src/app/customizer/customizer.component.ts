@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, Pipe } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
@@ -7,8 +7,11 @@ import { ApiService } from './../services/api.service';
 import { ModalService } from './../_modal/modal.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { exit } from 'node:process';
+// import { exit } from 'node:process';
 import { bitmap2vector } from 'bitmap2vector';
+import { DomSanitizer } from '@angular/platform-browser';
+var potrace = require('potrace');
+// fs = require('fs');
 
 var imagetracerjs = require("imagetracerjs")
 declare var window: any;
@@ -16,18 +19,18 @@ declare var window: any;
 @Component({
   selector: 'app-root',
   templateUrl: './customizer.component.html',
-  styleUrls: ['./customizer.component.scss']
+  styleUrls: ['./customizer.component.scss'],
 })
 
 export class CustomizerComponent implements OnInit {
-  
-  loginbtn:boolean;
-  logoutbtn:boolean;
+
+  loginbtn: boolean;
+  logoutbtn: boolean;
 
   title = 'angular-editor-fabric-js';
   showFiller: boolean = true;
   productOptions = [];
-  colors = ["#0A0A0A", "#0000FF", "#009A85",  "#FF0000", "#CC66CC" ];
+  colors = ["#0A0A0A", "#0000FF", "#009A85", "#FF0000", "#CC66CC"];
   selectedColor = "#000000";
   selectedOptionId;
   currentProductID: any = 0;
@@ -52,41 +55,41 @@ export class CustomizerComponent implements OnInit {
   guestUserID = '';
   dbUserID = '1';
   colorID; colorOptionsLabel; colorOptionsID;
-  customizedProduct;customizedProductValue;customizedImageId;
+  customizedProduct; customizedProductValue; customizedImageId;
   registerForm: FormGroup;
   submitted = false;
+  uploadedImgSVG;
 
   @ViewChildren('myCanvas') myCanvas: FabricjsEditorComponent;
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
   @ViewChild('svgEl') svgEl;
 
-  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService, private formBuilder: FormBuilder, private activateRoute: ActivatedRoute)  {
+  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService, private formBuilder: FormBuilder, private activateRoute: ActivatedRoute) {
     //set product id into the cutomizer
     activateRoute.params.subscribe(params => {
       this.setupComponent(params['id']);
       this.selectedKey = params['id2'];
     })
 
-  
+
     //Admin Login case
     //this.apiService.getLoggedInName.subscribe(name => this.changeName(name));
-    if(this.apiService.isLoggedIn())
-    {
+    if (this.apiService.isLoggedIn()) {
       console.log("loggedin");
-      this.loginbtn=false;
-      this.logoutbtn=true
-    }else{
-      this.loginbtn=true;
-      this.logoutbtn=false
+      this.loginbtn = false;
+      this.logoutbtn = true
+    } else {
+      this.loginbtn = true;
+      this.logoutbtn = false
     }
-    
+
     this.checkJavascript();
 
     //set cookie for new user guid
-    if(!this.cookieService.get('SIMON_GUID')){
-      this.cookieService.set( 'SIMON_GUID', this.getUniqueId(5) ); // To Set Cookie
-      this.addCurrentUserCookie(this.currentProductID,this.cookieService.get('SIMON_GUID'))
-    }else{
+    if (!this.cookieService.get('SIMON_GUID')) {
+      this.cookieService.set('SIMON_GUID', this.getUniqueId(5)); // To Set Cookie
+      this.addCurrentUserCookie(this.currentProductID, this.cookieService.get('SIMON_GUID'))
+    } else {
       this.guestUserID = this.cookieService.get('SIMON_GUID');
       this.dbUserID = localStorage.getItem('DBUSERID');
     }
@@ -96,15 +99,15 @@ export class CustomizerComponent implements OnInit {
   ngOnInit() {
     this.checkJavascript();
     this.registerForm = this.formBuilder.group({
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(6) ]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
     this.getProductModifiersOptions(this.currentProductID);
     this.getProductOptionsColor(this.currentProductID);
   }
 
-  showFillerEvent(){
-    this.showFiller = !this.showFiller;       
+  showFillerEvent() {
+    this.showFiller = !this.showFiller;
   }
 
   setupComponent(someParam) {
@@ -116,37 +119,36 @@ export class CustomizerComponent implements OnInit {
     this.logoutbtn = name;
     this.loginbtn = !name;
   }
-  
-  logout()
-  {
+
+  logout() {
     this.apiService.deleteToken();
     window.location.href = window.location.href;
   }
 
   get f() { return this.registerForm.controls; }
-  
+
   onSubmit() {
-      this.submitted = true;
-      // stop here if form is invalid
-      if (this.registerForm.invalid) {
-          return;
-      }
-      this.apiService.userlogin(this.registerForm.value.email,this.registerForm.value.password).pipe(first()).subscribe( data => {
-        console.log('you are login to my site');
-        this.closeModal("login-local");
-      },
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.registerForm.invalid) {
+      return;
+    }
+    this.apiService.userlogin(this.registerForm.value.email, this.registerForm.value.password).pipe(first()).subscribe(data => {
+      console.log('you are login to my site');
+      this.closeModal("login-local");
+    },
       error => {
-          alert("User name or password is incorrect")
+        alert("User name or password is incorrect")
       });
   }
-  
+
   get email() { return this.registerForm.get('email'); }
   get password() { return this.registerForm.get('password'); }
-      
+
 
   public getUniqueId(parts: number): string {
     const stringArr = [];
-    for(let i = 0; i< parts; i++){
+    for (let i = 0; i < parts; i++) {
       // tslint:disable-next-line:no-bitwise
       const S4 = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
       stringArr.push(S4);
@@ -180,7 +182,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   public addText() {
-    this.canvas.addText({fill: this.selectedColor});
+    this.canvas.addText({ fill: this.selectedColor });
   }
 
   public getImgPolaroid(event) {
@@ -193,11 +195,16 @@ export class CustomizerComponent implements OnInit {
 
   public addImageOnCanvas(url) {
     let ref = this;
-    imagetracerjs.imageToSVG(url, function (svgstr) { 
-      ref.canvas.getImageSVGPolaroid(svgstr, ref.selectedColor);
-    }, "default" );
+    // imagetracerjs.imageToSVG(url, function (svgstr) {
+    //   ref.canvas.getImageSVGPolaroid(svgstr, ref.selectedColor);
+    // }, "default");
+    potrace.trace(url, function (err, svg) {
+      if (err) throw err;
+      ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
+    });
 
     // this.canvas.addImageOnCanvas(url);
+    // this.canvas.getImageSVGPolaroid(this.uploadedImgSVG, ref.selectedColor);
     this.closeModal('upload-image-model');
   }
 
@@ -205,6 +212,17 @@ export class CustomizerComponent implements OnInit {
   public readUrl(event) {
     const file = event.target.files[0];
     this.canvas.readUrl(event);
+    // const reader = new FileReader();
+    // let ref = this;
+    // reader.onload = (readerEvent) => {
+    //   potrace.trace(readerEvent.target.result, function (err, svg) {
+    //     if (err) throw err;
+    //     ref.uploadedImgSVG = svg;
+    //     // ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
+    //     console.log('svg ===', svg);
+    //   });
+    // };
+    // reader.readAsDataURL(event.target.files[0]);
   }
 
   public removeWhite(url) {
@@ -308,32 +326,32 @@ export class CustomizerComponent implements OnInit {
     this.canvas.undoCanvas();
   }
 
-  checkJavascript() {   
+  checkJavascript() {
     let parent = null;
     const currentObject = this;
     // var QueryString = currentObject.getRequestsParam();
     var product_id = this.currentProductID;
     // var customer_id = QueryString['customer_id'];
-    if (product_id){
+    if (product_id) {
       this.currentProductID = product_id;
       currentObject.getProductOptions(product_id);
-    }else{
+    } else {
       window.history.back();
     }
 
   }
 
-  getParma(name){
-    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-       return decodeURIComponent(name[1]);
+  getParma(name) {
+    if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
   }
 
   getRequestsParam() {
     var s1 = location.search.substring(1, location.search.length).split('&'),
-        r = {}, s2, i;
+      r = {}, s2, i;
     for (i = 0; i < s1.length; i += 1) {
-        s2 = s1[i].split('=');
-        r[decodeURIComponent(s2[0]).toLowerCase()] = decodeURIComponent(s2[1]);
+      s2 = s1[i].split('=');
+      r[decodeURIComponent(s2[0]).toLowerCase()] = decodeURIComponent(s2[1]);
     }
     return r;
   };
@@ -349,15 +367,15 @@ export class CustomizerComponent implements OnInit {
       var newcontent = document.createElement('div');
       newcontent.innerHTML = JSON.stringify(res);
       //set selected lib data in the canvas
-      var keyData =  JSON.parse( localStorage.getItem(this.selectedKey) );
-      console.log('keyData',keyData.cansize);
+      var keyData = JSON.parse(localStorage.getItem(this.selectedKey));
+      console.log('keyData', keyData.cansize);
       // this.loadCanvas(keyData.json,keyData.cansize);
-      if(keyData.cansize == '108'){
-        this.loadCanvas(keyData.json,this.selectedOptionId);
-      }else{
-        this.loadCanvas(keyData.json,keyData.cansize);
+      if (keyData.cansize == '108') {
+        this.loadCanvas(keyData.json, this.selectedOptionId);
+      } else {
+        this.loadCanvas(keyData.json, keyData.cansize);
       }
-      
+
     }, error => {
       console.error('error', error);
     });
@@ -383,11 +401,11 @@ export class CustomizerComponent implements OnInit {
     }
 
     this.changeSize();
-    
+
   }
 
-  getProductModifiersSwatch(productID,colorCode: string) {
-    this.apiService.getProductModifiersSwatch(productID,colorCode).subscribe((res) => {
+  getProductModifiersSwatch(productID, colorCode: string) {
+    this.apiService.getProductModifiersSwatch(productID, colorCode).subscribe((res) => {
       this.colorID = res[0].id;
       this.colorOptionsLabel = res[0].label;
       this.colorOptionsID = res[0].option_id;
@@ -397,8 +415,8 @@ export class CustomizerComponent implements OnInit {
   }
 
   getProductModifiersOptions(productID) {
-    this.apiService.getProductModifiersSwatch(productID,'NULL').subscribe((res) => {
-      console.log('customizeProducrt: ',res);
+    this.apiService.getProductModifiersSwatch(productID, 'NULL').subscribe((res) => {
+      console.log('customizeProducrt: ', res);
       this.customizedProduct = res[0].customized_product;
       this.customizedProductValue = res[0].customized_product_value;
       this.customizedImageId = res[0].customized_image_id;
@@ -409,18 +427,18 @@ export class CustomizerComponent implements OnInit {
 
   getProductOptionsColor(productID) {
     this.apiService.getProductOptionsColor(productID).subscribe((res) => {
-      console.log('customizeProductColor: ',res);
+      console.log('customizeProductColor: ', res);
       this.colors = res;
     }, error => {
       console.error('error', error);
     });
   }
 
-  addCurrentUserCookie(productID,guestId: string) {
-    this.apiService.addCurrentUserCookie(productID,guestId).subscribe((res) => {
+  addCurrentUserCookie(productID, guestId: string) {
+    this.apiService.addCurrentUserCookie(productID, guestId).subscribe((res) => {
       console.log(res);
       localStorage.setItem('DBUSERID', res.id);
-        this.dbUserID = res.id;
+      this.dbUserID = res.id;
     }, error => {
       console.error('error', error);
     });
@@ -447,7 +465,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   closeModal(id: string) {
-      this.modalService.close(id);
+    this.modalService.close(id);
   }
 
   save() {
@@ -455,23 +473,23 @@ export class CustomizerComponent implements OnInit {
       alert('Canvas is empty');
       return false;
     }
-    
-    if(this.colors.length > 0){
+
+    if (this.colors.length > 0) {
       if (this.colorID === undefined || this.colorOptionsID === undefined) {
         alert('Please select Ink Color');
         return false;
       }
-    }else{
+    } else {
       this.colorID = '0';
       this.colorOptionsID = '0';
     }
 
-    console.log(' Save func called ', this.canvas); 
+    console.log(' Save func called ', this.canvas);
     this.saveLocalData.productid = this.currentProductID;
     this.saveLocalData.cansize = this.selectedOptionId;
-    this.saveLocalData.name = "added-to-cart-"+localStorage.getItem('lastsave');
-    this.saveLocalData.description = "added-to-cart-"+localStorage.getItem('lastsave');
-    this.saveLocalData.keyword = "added-to-cart-"+localStorage.getItem('lastsave');
+    this.saveLocalData.name = "added-to-cart-" + localStorage.getItem('lastsave');
+    this.saveLocalData.description = "added-to-cart-" + localStorage.getItem('lastsave');
+    this.saveLocalData.keyword = "added-to-cart-" + localStorage.getItem('lastsave');
     this.saveJson();
     this.saveLocalData = JSON.parse(localStorage.getItem(localStorage.getItem('lastsave')));
 
@@ -493,12 +511,12 @@ export class CustomizerComponent implements OnInit {
       ]
     }
 
-    console.log('attributeas: ',attributes);
-    
+    console.log('attributeas: ', attributes);
+
     this.apiService.addToCartData(attributes).subscribe((res: any) => {
       console.log('res', res);
       window.location = res.cart_url;
-         }, error => {
+    }, error => {
       console.error('error', error);
     });
   }
@@ -513,17 +531,17 @@ export class CustomizerComponent implements OnInit {
     this.selectedColor = color;
     var split_hash = color.replace('#', '');
     this.canvas.setAllElementColor(color);
-    this.getProductModifiersSwatch(this.currentProductID,split_hash);
+    this.getProductModifiersSwatch(this.currentProductID, split_hash);
   }
 
-  getSavedLibraies (guid) {
-    this.apiService.getSavedLibraries( guid, this.currentProductID ).subscribe((res:any) => {
-      var values = [];  
+  getSavedLibraies(guid) {
+    this.apiService.getSavedLibraries(guid, this.currentProductID).subscribe((res: any) => {
+      var values = [];
       if (res.data.length > 0) {
-        res.data.map(function(o1:any) {
+        res.data.map(function (o1: any) {
           console.log('res-get-libraies', o1);
-          localStorage.setItem( o1.meta_key, o1.meta_value );
-          values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
+          localStorage.setItem(o1.meta_key, o1.meta_value);
+          values.push(JSON.parse(localStorage.getItem(o1.meta_key)));
         });
         this.savedLibraries = values;
         console.log(this.savedLibraries)
@@ -535,7 +553,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   loadLibrary() {
-    this.getSavedLibraies(this.dbUserID); 
+    this.getSavedLibraies(this.dbUserID);
   }
 
   saveJson() {
@@ -543,9 +561,9 @@ export class CustomizerComponent implements OnInit {
     this.saveLocalData.cansize = this.selectedOptionId;
     this.saveLocalData.image = this.canvas.getCanvasSvg();
     this.canvas.saveCanvasToJSON(this.saveLocalData);
-    this.addUserLibraryData(this.saveLocalData,this.selectedOptionId);
+    this.addUserLibraryData(this.saveLocalData, this.selectedOptionId);
     this.closeModal("save-local");
-    this.saveLocalData =  {
+    this.saveLocalData = {
       productid: '',
       cansize: '',
       name: '',
@@ -561,7 +579,7 @@ export class CustomizerComponent implements OnInit {
     this.saveLocalData.cansize = this.selectedOptionId;
     this.saveLocalData.image = this.canvas.getCanvasSvg();
     this.canvas.saveCanvasToJSON(this.saveLocalData);
-    this.addUserLibraryData(this.saveLocalData,this.selectedOptionId);
+    this.addUserLibraryData(this.saveLocalData, this.selectedOptionId);
 
     var attributes = [
       {
@@ -582,7 +600,7 @@ export class CustomizerComponent implements OnInit {
       }
     ];
 
-    this.saveLocalData =  {
+    this.saveLocalData = {
       productid: '',
       cansize: '',
       name: '',
@@ -593,12 +611,12 @@ export class CustomizerComponent implements OnInit {
     };
   }
 
-  loadCanvas(json,size) {
-    console.log("size is define as:",size);
+  loadCanvas(json, size) {
+    console.log("size is define as:", size);
     this.selectedOptionId = size;
     this.sizeChangeHandler();
     this.canvas.loadCanvas(json);
   }
 
-  
+
 }

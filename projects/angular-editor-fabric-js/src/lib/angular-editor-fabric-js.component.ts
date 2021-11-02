@@ -56,13 +56,13 @@ export class FabricjsEditorComponent implements AfterViewInit {
   public selected: any;
   private guid: any;
 
-  constructor(private cookieService: CookieService) { 
+  constructor(private cookieService: CookieService) {
     this.guid = this.cookieService.get('SIMON_GUID')
-    console.log('[this.guid] ',this.guid );
+    console.log('[this.guid] ', this.guid);
   }
 
   ngAfterViewInit(): void {
-    
+
     // setup front side canvas
     this.canvas = new fabric.Canvas(this.htmlCanvas.nativeElement, {
       hoverCursor: 'pointer',
@@ -70,7 +70,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
       selectionBorderColor: 'blue',
       preserveObjectStacking: true
     });
-    
+
     this.canvas.on({
       'object:moving': (e) => {
       },
@@ -87,7 +87,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
         this.modifyCanvas(e);
       },
       'selection:created': (e) => {
-        console.log('show canvas selected:',e);
+        console.log('show canvas selected:', e);
         const selectedObject = e.target;
         this.selected = selectedObject;
         selectedObject.hasRotatingPoint = true;
@@ -146,14 +146,14 @@ export class FabricjsEditorComponent implements AfterViewInit {
   // Change all canvas elements color 
 
   setAllElementColor(color) {
-    var objs = this.canvas.getObjects().map(function(o:any) {
+    var objs = this.canvas.getObjects().map(function (o: any) {
       // console.log('canvas object: ', o);
-      if(o._objects){
-        o._objects.map(function(o1:any) {
-          if(o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff'){
+      if (o._objects) {
+        o._objects.map(function (o1: any) {
+          if (o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff') {
             o1.set('stroke', '#FFFFFF');
             return o1.set('fill', '#FFFFFF');
-          }else{
+          } else {
             return o1.set('fill', color);
           }
         });
@@ -241,34 +241,34 @@ export class FabricjsEditorComponent implements AfterViewInit {
       // image.scaleToHeight(100);
       // image.fill=color;
       console.log('on image load: ', objects);
-      var objs = objects.map(function(o:any) {
-        
-        if(o.group){
+      var objs = objects.map(function (o: any) {
 
-          o.group._objects.map(function(o1:any) {
+        if (o.group) {
 
-            if(o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff'){
+          o.group._objects.map(function (o1: any) {
+
+            if (o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff') {
               o1.set('stroke', '#FFFFFF');
               return o1.set('fill', '#FFFFFF');
-            }else{
+            } else {
               return o1.set('fill', color);
             }
           });
-        }else{
+        } else {
 
           return o.set('fill', color);
         }
       });
 
-      this.extend(image, this.randomId());
+      // this.extend(image, this.randomId());
       this.canvas.add(image);
       this.selectItemAfterAdded(image);
     });
   }
 
-  getImageSVGPolaroid(svgStr: string, color: string){
+  getImageSVGPolaroid(svgStr: string, color: string) {
     let ref = this;
-    fabric.loadSVGFromString(svgStr, function(objects, options) {
+    fabric.loadSVGFromString(svgStr, function (objects, options) {
       const image = fabric.util.groupSVGElements(objects, options);
       image.set({
         left: 10,
@@ -282,20 +282,20 @@ export class FabricjsEditorComponent implements AfterViewInit {
       // image.scaleToHeight(100);
       // image.fill=color;
       console.log('on image load: ', objects);
-      var objs = objects.map(function(o:any) {
-        
-        if(o.group){
+      var objs = objects.map(function (o: any) {
 
-          o.group._objects.map(function(o1:any) {
+        if (o.group) {
 
-            if(o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff'){
+          o.group._objects.map(function (o1: any) {
+            // console.log('objects', o1);
+            if (o1.fill == '#FFFFFF' || o1.fill == '#ffffff' || o1.stroke == '#ffffff') {
               o1.set('stroke', '#FFFFFF');
               return o1.set('fill', '#FFFFFF');
-            }else{
+            } else {
               return o1.set('fill', color);
             }
           });
-        }else{
+        } else {
 
           return o.set('fill', color);
         }
@@ -304,7 +304,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
       ref.extend(image, ref.randomId());
       ref.canvas.add(image);
       ref.selectItemAfterAdded(image);
-   })
+    })
 
   }
 
@@ -378,7 +378,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
     this.extend(add, this.randomId());
     this.canvas.add(add);
     this.selectItemAfterAdded(add);
-    
+
   }
 
   /*Canvas*/
@@ -546,7 +546,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
     if (!object) { return; }
     object.set(name, value).setCoords();
     console.log('object sdfsdf', object)
-    setTimeout(()=>{
+    setTimeout(() => {
       this.canvas.renderAll();
     }, 1000)
   }
@@ -803,7 +803,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   getUniqueId(parts: number): string {
     const stringArr = [];
-    for(let i = 0; i< parts; i++){
+    for (let i = 0; i < parts; i++) {
       // tslint:disable-next-line:no-bitwise
       const S4 = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
       stringArr.push(S4);
