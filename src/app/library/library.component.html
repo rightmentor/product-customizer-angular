@@ -1,30 +1,41 @@
 <div class="w-100 px-2">
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="row">
-                <div class="card-body body-img-lib">
-                    <img src="assets/img/lib_logo.png">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6">
+                <div class="row">
+                    <div class="card-body body-img-lib">
+                        <img src="assets/img/lib_logo.png">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-12">
-            <div class="row">
-                <div class="card-body body-img-lib">
-                    <input [(ngModel)]="filterText" (input)="filter()" />
+            <div class="col-xl-6 col-lg-6">
+                <div class="row">
+                    <div class="card-body body-img-lib search-bar">
+                        <input [(ngModel)]="filterText" placeholder="Search" (input)="filter()" />
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="card-body body-img-lib">
-                    <div class="canvas-list canvas-img-lib" *ngFor="let item of filteredLibraried">
-                        <img [src]="item[0].image" (click)="loadCanvas(item[2],item[1])" width="" />
-                        <div>
-                            <h4>{{item[0].name}}</h4>
-                            <p>{{item[0].description}}</p>
-                            <button type="button" (click)="deleteCanvasFn(item[3])">Delete</button>
+            <div class="col-xl-12">
+                <div class="row">
+                    <div class="card-body body-img-lib product-grid">
+                        <div class="canvas-list canvas-img-lib product-grid-box" *ngFor="let item of filteredLibraried">
+                            <div class="grid-box-img">
+                                <img [src]="item[0].image" (click)="loadCanvas(item[2],item[1])" width="" />
+                            </div>
+                            <div>
+                                <h4>{{item[0].name}}</h4>
+                                <p>{{item[0].description}}</p>
+                                <div class="tags">
+                                    <a href="#">Tag1</a>
+                                    <a href="#">Tag2</a>
+                                    <a href="#">Tag3</a>
+                                </div>
+                                <button class="close-btn" type="button" (click)="deleteCanvasFn(item[3])"><i class="fa fa-times"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 </div>
