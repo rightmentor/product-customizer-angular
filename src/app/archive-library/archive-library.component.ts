@@ -6,8 +6,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './library.component.html',
-  styleUrls: ['./library.component.css']
+  templateUrl: './archive-library.component.html',
+  styleUrls: ['./archive-library.component.css']
 })
 
 
@@ -26,6 +26,7 @@ export class LibraryComponent{
 
   constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router) {
     activateRoute.params.subscribe(params => {
+      console.log(params['id']);
       this.currentProductID = params['id'];
       this.setupComponent(params['id']);
     });
@@ -33,6 +34,7 @@ export class LibraryComponent{
   }
 
   filter() {
+    console.log('filter', this.filteredLibraried);
     if (this.filterText !== '') {
       this.filteredLibraried = this.savedLibraries.filter(lib =>  lib[0].name.toLowerCase().indexOf(this.filterText) > -1 || lib[0].description.toLowerCase().indexOf(this.filterText) > -1 )
     } else {
@@ -46,23 +48,25 @@ export class LibraryComponent{
     this.currentProductID = someParam;
   }
 
-  getSavedLibraies (guid) {
-    this.apiService.getSavedLibraries( guid, this.currentProductID ).subscribe((res:any) => {
+  getAllLibraries (guid) {
+    this.apiService.getAllLibraries( guid).subscribe((res:any) => {
       var values = []; 
       var productID = this.currentProductID; 
       if (res.data.length > 0) {
         res.data.map(function(o1:any) {
+          console.log('res-get-libraies', o1);
           localStorage.setItem( o1.meta_key, o1.meta_value );
           var valueData = [];
           valueData.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
           valueData.push( o1.meta_key );
           valueData.push( productID );
-          valueData.push( o1.id );
           values.push( valueData );
           // values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
         });
+        console.log('valueData: ',values);
         this.savedLibraries = values;
         this.filteredLibraried = values;
+        console.log(this.savedLibraries)
         return res.data;
       }
     }, error => {
@@ -70,24 +74,8 @@ export class LibraryComponent{
     });
   }
 
-  deleteCanvas( id ) {
-    this.apiService.deleteCanvas(id).subscribe((res) => {
-      alert(res);
-    }, error => {
-      console.error('error', error);
-    });
-  }
-
   loadLibrary() {
-    this.getSavedLibraies(this.dbUserID); 
-  }
-
-  deleteCanvasFn(id) {
-    console.log('entryId',id);
-    if(confirm("Are you sure to delete Canvas")) {
-      this.deleteCanvas(id);
-    }
-    this.loadLibrary();
+    this.getAllLibraries(this.dbUserID); 
   }
 
   // loadCanvas(json,size) {

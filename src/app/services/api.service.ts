@@ -8,7 +8,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class ApiService {
     // api_site_url = 'https://webspeedo.com/simonstamp/api/';
-    api_site_url = 'http://simonstamp.webspeedo.com/api/';
+    // api_site_url = 'https://simonstamp.webspeedo.com/api/';
+    api_site_url = 'https://customizer.simonstamp.com/api/';
     @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
     constructor(
         private http: HttpClient
@@ -106,6 +107,35 @@ export class ApiService {
         });
         
         return this.http.get(url, { headers: apiHeaders })
+    }
+
+    getAllLibraries( id ): Observable<any>  {
+        console.log('user ID', id);
+        if(this.isLoggedIn())
+        {
+            id = 1;
+            console.log("loggedin");
+        }
+        const url = this.api_site_url+`get_all_library_data.php?guid=${id}&auid=1`;
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
+    deleteCanvas( id ): Observable<any> {
+        const url = this.api_site_url+`delete_canvas_data.php`;
+        const apiHeaders = new HttpHeaders({
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+        });
+        
+        const body = {
+            'auth' : 'avlabs',
+            'data' : id
+        };
+
+        return this.http.post<any>(url, body, { headers: apiHeaders })
     }
 
     addCurrentUserCookie(productId, guestId:string): Observable<any> {

@@ -3,7 +3,7 @@
         <div class="col-xl-12">
             <div class="row">
                 <div class="card-body body-img-lib">
-                    <img src="assets/img/lib_logo.png">
+                    <h3>Simon stamp Product Library</h3>
                 </div>
             </div>
         </div>
@@ -16,11 +16,10 @@
             <div class="row">
                 <div class="card-body body-img-lib">
                     <div class="canvas-list canvas-img-lib" *ngFor="let item of filteredLibraried">
-                        <img [src]="item[0].image" (click)="loadCanvas(item[2],item[1])" width="" />
+                        <img [src]="item[0].image" (click)="loadCanvas(item[2],item[1])" />
                         <div>
                             <h4>{{item[0].name}}</h4>
                             <p>{{item[0].description}}</p>
-                            <button type="button" (click)="deleteCanvasFn(item[3])">Delete</button>
                         </div>
                     </div>
                 </div>
