@@ -30,7 +30,7 @@
                                     <a href="#">Tag2</a>
                                     <a href="#">Tag3</a>
                                 </div>
-                                <button class="close-btn" type="button" (click)="deleteCanvasFn(item[3])"><i class="fa fa-times"></i></button>
+                                <button *ngIf="dbUserID == item[4] || dbUserID == '1'" class="close-btn" type="button" (click)="deleteCanvasFn(item[3])"><i class="fa fa-times"></i></button>
                             </div>
                         </div>
                     </div>

@@ -290,6 +290,21 @@
                                         (change)="setCharSpacing()" step="10" min="-200" max="800">{{canvas.props.charSpacing}}
                                 </div>
                             </div>
+                            <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                                <div class="custom-item-title">Text Effect</div>
+                                <div class="custom-item-body">
+                                    <select class="form-control" [(ngModel)]="canvas.props.textEffect" class="form-control"
+                                    (change)="setTextEffect()">
+                                        <option value="curved">Curved</option>
+                                        <option value="arc">Arc</option>
+                                        <option value="STRAIGHT">STRAIGHT</option>
+                                        <option value="smallToLarge">smallToLarge</option>
+                                        <option value="largeToSmallTop">largeToSmallToped</option>
+                                        <option value="largeToSmallBottom">largeToSmallBottom</option>
+                                        <option value="bulge">bulge</option>
+                                      </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

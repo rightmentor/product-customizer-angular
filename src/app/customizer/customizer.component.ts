@@ -135,6 +135,8 @@ export class CustomizerComponent implements OnInit {
     }
     this.apiService.userlogin(this.registerForm.value.email, this.registerForm.value.password).pipe(first()).subscribe(data => {
       console.log('you are login to my site');
+      localStorage.setItem('DBUSERID', '1');
+      this.dbUserID = '1';
       this.closeModal("login-local");
     },
       error => {
@@ -292,6 +294,10 @@ export class CustomizerComponent implements OnInit {
 
   public setFontStyle() {
     this.canvas.setFontStyle();
+  }
+
+  public setTextEffect() {
+    this.canvas.setTextEffect();
   }
 
   public hasTextDecoration(value) {

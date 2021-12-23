@@ -24,6 +24,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
     fontStyle: null,
     textAlign: null,
     fontFamily: null,
+    textEffect: null,
     TextDecoration: ''
   };
 
@@ -551,6 +552,17 @@ export class FabricjsEditorComponent implements AfterViewInit {
     }, 1000)
   }
 
+  setCurvedText(name, value) {
+    const object = this.canvas.getActiveObject();
+    console.log('object', object)
+    if (!object) { return; }
+    object.set(name, value).setCoords();
+    console.log('object sdfsdf', object)
+    setTimeout(() => {
+      this.canvas.renderAll();
+    }, 1000)
+  }
+
   clone() {
     const activeObject = this.canvas.getActiveObject();
     const activeGroup = this.canvas.getActiveObjects();
@@ -688,6 +700,16 @@ export class FabricjsEditorComponent implements AfterViewInit {
   setFontFamily() {
     console.log('this.props.fontFamily', this.props.fontFamily);
     this.setActiveProp('fontFamily', this.props.fontFamily);
+  }
+
+  getTextEffect() {
+    this.props.textEffect = this.getActiveProp('textEffect');
+  }
+
+  setTextEffect() {
+    console.log('this.props.textEffect', this.props.textEffect);
+    // this.setActiveProp('effect', this.props.textEffect);
+    this.setActiveProp('radius','50');
   }
 
   /*System*/
