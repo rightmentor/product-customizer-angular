@@ -1,0 +1,25 @@
+.canvas-list.canvas-img-lib.grid-box-inner{
+  margin: 10px;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgb(0 0 0 / 8%);
+  position: relative;
+  padding: 15px;
+  margin: 0;
+}
+.card-body.body-img-lib .popup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  -moz-column-gap: 30px;
+  column-gap: 30px;
+  row-gap: 30px;
+}
+.canvas-list.canvas-img-lib.grid-box-inner img{
+    width: 100% !important;
+}
+.canvas-list.canvas-img-lib.grid-box-inner h4 {
+  font-size: 18px;
+  text-transform: capitalize;
+  padding: 10px 0 0;
+}

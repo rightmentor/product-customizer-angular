@@ -527,11 +527,11 @@
 <jw-modal id="load-library">  
     <button class="btn btn-danger modal-close-btn" (click)="closeModal('load-library');"><i class="fa fa-times" aria-hidden="true"></i></button>
     <div class="card-header">Library</div>
-    <div class="card-body body-img-lib">
+    <div class="card-body body-img-lib popup-grid">
         <!-- <select [(ngModel)]="selectedKey" class="size-select" (change)="loadCanvasFromJSON()">
             <option *ngFor="let key of localStorageKeys" [value]="key">{{key}}</option>
         </select> -->
-        <div class="canvas-list canvas-img-lib" *ngFor="let item of savedLibraries">
+        <div class="canvas-list canvas-img-lib grid-box-inner" *ngFor="let item of savedLibraries">
             <img [src]="item.image" (click)="loadCanvas(item.json, item.cansize)" />
             <div>
                 <h4>{{item.name}}</h4>
