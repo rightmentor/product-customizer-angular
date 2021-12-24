@@ -24,12 +24,17 @@ export class LibraryComponent{
   setupMessage = 'not set up yet';
   someParameterValue = null;
   filterText = '';
+  searchString = '';
 
   constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router, private cookieService: CookieService) {
     activateRoute.params.subscribe(params => {
       this.currentProductID = params['id'];
       this.setupComponent(params['id']);
     });
+
+    if (activateRoute.queryParams['_value'].search !== undefined) {
+      this.searchString = activateRoute.queryParams['_value'].search;
+    }
 
     //set cookie for new user guid
     if (!this.cookieService.get('SIMON_GUID')) {

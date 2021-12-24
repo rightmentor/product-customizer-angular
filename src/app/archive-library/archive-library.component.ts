@@ -11,7 +11,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 })
 
 
-export class LibraryComponent{
+export class ArchiveLibraryComponent{
   
   @ViewChildren('myCanvas') myCanvas: FabricjsEditorComponent;
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
@@ -23,12 +23,13 @@ export class LibraryComponent{
   setupMessage = 'not set up yet';
   someParameterValue = null;
   filterText = '';
+  searchText = '';
 
   constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router) {
     activateRoute.params.subscribe(params => {
-      console.log(params['id']);
-      this.currentProductID = params['id'];
-      this.setupComponent(params['id']);
+      console.log(params['search']);
+      this.searchText = params['search'];
+      this.setupComponent(params['search']);
     });
     this.loadLibrary();
   }
@@ -46,6 +47,7 @@ export class LibraryComponent{
     this.setupMessage = 'set up at ' + new Date();
     this.someParameterValue = someParam;
     this.currentProductID = someParam;
+    this.searchText = someParam;
   }
 
   getAllLibraries (guid) {
@@ -59,7 +61,7 @@ export class LibraryComponent{
           var valueData = [];
           valueData.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
           valueData.push( o1.meta_key );
-          valueData.push( productID );
+          valueData.push( o1.product_id );
           values.push( valueData );
           // values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
         });
@@ -75,12 +77,30 @@ export class LibraryComponent{
   }
 
   loadLibrary() {
-    this.getAllLibraries(this.dbUserID); 
+    this.getAllLibraries(this.searchText); 
+  }
+
+  deleteCanvas( id ) {
+    this.apiService.deleteCanvas(id).subscribe((res) => {
+      alert(res.msg);
+      this.loadLibrary();
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+
+  deleteCanvasFn(id) {
+    console.log('entryId',id);
+    if(confirm("Are you sure to delete Canvas")) {
+      this.deleteCanvas(id);
+    }
   }
 
   // loadCanvas(json,size) {
   //   this.activateRoute.navigateByUrl('/user');
   // }
+  
 
   loadCanvas($myParam: string = '',$myParam2: string = ''): void {
     const navigationDetails: string[] = ['/customizer'];

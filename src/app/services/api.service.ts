@@ -110,13 +110,9 @@ export class ApiService {
     }
 
     getAllLibraries( id ): Observable<any>  {
-        console.log('user ID', id);
-        if(this.isLoggedIn())
-        {
-            id = 1;
-            console.log("loggedin");
-        }
-        const url = this.api_site_url+`get_all_library_data.php?guid=${id}&auid=1`;
+        //console.log('search', id);
+
+        const url = this.api_site_url+`get_all_library_data.php?search=${id}`;
         const apiHeaders = new HttpHeaders({
         });
         
