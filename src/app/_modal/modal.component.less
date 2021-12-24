@@ -26,7 +26,7 @@ jw-modal {
             /* margin exposes part of the modal background */
            // margin: 40px;
 
-            width: 35%;
+            width: 500px;
             margin: 5% auto;
 
             .modal-close-btn {
@@ -69,9 +69,31 @@ body.jw-modal-open {
 }
 
 #load-library .jw-modal-body {
-    width: 50%;
+    width: 800px;
 }
 
 #add-image-model .jw-modal-body {
-    width: 50%;
+    width: 800px;
+}
+
+@media (max-width:991px){
+    #load-library .jw-modal-body {
+      width: 700px;
+    }
+    #add-image-model .jw-modal-body {
+      width: 700px;
+    }
+}
+@media (max-width:767px) {
+  #load-library .jw-modal-body {
+    width: 90%;
+  }
+  #add-image-model .jw-modal-body {
+    width: 90%;
+  }
+  .jw-modal-body {
+    // padding: 20px;
+    width: 90% !important;
+    margin: 5% auto;
+  }
 }
