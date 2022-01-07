@@ -280,9 +280,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
         hasRotatingPoint: true
       });
       image.scaleToWidth(100);
-      // image.scaleToHeight(100);
-      // image.fill=color;
-      console.log('on image load: ', objects);
+
       var objs = objects.map(function (o: any) {
 
         if (o.group) {
@@ -394,9 +392,10 @@ export class FabricjsEditorComponent implements AfterViewInit {
     console.log(obj)
   }
 
-  setCanvasFill() {
+  setCanvasFill(color) {
     if (!this.props.canvasImage) {
-      this.canvas.backgroundColor = this.props.canvasFill;
+      // this.canvas.backgroundColor = this.props.canvasFill;
+      this.canvas.backgroundColor = color;
       this.canvas.renderAll();
     }
   }
@@ -528,6 +527,11 @@ export class FabricjsEditorComponent implements AfterViewInit {
           left: (this.canvas.getWidth() / 2) - ((object.width * object.scaleX) / 2)
         });
         break;
+      case 'hcenter':
+        object.set({
+          top: (this.canvas.getHeight() / 2) - ((object.height * object.scaleY) / 2)
+        });
+        break;
     }
 
     object.setCoords();
@@ -543,21 +547,19 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   setActiveProp(name, value) {
     const object = this.canvas.getActiveObject();
-    console.log('object', object)
     if (!object) { return; }
     object.set(name, value).setCoords();
-    console.log('object sdfsdf', object)
+    fabric.util.clearFabricFontCache();
     setTimeout(() => {
+      console.log('renderAll');
       this.canvas.renderAll();
     }, 1000)
   }
 
   setCurvedText(name, value) {
     const object = this.canvas.getActiveObject();
-    console.log('object', object)
     if (!object) { return; }
     object.set(name, value).setCoords();
-    console.log('object sdfsdf', object)
     setTimeout(() => {
       this.canvas.renderAll();
     }, 1000)
@@ -698,7 +700,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
   }
 
   setFontFamily() {
-    console.log('this.props.fontFamily', this.props.fontFamily);
+    console.log('this.props.fontFamily: ', this.props.fontFamily);
     this.setActiveProp('fontFamily', this.props.fontFamily);
   }
 

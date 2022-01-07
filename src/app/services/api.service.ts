@@ -109,6 +109,20 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
+    getSavedLibrariesTab( id, productid, auid ): Observable<any>  {
+        console.log('user ID', id);
+        if(this.isLoggedIn())
+        {
+            id = 1;
+            console.log("loggedin");
+        }
+        const url = this.api_site_url+`get_library_data_tab.php?guid=${id}&product_id=${productid}&auid=${auid}`;
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
     getAllLibraries( id ): Observable<any>  {
         //console.log('search', id);
 
@@ -171,6 +185,41 @@ export class ApiService {
             'description' : lastdesc,
             'keywords' : lastkeyw,
             'meta_key' : lastsave,
+            'meta_value' : meta_value
+        };
+
+        console.log(body);
+
+        return this.http.post<any>(url, body, { headers: apiHeaders })
+    }
+
+    addUserImageLibraryData(data: any, option_id): Observable<any> {
+        const url = this.api_site_url+`add_image_library_data.php.php`;
+        const lastname = data.name;
+        const lastdesc = data.description;
+        const lastkeyw = data.keyword;
+        const lastsave = localStorage.getItem('lastsave');
+        const meta_value = data.image;
+        //console.log(meta_value);
+        var canvasId = localStorage.getItem('DBUSERID');
+        if(this.isLoggedIn())
+        {
+            canvasId = '1';
+        }
+
+        const apiHeaders = new HttpHeaders({
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+        });
+        
+        const body = {
+            'api_token' : 'avlable',
+            'guid' : canvasId,
+            'name' : lastname,
+            'canvas_size' : option_id,
+            'description' : lastdesc,
+            'keywords' : lastkeyw,
+            'meta_key' : 'Image',
             'meta_value' : meta_value
         };
 

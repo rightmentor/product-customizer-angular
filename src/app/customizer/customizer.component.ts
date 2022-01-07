@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewChildren, Pipe } from '@angular/core'
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
+import { fabric } from 'fabric';
 import { $ } from 'protractor';
 import { ApiService } from './../services/api.service';
 import { ModalService } from './../_modal/modal.service';
@@ -47,6 +48,17 @@ export class CustomizerComponent implements OnInit {
     json: '',
     image: ''
   };
+
+  saveImageLocalData: any = {
+    productid: '',
+    cansize: '',
+    name: '',
+    description: '',
+    keyword: '',
+    json: '',
+    image: ''
+  };
+
   savedLibraries: any = [];
 
   paramsName = '';
@@ -59,6 +71,12 @@ export class CustomizerComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
   uploadedImgSVG;
+
+  canvasActiveP = 'active';
+  canvasActiveM = '';
+
+  imageActiveP = 'active';
+  imageActiveM = '';
 
   @ViewChildren('myCanvas') myCanvas: FabricjsEditorComponent;
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
@@ -198,13 +216,15 @@ export class CustomizerComponent implements OnInit {
   public addImageOnCanvas(url) {
     let ref = this;
     // imagetracerjs.imageToSVG(url, function (svgstr) {
-    //   ref.canvas.getImageSVGPolaroid(svgstr, ref.selectedColor);
-    // }, "default");
-    potrace.trace(url, function (err, svg) {
-      if (err) throw err;
-      ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
-    });
-
+      //   ref.canvas.getImageSVGPolaroid(svgstr, ref.selectedColor);
+      // }, "default");
+      potrace.trace(url, function (err, svg) {
+        if (err) throw err;
+        ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
+      });
+      
+      this.saveImageLocalData.image = url;
+      this.saveImage();
     // this.canvas.addImageOnCanvas(url);
     // this.canvas.getImageSVGPolaroid(this.uploadedImgSVG, ref.selectedColor);
     this.closeModal('upload-image-model');
@@ -220,7 +240,7 @@ export class CustomizerComponent implements OnInit {
     //   potrace.trace(readerEvent.target.result, function (err, svg) {
     //     if (err) throw err;
     //     ref.uploadedImgSVG = svg;
-    //     // ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
+    //     ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
     //     console.log('svg ===', svg);
     //   });
     // };
@@ -256,8 +276,8 @@ export class CustomizerComponent implements OnInit {
     this.canvas.cleanSelect();
   }
 
-  public setCanvasFill() {
-    this.canvas.setCanvasFill();
+  public setCanvasFill(color) {
+    this.canvas.setCanvasFill(color);
   }
 
   public setCanvasImage() {
@@ -540,10 +560,11 @@ export class CustomizerComponent implements OnInit {
     this.getProductModifiersSwatch(this.currentProductID, split_hash);
   }
 
-  getSavedLibraies(guid) {
-    this.apiService.getSavedLibraries(guid, this.currentProductID).subscribe((res: any) => {
+  getSavedLibraies(guid,auid) {
+    // this.apiService.getSavedLibraries(guid, this.currentProductID).subscribe((res: any) => {
+    this.apiService.getSavedLibrariesTab(guid, this.currentProductID,auid).subscribe((res: any) => {
       var values = [];
-      if (res.data.length > 0) {
+      if (res.data != null && res.data.length > 0) {
         res.data.map(function (o1: any) {
           console.log('res-get-libraies', o1);
           localStorage.setItem(o1.meta_key, o1.meta_value);
@@ -559,7 +580,17 @@ export class CustomizerComponent implements OnInit {
   }
 
   loadLibrary() {
-    this.getSavedLibraies(this.dbUserID);
+    this.savedLibraries = [];
+    this.canvasActiveP = 'active';
+    this.canvasActiveM = '';
+    this.getSavedLibraies(1,1);
+  }
+
+  loadMyLibrary() {
+    this.savedLibraries = [];
+    this.canvasActiveP = '';
+    this.canvasActiveM = 'active';
+    this.getSavedLibraies(this.dbUserID,2);
   }
 
   saveJson() {
@@ -622,6 +653,28 @@ export class CustomizerComponent implements OnInit {
     this.selectedOptionId = size;
     this.sizeChangeHandler();
     this.canvas.loadCanvas(json);
+  }
+
+  addUserImageLibraryData(data: any, option_id) {
+    this.apiService.addUserImageLibraryData(data, option_id).subscribe((res) => {
+      console.log('res', res);
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+  saveImage() {
+    this.addUserImageLibraryData(this.saveImageLocalData, this.selectedOptionId);
+    this.closeModal("save-local");
+    this.saveImageLocalData = {
+      productid: '',
+      cansize: '',
+      name: '',
+      description: '',
+      keyword: '',
+      json: '',
+      image: ''
+    };
   }
 
 
