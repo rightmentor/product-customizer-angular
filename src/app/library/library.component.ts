@@ -95,10 +95,12 @@ export class LibraryComponent{
           valueData.push( productID );
           valueData.push( o1.id );
           valueData.push( o1.guid );
+          valueData.push( o1.keywords.split(",") );
           values.push( valueData );
+          
           // values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
         });
-
+        console.log(values);
         this.savedLibraries = values;
         this.filteredLibraried = values;
         return res.data;

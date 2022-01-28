@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, Pipe } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, Pipe, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { FabricjsEditorComponent } from 'projects/angular-editor-fabric-js/src/public-api';
@@ -12,7 +12,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { bitmap2vector } from 'bitmap2vector';
 import { DomSanitizer } from '@angular/platform-browser';
 var potrace = require('potrace');
-// fs = require('fs');
+// var fs = require('fs');
 
 var imagetracerjs = require("imagetracerjs")
 declare var window: any;
@@ -32,6 +32,7 @@ export class CustomizerComponent implements OnInit {
   showFiller: boolean = true;
   productOptions = [];
   colors = ["#0A0A0A", "#0000FF", "#009A85", "#FF0000", "#CC66CC"];
+  bgcolors = ["#0A0A0A", "#0000FF", "#009A85", "#FF0000", "#CC66CC"];
   selectedColor = "#000000";
   selectedOptionId;
   currentProductID: any = 0;
@@ -60,6 +61,7 @@ export class CustomizerComponent implements OnInit {
   };
 
   savedLibraries: any = [];
+  savedImageLibraries: any = [];
 
   paramsName = '';
   productOptionID = '';
@@ -82,7 +84,7 @@ export class CustomizerComponent implements OnInit {
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
   @ViewChild('svgEl') svgEl;
 
-  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService, private formBuilder: FormBuilder, private activateRoute: ActivatedRoute) {
+  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService, private formBuilder: FormBuilder, private activateRoute: ActivatedRoute,public sanitizer:DomSanitizer) {
     //set product id into the cutomizer
     activateRoute.params.subscribe(params => {
       this.setupComponent(params['id']);
@@ -122,6 +124,7 @@ export class CustomizerComponent implements OnInit {
     });
     this.getProductModifiersOptions(this.currentProductID);
     this.getProductOptionsColor(this.currentProductID);
+    this.getProductOptionsbgColor(this.currentProductID);
   }
 
   showFillerEvent() {
@@ -221,10 +224,12 @@ export class CustomizerComponent implements OnInit {
       potrace.trace(url, function (err, svg) {
         if (err) throw err;
         ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
+        console.log('SVG DATA:',svg);
+        ref.saveImageLocalData.image = svg;
+        ref.saveImage();
       });
       
-      this.saveImageLocalData.image = url;
-      this.saveImage();
+      
     // this.canvas.addImageOnCanvas(url);
     // this.canvas.getImageSVGPolaroid(this.uploadedImgSVG, ref.selectedColor);
     this.closeModal('upload-image-model');
@@ -460,6 +465,15 @@ export class CustomizerComponent implements OnInit {
     });
   }
 
+  getProductOptionsbgColor(productID) {
+    this.apiService.getProductOptionsbgColor(productID).subscribe((res) => {
+      console.log('customizeProductColor: ', res);
+      this.bgcolors = res;
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
   addCurrentUserCookie(productID, guestId: string) {
     this.apiService.addCurrentUserCookie(productID, guestId).subscribe((res) => {
       console.log(res);
@@ -481,7 +495,11 @@ export class CustomizerComponent implements OnInit {
   openModal(id: string) {
     if (id === 'load-library') {
       this.loadLibrary();
-    } else if (id === 'save-local') {
+    } 
+    else if (id === 'load-image-library') {
+      this.loadImageLibrary();
+    }
+    else if (id === 'save-local') {
       if (this.canvas.canvas._objects.length === 0) {
         alert('Canvas is empty');
         return false;
@@ -560,15 +578,23 @@ export class CustomizerComponent implements OnInit {
     this.getProductModifiersSwatch(this.currentProductID, split_hash);
   }
 
-  getSavedLibraies(guid,auid) {
+  getSavedLibraies(guid, auid) {
     // this.apiService.getSavedLibraries(guid, this.currentProductID).subscribe((res: any) => {
-    this.apiService.getSavedLibrariesTab(guid, this.currentProductID,auid).subscribe((res: any) => {
+    this.apiService.getSavedLibrariesTab(guid, this.currentProductID, auid).subscribe((res: any) => {
       var values = [];
       if (res.data != null && res.data.length > 0) {
         res.data.map(function (o1: any) {
           console.log('res-get-libraies', o1);
           localStorage.setItem(o1.meta_key, o1.meta_value);
-          values.push(JSON.parse(localStorage.getItem(o1.meta_key)));
+          var valueData = [];
+          // values.push(JSON.parse(localStorage.getItem(o1.meta_key)));
+          valueData.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
+          valueData.push( o1.meta_key );
+          valueData.push( o1.product_id );
+          valueData.push( o1.id );
+          valueData.push( o1.guid );
+          valueData.push( o1.keywords.split(",") );
+          values.push( valueData );
         });
         this.savedLibraries = values;
         console.log(this.savedLibraries)
@@ -664,7 +690,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   saveImage() {
-    this.addUserImageLibraryData(this.saveImageLocalData, this.selectedOptionId);
+    this.addUserImageLibraryData(this.saveImageLocalData, this.currentProductID);
     this.closeModal("save-local");
     this.saveImageLocalData = {
       productid: '',
@@ -677,5 +703,71 @@ export class CustomizerComponent implements OnInit {
     };
   }
 
+  loadImageLibrary() {
+    this.savedImageLibraries = [];
+    this.imageActiveP = 'active';
+    this.imageActiveM = '';
+    this.getSavedImageLibraies(1,1);
+  }
+
+  loadMyImageLibrary() {
+    this.savedImageLibraries = [];
+    this.imageActiveP = '';
+    this.imageActiveM = 'active';
+    this.getSavedImageLibraies(this.dbUserID,2);
+  }
+
+  loadImageCanvas(svg) {
+    this.canvas.getImageSVGPolaroid(svg, this.selectedColor);
+  }
+
+  getSavedImageLibraies(guid, auid) {
+    // this.apiService.getSavedLibraries(guid, this.currentProductID).subscribe((res: any) => {
+    this.apiService.getSavedImageLibrariesTab(guid, this.currentProductID, auid).subscribe((res: any) => {
+      var values = [];
+      if (res.data != null && res.data.length > 0) {
+        res.data.map(function (o1: any) {
+          values.push(o1);
+        });
+        this.savedImageLibraries = values;
+        console.log(this.savedLibraries)
+        return res.data;
+      }
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+  deleteCanvasFn(id) {
+    console.log('entryId',id);
+    if(confirm("Are you sure to delete Canvas")) {
+      this.deleteCanvas(id);
+    }
+  }
+
+  deleteCanvas( id ) {
+    this.apiService.deleteCanvas(id).subscribe((res) => {
+      alert(res.msg);
+      this.loadLibrary();
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+  deleteImageFn(id) {
+    console.log('entryId',id);
+    if(confirm("Are you sure to delete Image")) {
+      this.deleteImage(id);
+    }
+  }
+
+  deleteImage( id ) {
+    this.apiService.deleteImage(id).subscribe((res) => {
+      alert(res.msg);
+      this.loadMyLibrary();
+    }, error => {
+      console.error('error', error);
+    });
+  }
 
 }

@@ -10,7 +10,7 @@
         <a class="list-group-item list-group-item-action bg-light" (click)="openModal('text-modal')"><i class="fa fa-text-width"></i> Add Text</a>
         <a class="list-group-item list-group-item-action bg-light" (click)="openModal('add-figure-model')"><i class="fa fa-square"></i> Add Shape</a>
         <a class="list-group-item list-group-item-action bg-light" (click)="openModal('add-image-model')"><i class="fa fa-image"></i> Add Clipart</a>
-        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('upload-image-model')"><i class="fa fa-image"></i> Upload Image</a>
+        <a class="list-group-item list-group-item-action bg-light" (click)="openModal('load-image-library')"><i class="fa fa-image"></i> Image Library</a>
         <a class="list-group-item list-group-item-action bg-light" (click)="confirmClear();"><i class="fa fa-ban" aria-hidden="true"></i> Clear All</a>
         <a class="list-group-item list-group-item-action bg-light"></a>
         <a class="list-group-item list-group-item-action bg-light" (click)="rasterize();"><i class="fa fa-download" aria-hidden="true"></i> Export to image</a>
@@ -362,11 +362,11 @@
     </div>
 
     <div class="card-body">
-        <div class="custom-item" *ngIf="colors?.length > 0">
+        <div class="custom-item" *ngIf="bgcolors?.length > 0">
             <div class="custom-item-title">Background Color</div>
             <div class="custom-item-body">
-                    <div *ngFor="let color of colors" class="colorPicker" [class.selected-color]="selectedColor===color">
-                            <div [style.background-color]="color"  (click)="setCanvasFill(color)" ></div>
+                    <div *ngFor="let bcolor of bgcolors" class="colorPicker" [class.selected-color]="selectedColor===bcolor">
+                            <div [style.background-color]="bcolor"  (click)="setCanvasFill(bcolor)" ></div>
                     </div>
             </div>
         </div>
@@ -502,6 +502,7 @@
 
 <jw-modal id="upload-image-model">            
     <button class="btn btn-danger modal-close-btn" (click)="closeModal('upload-image-model');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <a class="add-image-button list-group-item list-group-item-action bg-dark" (click)="openModal('load-image-library');closeModal('upload-image-model');"><i class="fa fa-image"></i> Image Library</a>
     <div class="card-header">Upload image</div>
     <div class="card-body ">
         <input class="form-control" [(ngModel)]="saveImageLocalData.name" placeholder="Name" /><br />
@@ -525,6 +526,40 @@
                     <i class="fa fa-times" aria-hidden="true"></i> Remove</button>
             </div>
         </div>
+    </div>
+</jw-modal>
+
+<jw-modal id="load-image-library">  
+    <button class="btn btn-danger modal-close-btn" (click)="closeModal('load-image-library');"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <a class="add-image-button list-group-item list-group-item-action bg-dark" (click)="openModal('upload-image-model');closeModal('load-image-library');"><i class="fa fa-image"></i> Upload Image</a>
+    <div class="card-header">Image Library</div>
+    <div class="text-center">
+        <div class="btn-group ml-2 mt-2" role="group" aria-label="...">
+            <button data-toggle="tooltip" data-placement="bottom" title="Public Images" type="button"
+                class="btn btn-outline-primary {{imageActiveP}}" (click)="loadImageLibrary();">
+                Public Images
+            </button>
+            <button data-toggle="tooltip" data-placement="bottom" title="My Images" type="button"
+                class="btn btn-outline-primary {{imageActiveM}}" (click)="loadMyImageLibrary();">
+                My Images
+            </button>
+            
+        </div>
+    </div>
+
+    <div class="card-body body-img-lib popup-grid" >
+        <!-- <select [(ngModel)]="selectedKey" class="size-select" (change)="loadCanvasFromJSON()">
+            <option *ngFor="let key of localStorageKeys" [value]="key">{{key}}</option>
+        </select> -->
+        <div class="canvas-list canvas-img-lib grid-box-inner" *ngFor="let item of savedImageLibraries">
+            <div (click)="loadImageCanvas(item.meta_value)" id="svg-div" [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.meta_value)">
+            </div>
+            <div>
+                <h4>{{item.name}}</h4>
+                <p>{{item.description}}</p>
+            </div>
+            <button *ngIf="dbUserID == item.guid || dbUserID == '1'" class="close-btn" type="button" (click)="deleteImageFn(item.id)"><i class="fa fa-times"></i></button>
+        </div> 
     </div>
 </jw-modal>
 
@@ -563,11 +598,15 @@
             <option *ngFor="let key of localStorageKeys" [value]="key">{{key}}</option>
         </select> -->
         <div class="canvas-list canvas-img-lib grid-box-inner" *ngFor="let item of savedLibraries">
-            <img [src]="item.image" (click)="loadCanvas(item.json, item.cansize)" />
+            <img [src]="item[0].image" (click)="loadCanvas(item[0].json, item[0].cansize)" />
             <div>
-                <h4>{{item.name}}</h4>
-                <p>{{item.description}}</p>
+                <h4>{{item[0].name}}</h4>
+                <p>{{item[0].description}}</p>
             </div>
+            <div class="tags" *ngIf="(item[5]| json) != '{}'">
+                <a *ngFor="let key of item[5] | keyvalue" href="https://customizer.simonstamp.com/library/search/{{key.value}}">{{key.value}}, </a>
+            </div>
+            <button *ngIf="dbUserID == item[3] || dbUserID == '1'" class="close-btn" type="button" (click)="deleteCanvasFn(item[4])"><i class="fa fa-times"></i></button>
         </div> 
     </div>
 </jw-modal>

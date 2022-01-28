@@ -173,7 +173,7 @@
     .card-body.product-grid .product-grid-box .tags{
       margin-bottom: 30px;
     }
-    .card-body.product-grid .product-grid-box .tags a {
+    /*.card-body.product-grid .product-grid-box .tags a {
       font-size: 16px;
       color: #3c3c3c;
       padding: 8px 15px;
@@ -187,7 +187,8 @@
       color: #fff;
       padding: 8px 15px;
       background: #3388ff;
-    }
+    }*/
+
     .card-body.product-grid .product-grid-box button.close-btn {
       position: absolute;
       top: -10px;

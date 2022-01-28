@@ -76,6 +76,15 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
+    getProductOptionsbgColor(productId): Observable<any> {
+        const url = this.api_site_url+`get_all_bg_color_swatch.php?product_id=${productId}`;
+
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
     getProductModifiers(productId): Observable<any> {
         const url = this.api_site_url+`product_modifiers.php?product_id=${productId}`;
 
@@ -123,6 +132,20 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
+    getSavedImageLibrariesTab( id, productid, auid ): Observable<any>  {
+        console.log('user ID', id);
+        if(this.isLoggedIn())
+        {
+            id = 1;
+            console.log("loggedin");
+        }
+        const url = this.api_site_url+`get_image_library_data_tab.php?guid=${id}&product_id=${productid}&auid=${auid}`;
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
     getAllLibraries( id ): Observable<any>  {
         //console.log('search', id);
 
@@ -135,6 +158,22 @@ export class ApiService {
 
     deleteCanvas( id ): Observable<any> {
         const url = this.api_site_url+`delete_canvas_data.php`;
+        const apiHeaders = new HttpHeaders({
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+        });
+        
+        const body = {
+            'auth' : 'avlabs',
+            'data' : id
+        };
+
+        return this.http.post<any>(url, body, { headers: apiHeaders })
+    }
+
+
+    deleteImage( id ): Observable<any> {
+        const url = this.api_site_url+`delete_image_data.php`;
         const apiHeaders = new HttpHeaders({
             'cache-control': 'no-cache',
             'content-type': 'application/json',
@@ -194,7 +233,7 @@ export class ApiService {
     }
 
     addUserImageLibraryData(data: any, option_id): Observable<any> {
-        const url = this.api_site_url+`add_image_library_data.php.php`;
+        const url = this.api_site_url+`add_image_library_data.php`;
         const lastname = data.name;
         const lastdesc = data.description;
         const lastkeyw = data.keyword;

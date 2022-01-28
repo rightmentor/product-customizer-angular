@@ -215,3 +215,7 @@
        grid-template-columns: repeat(2, 1fr);
      }
    }
+   #svg-div svg {
+    width: 200px !important;
+    height: 200px !important;
+  }

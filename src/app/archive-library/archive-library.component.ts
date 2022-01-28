@@ -24,14 +24,44 @@ export class ArchiveLibraryComponent{
   someParameterValue = null;
   filterText = '';
   searchText = '';
+  guestUserID = '';
 
-  constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router) {
+  constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router, private cookieService: CookieService) {
     activateRoute.params.subscribe(params => {
       console.log(params['search']);
       this.searchText = params['search'];
       this.setupComponent(params['search']);
     });
+
+    //set cookie for new user guid
+    if (!this.cookieService.get('SIMON_GUID')) {
+      this.cookieService.set('SIMON_GUID', this.getUniqueId(5)); // To Set Cookie
+      this.addCurrentUserCookie(this.currentProductID, this.cookieService.get('SIMON_GUID'))
+    } else {
+      this.guestUserID = this.cookieService.get('SIMON_GUID');
+      this.dbUserID = localStorage.getItem('DBUSERID');
+    }
     this.loadLibrary();
+  }
+
+  public getUniqueId(parts: number): string {
+    const stringArr = [];
+    for (let i = 0; i < parts; i++) {
+      // tslint:disable-next-line:no-bitwise
+      const S4 = (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+      stringArr.push(S4);
+    }
+    return stringArr.join('-');
+  }
+
+  addCurrentUserCookie(productID, guestId: string) {
+    this.apiService.addCurrentUserCookie(productID, guestId).subscribe((res) => {
+      console.log(res);
+      localStorage.setItem('DBUSERID', res.id);
+      this.dbUserID = res.id;
+    }, error => {
+      console.error('error', error);
+    });
   }
 
   filter() {
@@ -61,7 +91,10 @@ export class ArchiveLibraryComponent{
           var valueData = [];
           valueData.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
           valueData.push( o1.meta_key );
-          valueData.push( o1.product_id );
+          valueData.push( productID );
+          valueData.push( o1.id );
+          valueData.push( o1.guid );
+          valueData.push( o1.keywords.split(",") );
           values.push( valueData );
           // values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
         });

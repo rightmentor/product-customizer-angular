@@ -300,6 +300,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
         }
       });
 
+      console.log('image data :', image);
       ref.extend(image, ref.randomId());
       ref.canvas.add(image);
       ref.selectItemAfterAdded(image);

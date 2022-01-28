@@ -68,7 +68,8 @@ body.jw-modal-open {
     overflow: hidden;
 }
 
-#load-library .jw-modal-body {
+#load-library .jw-modal-body,
+#load-image-library .jw-modal-body {
     width: 800px;
 }
 
@@ -76,8 +77,14 @@ body.jw-modal-open {
     width: 800px;
 }
 
+#svg-div svg {
+  width: 100px;
+  height: 100px;
+}
+
 @media (max-width:991px){
-    #load-library .jw-modal-body {
+    #load-library .jw-modal-body,
+    #load-image-library .jw-modal-body {
       width: 700px;
     }
     #add-image-model .jw-modal-body {
@@ -85,7 +92,8 @@ body.jw-modal-open {
     }
 }
 @media (max-width:767px) {
-  #load-library .jw-modal-body {
+  #load-library .jw-modal-body,
+  #load-image-library .jw-modal-body {
     width: 90%;
   }
   #add-image-model .jw-modal-body {
