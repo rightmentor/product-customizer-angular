@@ -202,6 +202,7 @@ export class ApiService {
         const lastname = data.name;
         const lastdesc = data.description;
         const lastkeyw = data.keyword;
+        const fabricatorImage = data.fabricatorImage;
         const lastsave = localStorage.getItem('lastsave');
         const meta_value = localStorage.getItem(lastsave);
         //console.log(meta_value);
@@ -224,7 +225,8 @@ export class ApiService {
             'description' : lastdesc,
             'keywords' : lastkeyw,
             'meta_key' : lastsave,
-            'meta_value' : meta_value
+            'meta_value' : meta_value,
+            'fabricatorImage' : fabricatorImage
         };
 
         console.log(body);

@@ -47,7 +47,8 @@ export class CustomizerComponent implements OnInit {
     description: '',
     keyword: '',
     json: '',
-    image: ''
+    image: '',
+    fabricatorImage: ''
   };
 
   saveImageLocalData: any = {
@@ -59,6 +60,10 @@ export class CustomizerComponent implements OnInit {
     json: '',
     image: ''
   };
+  zoom_value: any = 100;
+  zoom_max: any = 50;
+  zoom_min: any = -50;
+  zoom_current: any = 100;
 
   savedLibraries: any = [];
   savedImageLibraries: any = [];
@@ -84,7 +89,7 @@ export class CustomizerComponent implements OnInit {
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
   @ViewChild('svgEl') svgEl;
 
-  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService, private formBuilder: FormBuilder, private activateRoute: ActivatedRoute,public sanitizer:DomSanitizer) {
+  constructor(private apiService: ApiService, private modalService: ModalService, private cookieService: CookieService, private formBuilder: FormBuilder, private activateRoute: ActivatedRoute, public sanitizer: DomSanitizer) {
     //set product id into the cutomizer
     activateRoute.params.subscribe(params => {
       this.setupComponent(params['id']);
@@ -219,17 +224,17 @@ export class CustomizerComponent implements OnInit {
   public addImageOnCanvas(url) {
     let ref = this;
     // imagetracerjs.imageToSVG(url, function (svgstr) {
-      //   ref.canvas.getImageSVGPolaroid(svgstr, ref.selectedColor);
-      // }, "default");
-      potrace.trace(url, function (err, svg) {
-        if (err) throw err;
-        ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
-        console.log('SVG DATA:',svg);
-        ref.saveImageLocalData.image = svg;
-        ref.saveImage();
-      });
-      
-      
+    //   ref.canvas.getImageSVGPolaroid(svgstr, ref.selectedColor);
+    // }, "default");
+    potrace.trace(url, function (err, svg) {
+      if (err) throw err;
+      ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
+      console.log('SVG DATA:', svg);
+      ref.saveImageLocalData.image = svg;
+      ref.saveImage();
+    });
+
+
     // this.canvas.addImageOnCanvas(url);
     // this.canvas.getImageSVGPolaroid(this.uploadedImgSVG, ref.selectedColor);
     this.closeModal('upload-image-model');
@@ -303,6 +308,9 @@ export class CustomizerComponent implements OnInit {
 
   public setFontFamily() {
     this.canvas.setFontFamily();
+    setTimeout(() => {
+      this.canvas.setFontFamily();
+    }, 500)
   }
 
   public setTextAlign(value) {
@@ -495,7 +503,7 @@ export class CustomizerComponent implements OnInit {
   openModal(id: string) {
     if (id === 'load-library') {
       this.loadLibrary();
-    } 
+    }
     else if (id === 'load-image-library') {
       this.loadImageLibrary();
     }
@@ -588,13 +596,13 @@ export class CustomizerComponent implements OnInit {
           localStorage.setItem(o1.meta_key, o1.meta_value);
           var valueData = [];
           // values.push(JSON.parse(localStorage.getItem(o1.meta_key)));
-          valueData.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
-          valueData.push( o1.meta_key );
-          valueData.push( o1.product_id );
-          valueData.push( o1.id );
-          valueData.push( o1.guid );
-          valueData.push( o1.keywords.split(",") );
-          values.push( valueData );
+          valueData.push(JSON.parse(localStorage.getItem(o1.meta_key)));
+          valueData.push(o1.meta_key);
+          valueData.push(o1.product_id);
+          valueData.push(o1.id);
+          valueData.push(o1.guid);
+          valueData.push(o1.keywords.split(","));
+          values.push(valueData);
         });
         this.savedLibraries = values;
         console.log(this.savedLibraries)
@@ -609,14 +617,14 @@ export class CustomizerComponent implements OnInit {
     this.savedLibraries = [];
     this.canvasActiveP = 'active';
     this.canvasActiveM = '';
-    this.getSavedLibraies(1,1);
+    this.getSavedLibraies(1, 1);
   }
 
   loadMyLibrary() {
     this.savedLibraries = [];
     this.canvasActiveP = '';
     this.canvasActiveM = 'active';
-    this.getSavedLibraies(this.dbUserID,2);
+    this.getSavedLibraies(this.dbUserID, 2);
   }
 
   saveJson() {
@@ -624,7 +632,13 @@ export class CustomizerComponent implements OnInit {
     this.saveLocalData.cansize = this.selectedOptionId;
     this.saveLocalData.image = this.canvas.getCanvasSvg();
     this.canvas.saveCanvasToJSON(this.saveLocalData);
+    this.setAllElementColor('#000000');
+    this.saveLocalData.fabricatorImage = this.canvas.getCanvasSvg();
     this.addUserLibraryData(this.saveLocalData, this.selectedOptionId);
+
+    console.log('userSVG: ', this.saveLocalData);
+
+
     this.closeModal("save-local");
     this.saveLocalData = {
       productid: '',
@@ -633,7 +647,8 @@ export class CustomizerComponent implements OnInit {
       description: '',
       keyword: '',
       json: '',
-      image: ''
+      image: '',
+      fabricatorImage: ''
     };
   }
 
@@ -642,6 +657,8 @@ export class CustomizerComponent implements OnInit {
     this.saveLocalData.cansize = this.selectedOptionId;
     this.saveLocalData.image = this.canvas.getCanvasSvg();
     this.canvas.saveCanvasToJSON(this.saveLocalData);
+    this.setAllElementColor('#000000');
+    this.saveLocalData.fabricatorImage = this.canvas.getCanvasSvg();
     this.addUserLibraryData(this.saveLocalData, this.selectedOptionId);
 
     var attributes = [
@@ -670,7 +687,8 @@ export class CustomizerComponent implements OnInit {
       description: '',
       keyword: '',
       json: '',
-      image: ''
+      image: '',
+      fabricatorImage: ''
     };
   }
 
@@ -707,14 +725,14 @@ export class CustomizerComponent implements OnInit {
     this.savedImageLibraries = [];
     this.imageActiveP = 'active';
     this.imageActiveM = '';
-    this.getSavedImageLibraies(1,1);
+    this.getSavedImageLibraies(1, 1);
   }
 
   loadMyImageLibrary() {
     this.savedImageLibraries = [];
     this.imageActiveP = '';
     this.imageActiveM = 'active';
-    this.getSavedImageLibraies(this.dbUserID,2);
+    this.getSavedImageLibraies(this.dbUserID, 2);
   }
 
   loadImageCanvas(svg) {
@@ -739,13 +757,13 @@ export class CustomizerComponent implements OnInit {
   }
 
   deleteCanvasFn(id) {
-    console.log('entryId',id);
-    if(confirm("Are you sure to delete Canvas")) {
+    console.log('entryId', id);
+    if (confirm("Are you sure to delete Canvas")) {
       this.deleteCanvas(id);
     }
   }
 
-  deleteCanvas( id ) {
+  deleteCanvas(id) {
     this.apiService.deleteCanvas(id).subscribe((res) => {
       alert(res.msg);
       this.loadLibrary();
@@ -755,13 +773,13 @@ export class CustomizerComponent implements OnInit {
   }
 
   deleteImageFn(id) {
-    console.log('entryId',id);
-    if(confirm("Are you sure to delete Image")) {
+    console.log('entryId', id);
+    if (confirm("Are you sure to delete Image")) {
       this.deleteImage(id);
     }
   }
 
-  deleteImage( id ) {
+  deleteImage(id) {
     this.apiService.deleteImage(id).subscribe((res) => {
       alert(res.msg);
       this.loadMyLibrary();
@@ -770,4 +788,46 @@ export class CustomizerComponent implements OnInit {
     });
   }
 
+  zoomout() {
+    
+    if (this.zoom_value >= 25) {
+      this.zoom(this.zoom_value);
+    }
+  }
+
+  zoomin() {
+    if (this.zoom_value <= 400) {
+      this.zoom(this.zoom_value);
+    }
+  }
+
+  zoom(e) {
+    // this.canvas.zoomCanvas(this.zoom_value);
+    var zoomLevel = (this.zoom_current - this.zoom_value) / 100;
+    var zoomLevelCan = this.zoom_value / 100;
+    console.log('zoom level  ', Math.abs(zoomLevelCan) );
+
+    if(zoomLevel > 1){
+      this.canvas.zoomCanvas( -Math.abs(zoomLevelCan) );
+      this.canvas.zoomsetDimensions({
+        width: this.canvas.size.width * 1,
+        height: this.canvas.size.height * 1
+      });
+      this.canvas.zoomsetDimensions({
+        width: this.canvas.size.width / zoomLevelCan,
+        height: this.canvas.size.height / zoomLevelCan
+      });
+    }else{
+      this.canvas.zoomCanvas( Math.abs(zoomLevelCan) );
+      this.canvas.zoomsetDimensions({
+        width: this.canvas.size.width * 1,
+        height: this.canvas.size.height * 1
+      });
+      this.canvas.zoomsetDimensions({
+        width: this.canvas.size.width * Math.abs(zoomLevelCan),
+        height: this.canvas.size.height * Math.abs(zoomLevelCan)
+      });
+    }
+    this.zoom_current = this.zoom_value;
+  }
 }

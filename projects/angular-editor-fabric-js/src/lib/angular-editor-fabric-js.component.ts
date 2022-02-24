@@ -56,6 +56,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
   public figureEditor = false;
   public selected: any;
   private guid: any;
+  public defaltZoom = 1;
 
   constructor(private cookieService: CookieService) {
     this.guid = this.cookieService.get('SIMON_GUID')
@@ -502,6 +503,12 @@ export class FabricjsEditorComponent implements AfterViewInit {
     const object = this.canvas.getActiveObject();
     if (!object) { return ''; }
 
+    console.log('canvas width', this.canvas.getWidth());
+    console.log('object width', object.width);
+    console.log('object height', object.height);
+    console.log('canvas x', object.scaleX);
+    console.log('canvas Y', object.scaleY);
+
     switch (val) {
       case 'left':
         object.set({
@@ -534,7 +541,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
         });
         break;
     }
-
+    console.log('object coords: ',object);
     object.setCoords();
     this.canvas.renderAll();
   }
@@ -893,4 +900,36 @@ export class FabricjsEditorComponent implements AfterViewInit {
       this.currentIndex = this.canvasSteps.length - 1;
     }
   }
+
+  zoomCanvas(zoom_value) {
+    var zoom = 1;
+    console.log('canvas zoom: ',zoom_value);
+    zoom *= 1 * zoom_value;
+    console.log('canvas zoom cal: ',zoom);
+
+    if (zoom > 20) zoom = 20;
+    if (zoom < 0.01) zoom = 0.01;
+
+    
+  
+    // this.canvas.zoomToPoint(new fabric.Point(this.canvas.width / zoom, this.canvas.height / zoom), zoom);
+    for (var i = 0, len = this.canvas._objects.length; i < len; i++) {
+      console.log('coords: ', this.canvas._objects[0].getCoords());
+      this.canvas._objects[i].setCoords();
+    }
+
+
+    this.canvas.setZoom(zoom);
+    this.canvas.renderAll();
+
+  }
+
+  zoomsetDimensions(widthHeight) {
+    this.canvas.setDimensions(widthHeight);
+  }
+
+  setViewportTransform(vpt: number[]) {
+    this.canvas.setViewportTransform(vpt);
+  }
+
 }
