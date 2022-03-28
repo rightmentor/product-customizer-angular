@@ -9,6 +9,8 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class FabricjsEditorComponent implements AfterViewInit {
   @ViewChild('htmlCanvas') htmlCanvas: ElementRef;
+  @ViewChild('htmlTCanvas') htmlTCanvas: ElementRef;
+  @ViewChild('htmlLCanvas') htmlLCanvas: ElementRef;
 
   public canvas: fabric.Canvas;
   public props = {
@@ -39,6 +41,9 @@ export class FabricjsEditorComponent implements AfterViewInit {
     undoDisabled: true
   };
 
+  public topRuler = new fabric.Canvas('top-ruler');
+  public leftRuler = new fabric.Canvas('left-ruler');
+
   public textString: string;
   public currentIndex = 0;
   public url: string | ArrayBuffer = '';
@@ -57,13 +62,31 @@ export class FabricjsEditorComponent implements AfterViewInit {
   public selected: any;
   private guid: any;
   public defaltZoom = 1;
+  public gridGroup;
+  public mainCanWidth;
+  public mainCanHeight;
+  public mainCanvas;
 
   constructor(private cookieService: CookieService) {
     this.guid = this.cookieService.get('SIMON_GUID')
+    
     console.log('[this.guid] ', this.guid);
   }
 
   ngAfterViewInit(): void {
+    //setup ruler canvas
+    this.topRuler = new fabric.Canvas(this.htmlTCanvas.nativeElement, {
+      hoverCursor: 'pointer',
+      selection: true,
+      selectionBorderColor: 'blue',
+      preserveObjectStacking: true
+    });
+    this.leftRuler = new fabric.Canvas(this.htmlLCanvas.nativeElement, {
+      hoverCursor: 'pointer',
+      selection: true,
+      selectionBorderColor: 'blue',
+      preserveObjectStacking: true
+    });
 
     // setup front side canvas
     this.canvas = new fabric.Canvas(this.htmlCanvas.nativeElement, {
@@ -87,6 +110,43 @@ export class FabricjsEditorComponent implements AfterViewInit {
       },
       'object:modified': (e) => {
         this.modifyCanvas(e);
+      },
+      'selection:updated': (e) => {
+        console.log('show canvas selected:', e);
+        const selectedObject = e.target;
+        this.selected = selectedObject;
+        selectedObject.hasRotatingPoint = true;
+        selectedObject.transparentCorners = false;
+        selectedObject.cornerColor = 'rgba(255, 87, 34, 0.7)';
+
+        this.resetPanels();
+
+        if (selectedObject.type !== 'group' && selectedObject) {
+
+          this.getId();
+          this.getOpacity();
+
+          switch (selectedObject.type) {
+            case 'rect':
+            case 'circle':
+            case 'triangle':
+              this.figureEditor = true;
+              this.getFill();
+              break;
+            case 'i-text':
+              this.textEditor = true;
+              this.getLineHeight();
+              this.getCharSpacing();
+              this.getBold();
+              this.getFill();
+              this.getTextDecoration();
+              this.getTextAlign();
+              this.getFontFamily();
+              break;
+            case 'image':
+              break;
+          }
+        }
       },
       'selection:created': (e) => {
         console.log('show canvas selected:', e);
@@ -140,9 +200,65 @@ export class FabricjsEditorComponent implements AfterViewInit {
     });
     this.canvasSteps = [];
     this.canvasSteps.push(JSON.stringify(this.canvas.toJSON()));
+    this.redrawRulers();
   }
 
+  redrawRulers() {
+    this.topRuler.clear();
+    this.leftRuler.clear();
+    this.topRuler.backgroundColor ='#aaa';
+    this.leftRuler.backgroundColor ='#aaa';
 
+    console.log('canvas width', this.canvas.getWidth());
+
+    this.topRuler.setWidth(this.mainCanWidth+3);
+    this.topRuler.setHeight(50);
+
+    this.leftRuler.setWidth(50);
+    this.leftRuler.setHeight(this.mainCanHeight+3);
+  
+    console.log('canvas element', this.canvas.getElement());
+    var zoomLevel = this.canvas.getZoom();
+    console.log('Ruleres', zoomLevel);
+    for (i = 0; i <= this.canvas.getWidth(); i += (19* zoomLevel)) {
+      // console.log("one inches", i);
+      var topLine = new fabric.Line([i, 25, i, 50], {
+        stroke: 'black',
+        strokeWidth: 1
+      });
+      this.topRuler.add(topLine);
+      var leftLine = new fabric.Line([25, i, 50, i], {
+        stroke: 'black',
+        strokeWidth: 1
+      });
+      this.leftRuler.add(leftLine);
+    }
+    
+    // Numbers
+    var inch = 0;
+    for (var i = 0; i < this.topRuler.getWidth();  i += (95 * zoomLevel)) {
+      var inchSt = `${inch}''`;
+      var text = new fabric.Text( ( inchSt ).toString(), {
+        left: i,
+        top: 10,
+        fontSize: 8
+      });
+      this.topRuler.add(text);
+      inch += 0.5;
+    }
+
+    inch = 0;
+    for (var i = 0; i < this.leftRuler.getHeight();  i += (95 * zoomLevel)) {
+      var inchSt = `${inch}''`;
+      var text = new fabric.Text( ( inchSt ).toString(), {
+        top: i,
+        left: 5,
+        fontSize: 8
+      });
+      this.leftRuler.add(text);
+      inch += 0.5;
+    }
+  }
   /*------------------------Block elements------------------------*/
 
   // Change all canvas elements color 
@@ -177,6 +293,10 @@ export class FabricjsEditorComponent implements AfterViewInit {
   changeSize() {
     this.canvas.setWidth(this.size.width);
     this.canvas.setHeight(this.size.height);
+
+    this.mainCanWidth = this.size.width;
+    this.mainCanHeight = this.size.height;
+    this.redrawRulers();
   }
 
   // Block "Add text"
@@ -508,6 +628,9 @@ export class FabricjsEditorComponent implements AfterViewInit {
     console.log('object height', object.height);
     console.log('canvas x', object.scaleX);
     console.log('canvas Y', object.scaleY);
+    console.log('defaltZoom Y', this.defaltZoom);
+    const viwePortCoords = this.canvas.vptCoords;
+    console.log('viwePortCoords: ', viwePortCoords);
 
     switch (val) {
       case 'left':
@@ -517,7 +640,7 @@ export class FabricjsEditorComponent implements AfterViewInit {
         break;
       case 'right':
         object.set({
-          left: this.canvas.getWidth() - (object.width * object.scaleX)
+          left: ( this.canvas.getWidth() / this.defaltZoom ) - ( object.width * object.scaleX  )
         });
         break;
       case 'top':
@@ -527,17 +650,17 @@ export class FabricjsEditorComponent implements AfterViewInit {
         break;
       case 'bottom':
         object.set({
-          top: this.canvas.getHeight() - (object.height * object.scaleY)
+          top: (this.canvas.getHeight() / this.defaltZoom ) - (object.height * object.scaleY)
         });
         break;
       case 'center':
         object.set({
-          left: (this.canvas.getWidth() / 2) - ((object.width * object.scaleX) / 2)
+          left: (this.canvas.getWidth() / ( 2 * this.defaltZoom) ) - ((object.width * object.scaleX) / 2)
         });
         break;
       case 'hcenter':
         object.set({
-          top: (this.canvas.getHeight() / 2) - ((object.height * object.scaleY) / 2)
+          top: (this.canvas.getHeight() / ( 2 * this.defaltZoom) ) - ((object.height * object.scaleY) / 2)
         });
         break;
     }
@@ -560,15 +683,6 @@ export class FabricjsEditorComponent implements AfterViewInit {
     fabric.util.clearFabricFontCache();
     setTimeout(() => {
       console.log('renderAll');
-      this.canvas.renderAll();
-    }, 1000)
-  }
-
-  setCurvedText(name, value) {
-    const object = this.canvas.getActiveObject();
-    if (!object) { return; }
-    object.set(name, value).setCoords();
-    setTimeout(() => {
       this.canvas.renderAll();
     }, 1000)
   }
@@ -710,16 +824,6 @@ export class FabricjsEditorComponent implements AfterViewInit {
   setFontFamily() {
     console.log('this.props.fontFamily: ', this.props.fontFamily);
     this.setActiveProp('fontFamily', this.props.fontFamily);
-  }
-
-  getTextEffect() {
-    this.props.textEffect = this.getActiveProp('textEffect');
-  }
-
-  setTextEffect() {
-    console.log('this.props.textEffect', this.props.textEffect);
-    // this.setActiveProp('effect', this.props.textEffect);
-    this.setActiveProp('radius','50');
   }
 
   /*System*/
@@ -903,25 +1007,56 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   zoomCanvas(zoom_value) {
     var zoom = 1;
-    console.log('canvas zoom: ',zoom_value);
+    this.defaltZoom = zoom_value;
     zoom *= 1 * zoom_value;
-    console.log('canvas zoom cal: ',zoom);
 
     if (zoom > 20) zoom = 20;
     if (zoom < 0.01) zoom = 0.01;
 
-    
-  
-    // this.canvas.zoomToPoint(new fabric.Point(this.canvas.width / zoom, this.canvas.height / zoom), zoom);
-    for (var i = 0, len = this.canvas._objects.length; i < len; i++) {
-      console.log('coords: ', this.canvas._objects[0].getCoords());
-      this.canvas._objects[i].setCoords();
-    }
+    const trns = [1,0,0,3,0,0];
 
+    this.canvas.setViewportTransform(trns);
+    this.canvas.viewportTransform[0] = 1;
+    this.canvas.viewportTransform[3] = 1;
+
+    // this.canvas.zoomToPoint(new fabric.Point(this.canvas.width / zoom, this.canvas.height / zoom), zoom);
+    // for (var i = 0, len = this.canvas._objects.length; i < len; i++) {
+    //   console.log('coords: ', this.canvas._objects[0].getCoords());
+    //   this.canvas._objects[i].setCoords();
+    // }
+
+    this.canvas.forEachObject(function(object){
+      object.setCoords();
+    })
 
     this.canvas.setZoom(zoom);
     this.canvas.renderAll();
 
+  }
+
+  zoomRuller(zoomLevel,zoomLevelCan){
+    console.log('this.zoomlave: ',zoomLevelCan);
+    if(zoomLevelCan < 1){
+      this.mainCanWidth = this.size.width / zoomLevelCan;
+      this.mainCanHeight = this.size.height / zoomLevelCan;
+    }else if(zoomLevelCan == 1){
+
+      this.mainCanWidth = this.size.width;
+      this.mainCanHeight =this.size.height;
+
+    }else{
+
+      this.mainCanWidth = this.size.width * Math.abs(zoomLevelCan);
+      this.mainCanHeight = this.size.height * Math.abs(zoomLevelCan);
+    }
+
+    this.mainCanWidth = this.size.width * zoomLevelCan;
+    this.mainCanHeight = this.size.height * zoomLevelCan;
+
+    this.redrawRulers();  
+
+    console.log('this.mainCanWidth: ', this.size.width * zoomLevelCan);
+    console.log('this.mainCanHeight: ', this.size.height * zoomLevelCan);
   }
 
   zoomsetDimensions(widthHeight) {
@@ -930,6 +1065,50 @@ export class FabricjsEditorComponent implements AfterViewInit {
 
   setViewportTransform(vpt: number[]) {
     this.canvas.setViewportTransform(vpt);
+  }
+
+  removeGrid() {
+    console.log(this.gridGroup);
+    this.gridGroup && this.canvas.remove(this.gridGroup);
+    this.gridGroup = null;
+  }
+
+  addGrid(grid_size = 25) {
+    if (this.gridGroup) return;
+    let options = {
+        distance: 19,
+        width: this.canvas.getWidth(),
+        height: this.canvas.getWidth(),
+        param: {
+          stroke: '#ebebeb',
+          strokeWidth: 1,
+          selectable: false
+        }
+    },
+    gridLen = options.width / options.distance;
+
+    var gridLines = [];
+    for (var i = 0; i < gridLen; i++) {
+      var distance   = i * options.distance,
+          
+      horizontal = new fabric.Line([ distance, 0, distance, options.width], options.param),
+      vertical   = new fabric.Line([ 0, distance, options.width, distance], options.param);
+      
+      // this.canvas.add(horizontal);
+      // this.canvas.add(vertical);
+
+      if(i%5 === 0){
+        horizontal.set({stroke: '#cccccc'});
+        vertical.set({stroke: '#cccccc'});
+      }
+      gridLines.push(horizontal);
+      gridLines.push(vertical);
+    }
+    this.gridGroup = new fabric.Group(gridLines, {
+      selectable: false,
+      evented: false
+    });
+    this.canvas.add(this.gridGroup);
   }
 
 }

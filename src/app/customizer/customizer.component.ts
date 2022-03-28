@@ -30,9 +30,11 @@ export class CustomizerComponent implements OnInit {
 
   title = 'angular-editor-fabric-js';
   showFiller: boolean = true;
+  showGrid: boolean = false;
   productOptions = [];
   colors = ["#0A0A0A", "#0000FF", "#009A85", "#FF0000", "#CC66CC"];
-  bgcolors = ["#0A0A0A", "#0000FF", "#009A85", "#FF0000", "#CC66CC"];
+  bgcolors = [];
+  mounting = [];
   selectedColor = "#000000";
   selectedOptionId;
   currentProductID: any = 0;
@@ -74,6 +76,8 @@ export class CustomizerComponent implements OnInit {
   guestUserID = '';
   dbUserID = '1';
   colorID; colorOptionsLabel; colorOptionsID;
+  bgcolorID; bgcolorOptionsLabel; bgcolorOptionsID;
+  mountingID; mountingOptionsLabel; mountingOptionsID;
   customizedProduct; customizedProductValue; customizedImageId;
   registerForm: FormGroup;
   submitted = false;
@@ -127,9 +131,10 @@ export class CustomizerComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+    this.getProductOptionsMountingColor(this.currentProductID);
     this.getProductModifiersOptions(this.currentProductID);
-    this.getProductOptionsColor(this.currentProductID);
-    this.getProductOptionsbgColor(this.currentProductID);
+    // this.getProductOptionsColor(this.currentProductID);
+    // this.getProductOptionsbgColor(this.currentProductID);
   }
 
   showFillerEvent() {
@@ -207,6 +212,11 @@ export class CustomizerComponent implements OnInit {
 
   public changeSize() {
     this.canvas.changeSize();
+    console.log('grid status',this.showGrid);
+    if(this.showGrid == true){
+      this.canvas.removeGrid();
+      this.canvas.addGrid();
+    }  
   }
 
   public addText() {
@@ -329,10 +339,6 @@ export class CustomizerComponent implements OnInit {
     this.canvas.setFontStyle();
   }
 
-  public setTextEffect() {
-    this.canvas.setTextEffect();
-  }
-
   public hasTextDecoration(value) {
     this.canvas.hasTextDecoration(value);
   }
@@ -423,20 +429,33 @@ export class CustomizerComponent implements OnInit {
   sizeChangeHandler() {
     this.productOptionValue = this.selectedOptionId;
     const selectedOption = this.productOptions.filter(opt => parseInt(opt.id, 10) === parseInt(this.selectedOptionId, 10));
+
+    console.log('Options details: ',selectedOption[0]);
     const label = selectedOption[0].label;
+
+    var iHeight = 190*selectedOption[0].width;
+    var iWidth = 190*selectedOption[0].height;
+
     // 1mm =  3.779527559px
-    let s = label.substring(label.indexOf("(") + 1);
+    /*let s = label.substring(label.indexOf("(") + 1);
     s = s.substring(0, s.indexOf(")"));
-    const height = s.substring(0, s.indexOf("mm")) * 2;
+    const height = s.substring(0, s.indexOf("mm"));
     if (height) {
       this.canvas.size.height = Math.round((height * 3.779527559) * 10) / 10;
     }
     let width = s.substring(s.indexOf("x") + 1);
     if (width) {
-      width = width.substring(0, width.indexOf("mm")) * 2;
+      width = width.substring(0, width.indexOf("mm"));
       if (width) {
         this.canvas.size.width = Math.round((width * 3.779527559) * 10) / 10;
       }
+    }*/
+
+    if (iHeight) {
+      this.canvas.size.height = Math.round(iHeight);
+    }
+    if (iWidth) {
+        this.canvas.size.width = Math.round(iWidth);
     }
 
     this.changeSize();
@@ -455,7 +474,7 @@ export class CustomizerComponent implements OnInit {
 
   getProductModifiersOptions(productID) {
     this.apiService.getProductModifiersSwatch(productID, 'NULL').subscribe((res) => {
-      console.log('customizeProducrt: ', res);
+      // console.log('customizeProducrt: ', res);
       this.customizedProduct = res[0].customized_product;
       this.customizedProductValue = res[0].customized_product_value;
       this.customizedImageId = res[0].customized_image_id;
@@ -466,8 +485,8 @@ export class CustomizerComponent implements OnInit {
 
   getProductOptionsColor(productID) {
     this.apiService.getProductOptionsColor(productID).subscribe((res) => {
-      console.log('customizeProductColor: ', res);
-      this.colors = res;
+      // console.log('customizeProductColor: ', res);
+      // this.colors = res;
     }, error => {
       console.error('error', error);
     });
@@ -475,8 +494,32 @@ export class CustomizerComponent implements OnInit {
 
   getProductOptionsbgColor(productID) {
     this.apiService.getProductOptionsbgColor(productID).subscribe((res) => {
-      console.log('customizeProductColor: ', res);
+      // console.log('customizeProductColor: ', res);
       this.bgcolors = res;
+    }, error => {
+      console.error('error', error);
+    });
+  }
+  
+  getProductOptionsMountingColor(productID) {
+    this.apiService.getProductOptionsMountingColor(productID).subscribe((res) => {
+      console.log('all option: ', res);
+      for (const [key, value] of Object.entries(res)) {
+        if(value['name'] == 'Mounting Options'){
+          this.mountingOptionsID = key;
+          this.mounting = value['data'];
+        }else if(value['name'] == 'Color' || value['name'] == 'Ink Color' || value['name'] == 'Custom rubber stamps'){
+          this.colorOptionsID = key;
+          this.colors = value['data'];
+        }else if(value['name'] == 'Background Color'){
+          this.bgcolorOptionsID = key;
+          this.bgcolors = value['data'];
+        }
+        // console.log('mounting value', this.mounting);
+
+      }
+
+      //this.mounting = res;
     }, error => {
       console.error('error', error);
     });
@@ -803,10 +846,17 @@ export class CustomizerComponent implements OnInit {
 
   zoom(e) {
     // this.canvas.zoomCanvas(this.zoom_value);
-    var zoomLevel = (this.zoom_current - this.zoom_value) / 100;
+    console.log('zoom current  ', this.zoom_current );
+    console.log('zoom value  ', this.zoom_value );
+    if(this.zoom_value == '100'){
+      var zoomLevel = 1;
+    }else{
+      var zoomLevel = (this.zoom_current - this.zoom_value) / 100;
+    }
     var zoomLevelCan = this.zoom_value / 100;
-    console.log('zoom level  ', Math.abs(zoomLevelCan) );
+    console.log('zoom level can ', zoomLevelCan );
 
+    
     if(zoomLevel > 1){
       this.canvas.zoomCanvas( -Math.abs(zoomLevelCan) );
       this.canvas.zoomsetDimensions({
@@ -828,6 +878,19 @@ export class CustomizerComponent implements OnInit {
         height: this.canvas.size.height * Math.abs(zoomLevelCan)
       });
     }
+    this.canvas.zoomRuller(zoomLevel,zoomLevelCan);
+
     this.zoom_current = this.zoom_value;
+  }
+
+  addGrid(){
+    console.log('grid status',this.showGrid);
+    if(this.showGrid == false){
+      this.canvas.addGrid();
+      this.showGrid = true;
+    }else{
+      this.canvas.removeGrid();
+      this.showGrid = false;
+    }
   }
 }

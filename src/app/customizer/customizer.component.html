@@ -50,6 +50,9 @@
             <option value="375">375%</option>
             <option value="400">400%</option>
         </select>
+        <div class="form-check form-check-inline ml-2">
+            <input class="form-check-input" type="checkbox" (click)="addGrid()" > Grid View
+         </div>
         </div>
         <div class="btn-group ml-2" role="group" aria-label="...">
             <button data-toggle="tooltip" data-placement="bottom" title="Undo" type="button"
@@ -154,9 +157,9 @@
                                             <button title="Left Align" type="button" class="btn btn-primary" (click)="setObjectAlign('left')">
                                                 <i class="fa fa-angle-double-left"></i>
                                             </button>&nbsp;&nbsp;&nbsp;
-                                            <button title="Vertical Center Align" type="button" class="btn btn-primary" (click)="setObjectAlign('center')">
+                                            <button title="Vertical Center Align" type="button" class="btn btn-primary" (click)="setObjectAlign('hcenter')">
                                                 <i class="fa fa-arrows-alt-v"></i>—</button>&nbsp;
-                                            <button title="Horizental Center Align" type="button" class="btn btn-primary" (click)="setObjectAlign('hcenter')">
+                                            <button title="Horizental Center Align" type="button" class="btn btn-primary" (click)="setObjectAlign('center')">
                                                 <i class="fa fa-arrows-alt-h"></i>|</button>
                                             &nbsp;&nbsp;&nbsp;
                                             <button title="Right Align" type="button" class="btn btn-primary" (click)="setObjectAlign('right')">
@@ -321,7 +324,7 @@
                                             (change)="setCharSpacing()" step="10" min="-200" max="800">{{canvas.props.charSpacing}}
                                     </div>
                                 </div>
-                                <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
+                                <!-- <div class="custom-item" *ngIf="canvas.selected && canvas.textEditor">
                                     <div class="custom-item-title">Text Effect</div>
                                     <div class="custom-item-body">
                                         <select class="form-control" [(ngModel)]="canvas.props.textEffect" class="form-control"
@@ -335,7 +338,7 @@
                                             <option value="bulge">bulge</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         </div>
@@ -383,8 +386,8 @@
         <div class="custom-item" *ngIf="colors?.length > 0">
             <div class="custom-item-title">Color</div>
             <div class="custom-item-body">
-                    <div *ngFor="let color of colors" class="colorPicker" [class.selected-color]="selectedColor===color">
-                            <div [style.background-color]="color"  (click)="setAllElementColor(color)" ></div>
+                    <div *ngFor="let color of colors" class="colorPicker" [class.selected-color]="selectedColor===color.value">
+                            <div [style.background-color]="color.value"  (click)="setAllElementColor(color.value)" ></div>
                     </div>
             </div>
         </div>
@@ -394,8 +397,22 @@
         <div class="custom-item" *ngIf="bgcolors?.length > 0">
             <div class="custom-item-title">Background Color</div>
             <div class="custom-item-body">
-                    <div *ngFor="let bcolor of bgcolors" class="colorPicker" [class.selected-color]="selectedColor===bcolor">
-                            <div [style.background-color]="bcolor"  (click)="setCanvasFill(bcolor)" ></div>
+                    <div *ngFor="let bcolor of bgcolors" class="colorPicker" [class.selected-color]="selectedColor===bcolor.value">
+                            <div [style.background-color]="bcolor.value"  (click)="setCanvasFill(bcolor.value)" ></div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        <div class="custom-item" *ngIf="mounting?.length > 0">
+            <div class="custom-item-title">Mounting Options</div>
+            <div class="custom-item-body">
+                    <div *ngFor="let mount of mounting" >
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" [id]="mount.id" [value]="mount.id" > {{mount.value}}
+                         </div>
+                        
                     </div>
             </div>
         </div>

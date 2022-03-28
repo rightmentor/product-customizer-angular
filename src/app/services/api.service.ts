@@ -85,6 +85,16 @@ export class ApiService {
         return this.http.get(url, { headers: apiHeaders })
     }
 
+
+    getProductOptionsMountingColor(productId): Observable<any> {
+        const url = this.api_site_url+`get_all_mounting_swatch.php?product_id=${productId}`;
+
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    }
+
     getProductModifiers(productId): Observable<any> {
         const url = this.api_site_url+`product_modifiers.php?product_id=${productId}`;
 
