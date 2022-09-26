@@ -25,6 +25,8 @@ export class LibraryComponent{
   someParameterValue = null;
   filterText = '';
   searchString = '';
+  productOptionID = '';
+  productOptions: any = [];
 
   constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router, private cookieService: CookieService) {
     activateRoute.params.subscribe(params => {
@@ -44,8 +46,9 @@ export class LibraryComponent{
       this.guestUserID = this.cookieService.get('SIMON_GUID');
       this.dbUserID = localStorage.getItem('DBUSERID');
     }
-
-    this.loadLibrary();
+    console.log(this.currentProductID);
+    this.getProductOptions(this.currentProductID);
+    
   }
 
   public getUniqueId(parts: number): string {
@@ -70,7 +73,7 @@ export class LibraryComponent{
 
   filter() {
     if (this.filterText !== '') {
-      this.filteredLibraried = this.savedLibraries.filter(lib =>  lib[0].name.toLowerCase().indexOf(this.filterText) > -1 || lib[0].description.toLowerCase().indexOf(this.filterText) > -1 )
+      this.filteredLibraried = this.savedLibraries.filter(lib =>  lib[0].name.toLowerCase().indexOf(this.filterText) > -1 || lib[0].description.toLowerCase().indexOf(this.filterText) > -1  || lib[6].toLowerCase().indexOf(this.filterText) > -1 )
     } else {
       this.filteredLibraried = this.savedLibraries
     }
@@ -86,6 +89,8 @@ export class LibraryComponent{
     this.apiService.getSavedLibraries( guid, this.currentProductID ).subscribe((res:any) => {
       var values = []; 
       var productID = this.currentProductID; 
+      var productOP = this.productOptions; 
+      console.log('before: ',productOP);
       if (res.data.length > 0) {
         res.data.map(function(o1:any) {
           localStorage.setItem( o1.meta_key, o1.meta_value );
@@ -96,6 +101,11 @@ export class LibraryComponent{
           valueData.push( o1.id );
           valueData.push( o1.guid );
           valueData.push( o1.keywords.split(",") );
+          const selectedOption = productOP.filter(opt => parseInt(opt.id, 10) === parseInt(o1.canvas_size, 10));
+          console.log(o1.canvas_size);
+          const label = selectedOption[0].label;
+          
+          valueData.push( label );
           values.push( valueData );
           
           // values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
@@ -105,6 +115,27 @@ export class LibraryComponent{
         this.filteredLibraried = values;
         return res.data;
       }
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+  getCanvasSizeDetails(canvas_size){
+    const selectedOption = this.productOptions.filter(opt => parseInt(opt.id, 10) === parseInt(canvas_size, 10));
+    console.log(selectedOption);
+    const label = selectedOption[0].label;
+    return label;
+  }
+
+  getProductOptions(productID) {
+    console.log('calling getProductOptions');
+    this.apiService.getProductOptions(productID).subscribe((res: any) => {
+      console.log('res', res);
+      this.productOptionID = res.data[0].id;
+      this.productOptions = res.data[0].option_values;
+      console.log(this.productOptions);
+      this.loadLibrary();
+
     }, error => {
       console.error('error', error);
     });

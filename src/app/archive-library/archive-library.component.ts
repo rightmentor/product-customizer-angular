@@ -25,6 +25,8 @@ export class ArchiveLibraryComponent{
   filterText = '';
   searchText = '';
   guestUserID = '';
+  productOptionID = '';
+  productOptions: any = [];
 
   constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router, private cookieService: CookieService) {
     activateRoute.params.subscribe(params => {
@@ -41,6 +43,8 @@ export class ArchiveLibraryComponent{
       this.guestUserID = this.cookieService.get('SIMON_GUID');
       this.dbUserID = localStorage.getItem('DBUSERID');
     }
+    console.log(this.currentProductID);
+    this.getProductOptions(this.currentProductID);
     this.loadLibrary();
   }
 
@@ -84,6 +88,7 @@ export class ArchiveLibraryComponent{
     this.apiService.getAllLibraries( guid).subscribe((res:any) => {
       var values = []; 
       var productID = this.currentProductID; 
+      var productOP = this.productOptions; 
       if (res.data.length > 0) {
         res.data.map(function(o1:any) {
           console.log('res-get-libraies', o1);
@@ -95,6 +100,11 @@ export class ArchiveLibraryComponent{
           valueData.push( o1.id );
           valueData.push( o1.guid );
           valueData.push( o1.keywords.split(",") );
+          const selectedOption = productOP.filter(opt => parseInt(opt.id, 10) === parseInt(o1.canvas_size, 10));
+          console.log(o1.canvas_size);
+          const label = selectedOption[0].label;
+          
+          valueData.push( label );
           values.push( valueData );
           // values.push( JSON.parse( localStorage.getItem( o1.meta_key ) ) );
         });
@@ -104,6 +114,26 @@ export class ArchiveLibraryComponent{
         console.log(this.savedLibraries)
         return res.data;
       }
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
+  getCanvasSizeDetails(canvas_size){
+    const selectedOption = this.productOptions.filter(opt => parseInt(opt.id, 10) === parseInt(canvas_size, 10));
+    console.log(selectedOption);
+    const label = selectedOption[0].label;
+    return label;
+  }
+
+  getProductOptions(productID) {
+    console.log('calling getProductOptions');
+    this.apiService.getProductOptions(productID).subscribe((res: any) => {
+      console.log('res', res);
+      this.productOptionID = res.data[0].id;
+      this.productOptions = res.data[0].option_values;
+      console.log(this.productOptions);
+
     }, error => {
       console.error('error', error);
     });

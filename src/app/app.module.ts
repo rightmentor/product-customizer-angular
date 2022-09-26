@@ -15,6 +15,7 @@ import { LibraryComponent } from './library/library.component';
 import { ArchiveLibraryComponent } from './archive-library/archive-library.component';
 import { CustomizerComponent } from './customizer/customizer.component';
 import { MatSliderModule } from '@angular/material';
+import ArcText from 'arc-text';
 
 const routes: Routes = [{ path: '', component: LibraryComponent }, { path: 'library/search/:search', component: ArchiveLibraryComponent }, { path: 'library/:id', component: LibraryComponent }, { path: 'customizer/:id/:id2', component: CustomizerComponent }]; // sets up routes constant where you define your routes
 
@@ -31,7 +32,7 @@ const routes: Routes = [{ path: '', component: LibraryComponent }, { path: 'libr
     ColorPickerModule,
     [RouterModule.forRoot(routes)],
     ModalModule,
-    MatSliderModule
+    MatSliderModule,
   ],
   exports: [RouterModule],
   providers: [ApiService,CookieService],

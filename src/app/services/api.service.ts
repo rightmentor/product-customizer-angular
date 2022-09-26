@@ -58,6 +58,16 @@ export class ApiService {
     }
     //login function end
 
+    getProductdetails(productId): Observable<any>  {
+        const url = this.api_site_url+`product_details.php?product_id=${productId}`;
+
+        const apiHeaders = new HttpHeaders({
+        });
+        
+        return this.http.get(url, { headers: apiHeaders })
+    
+    }
+
     getProductOptions(productId): Observable<any> {
         const url = this.api_site_url+`product_options.php?product_id=${productId}`;
 

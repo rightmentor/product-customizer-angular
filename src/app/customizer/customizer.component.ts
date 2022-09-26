@@ -10,8 +10,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 // import { exit } from 'node:process';
 import { bitmap2vector } from 'bitmap2vector';
+import CircleType from 'circletype';
+import ArcText from 'arc-text';
 import { DomSanitizer } from '@angular/platform-browser';
+
 var potrace = require('potrace');
+var arcText = require("arc-text");
+var htmlToImage = require('html-to-image')
 // var fs = require('fs');
 
 var imagetracerjs = require("imagetracerjs")
@@ -28,11 +33,12 @@ export class CustomizerComponent implements OnInit {
   loginbtn: boolean;
   logoutbtn: boolean;
 
-  title = 'angular-editor-fabric-js';
+  title = '';
+  productURL = '';
   showFiller: boolean = true;
   showGrid: boolean = false;
   productOptions = [];
-  colors = ["#0A0A0A", "#0000FF", "#009A85", "#FF0000", "#CC66CC"];
+  colors = [];
   bgcolors = [];
   mounting = [];
   selectedColor = "#000000";
@@ -70,6 +76,7 @@ export class CustomizerComponent implements OnInit {
   savedLibraries: any = [];
   savedImageLibraries: any = [];
 
+  libraryLink = '';
   paramsName = '';
   productOptionID = '';
   productOptionValue = '';
@@ -100,11 +107,12 @@ export class CustomizerComponent implements OnInit {
       this.selectedKey = params['id2'];
     })
 
+    this.getProductdetails(this.currentProductID);
 
     //Admin Login case
     //this.apiService.getLoggedInName.subscribe(name => this.changeName(name));
     if (this.apiService.isLoggedIn()) {
-      console.log("loggedin");
+      
       this.loginbtn = false;
       this.logoutbtn = true
     } else {
@@ -122,6 +130,8 @@ export class CustomizerComponent implements OnInit {
       this.guestUserID = this.cookieService.get('SIMON_GUID');
       this.dbUserID = localStorage.getItem('DBUSERID');
     }
+
+    this.libraryLink = '/library/'+this.currentProductID;
 
   }
 
@@ -165,7 +175,7 @@ export class CustomizerComponent implements OnInit {
       return;
     }
     this.apiService.userlogin(this.registerForm.value.email, this.registerForm.value.password).pipe(first()).subscribe(data => {
-      console.log('you are login to my site');
+      
       localStorage.setItem('DBUSERID', '1');
       this.dbUserID = '1';
       this.closeModal("login-local");
@@ -212,7 +222,7 @@ export class CustomizerComponent implements OnInit {
 
   public changeSize() {
     this.canvas.changeSize();
-    console.log('grid status',this.showGrid);
+    
     if(this.showGrid == true){
       this.canvas.removeGrid();
       this.canvas.addGrid();
@@ -221,6 +231,44 @@ export class CustomizerComponent implements OnInit {
 
   public addText() {
     this.canvas.addText({ fill: this.selectedColor });
+
+    
+    // Instantiate `CircleType` with an HTML element.
+    const circleType = new CircleType(document.getElementById('test_show'));
+    
+    // Set the text radius and direction. Note: setter methods are chainable.
+    console.log ( 'Circle image: ', circleType.radius(0).dir(1) );
+
+    var node = document.getElementById('test_show');
+
+    htmlToImage.toPng(node)
+    .then(function (dataUrl) {
+      var img = new Image();
+      img.src = dataUrl;
+      document.body.appendChild(img);
+    })
+    .catch(function (error) {
+      console.error('oops, something went wrong!', error);
+    });
+
+    this.closeModal("text-modal");
+
+  }
+
+  public filterSVG (node) {
+    return (node.tagName !== 'i');
+  }
+
+  public addCurveText() {
+    this.canvas.addCurveText({ fill: this.selectedColor });
+  }
+
+  public setDiameter() {
+    this.canvas.setDiameter();
+  }
+
+  public setKerning() {
+    this.canvas.setKerning();
   }
 
   public getImgPolaroid(event) {
@@ -239,7 +287,7 @@ export class CustomizerComponent implements OnInit {
     potrace.trace(url, function (err, svg) {
       if (err) throw err;
       ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
-      console.log('SVG DATA:', svg);
+   
       ref.saveImageLocalData.image = svg;
       ref.saveImage();
     });
@@ -261,7 +309,7 @@ export class CustomizerComponent implements OnInit {
     //     if (err) throw err;
     //     ref.uploadedImgSVG = svg;
     //     ref.canvas.getImageSVGPolaroid(svg, ref.selectedColor);
-    //     console.log('svg ===', svg);
+    //     
     //   });
     // };
     // reader.readAsDataURL(event.target.files[0]);
@@ -288,7 +336,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   public clone() {
-    console.log('active object');
+    
     this.canvas.clone();
   }
 
@@ -402,9 +450,9 @@ export class CustomizerComponent implements OnInit {
   };
 
   getProductOptions(productID) {
-    console.log('calling getProductOptions');
+    
     this.apiService.getProductOptions(productID).subscribe((res: any) => {
-      console.log('res', res);
+      
       this.productOptionID = res.data[0].id;
       this.productOptions = res.data[0].option_values;
       this.selectedOptionId = this.productOptions[0].id;
@@ -413,7 +461,7 @@ export class CustomizerComponent implements OnInit {
       newcontent.innerHTML = JSON.stringify(res);
       //set selected lib data in the canvas
       var keyData = JSON.parse(localStorage.getItem(this.selectedKey));
-      console.log('keyData', keyData.cansize);
+      
       // this.loadCanvas(keyData.json,keyData.cansize);
       if (keyData.cansize == '108') {
         this.loadCanvas(keyData.json, this.selectedOptionId);
@@ -429,8 +477,9 @@ export class CustomizerComponent implements OnInit {
   sizeChangeHandler() {
     this.productOptionValue = this.selectedOptionId;
     const selectedOption = this.productOptions.filter(opt => parseInt(opt.id, 10) === parseInt(this.selectedOptionId, 10));
+    
 
-    console.log('Options details: ',selectedOption[0]);
+    
     const label = selectedOption[0].label;
 
     var iHeight = 190*selectedOption[0].width;
@@ -462,6 +511,15 @@ export class CustomizerComponent implements OnInit {
 
   }
 
+  getProductdetails(productID) {
+    this.apiService.getProductdetails(productID).subscribe((res) => {
+      this.title = res.data.name;
+      this.productURL = 'https://simonstampcom.mybigcommerce.com'+res.data.custom_url.url;
+    }, error => {
+      console.error('error', error);
+    });
+  }
+
   getProductModifiersSwatch(productID, colorCode: string) {
     this.apiService.getProductModifiersSwatch(productID, colorCode).subscribe((res) => {
       this.colorID = res[0].id;
@@ -474,7 +532,7 @@ export class CustomizerComponent implements OnInit {
 
   getProductModifiersOptions(productID) {
     this.apiService.getProductModifiersSwatch(productID, 'NULL').subscribe((res) => {
-      // console.log('customizeProducrt: ', res);
+      // 
       this.customizedProduct = res[0].customized_product;
       this.customizedProductValue = res[0].customized_product_value;
       this.customizedImageId = res[0].customized_image_id;
@@ -485,8 +543,8 @@ export class CustomizerComponent implements OnInit {
 
   getProductOptionsColor(productID) {
     this.apiService.getProductOptionsColor(productID).subscribe((res) => {
-      // console.log('customizeProductColor: ', res);
-      // this.colors = res;
+      // 
+      this.colors = res;
     }, error => {
       console.error('error', error);
     });
@@ -494,7 +552,7 @@ export class CustomizerComponent implements OnInit {
 
   getProductOptionsbgColor(productID) {
     this.apiService.getProductOptionsbgColor(productID).subscribe((res) => {
-      // console.log('customizeProductColor: ', res);
+      // 
       this.bgcolors = res;
     }, error => {
       console.error('error', error);
@@ -503,7 +561,7 @@ export class CustomizerComponent implements OnInit {
   
   getProductOptionsMountingColor(productID) {
     this.apiService.getProductOptionsMountingColor(productID).subscribe((res) => {
-      console.log('all option: ', res);
+      
       for (const [key, value] of Object.entries(res)) {
         if(value['name'] == 'Mounting Options'){
           this.mountingOptionsID = key;
@@ -515,8 +573,7 @@ export class CustomizerComponent implements OnInit {
           this.bgcolorOptionsID = key;
           this.bgcolors = value['data'];
         }
-        // console.log('mounting value', this.mounting);
-
+        
       }
 
       //this.mounting = res;
@@ -527,7 +584,7 @@ export class CustomizerComponent implements OnInit {
 
   addCurrentUserCookie(productID, guestId: string) {
     this.apiService.addCurrentUserCookie(productID, guestId).subscribe((res) => {
-      console.log(res);
+      
       localStorage.setItem('DBUSERID', res.id);
       this.dbUserID = res.id;
     }, error => {
@@ -537,7 +594,7 @@ export class CustomizerComponent implements OnInit {
 
   addUserLibraryData(data: any, option_id) {
     this.apiService.addUserLibraryData(data, option_id).subscribe((res) => {
-      console.log('res', res);
+      
     }, error => {
       console.error('error', error);
     });
@@ -579,7 +636,7 @@ export class CustomizerComponent implements OnInit {
       this.colorOptionsID = '0';
     }
 
-    console.log(' Save func called ', this.canvas);
+    
     this.saveLocalData.productid = this.currentProductID;
     this.saveLocalData.cansize = this.selectedOptionId;
     this.saveLocalData.name = "added-to-cart-" + localStorage.getItem('lastsave');
@@ -606,10 +663,10 @@ export class CustomizerComponent implements OnInit {
       ]
     }
 
-    console.log('attributeas: ', attributes);
+    
 
     this.apiService.addToCartData(attributes).subscribe((res: any) => {
-      console.log('res', res);
+      
       window.location = res.cart_url;
     }, error => {
       console.error('error', error);
@@ -617,12 +674,12 @@ export class CustomizerComponent implements OnInit {
   }
 
   cancel() {
-    console.log(' cancel func called ');
-    window.location = "https://simonstampcom.mybigcommerce.com/";
+    
+    window.location = this.productURL;
   }
 
   setAllElementColor(color) {
-    console.log(color);
+    
     this.selectedColor = color;
     var split_hash = color.replace('#', '');
     this.canvas.setAllElementColor(color);
@@ -632,10 +689,11 @@ export class CustomizerComponent implements OnInit {
   getSavedLibraies(guid, auid) {
     // this.apiService.getSavedLibraries(guid, this.currentProductID).subscribe((res: any) => {
     this.apiService.getSavedLibrariesTab(guid, this.currentProductID, auid).subscribe((res: any) => {
+      var productOP = this.productOptions;
       var values = [];
       if (res.data != null && res.data.length > 0) {
         res.data.map(function (o1: any) {
-          console.log('res-get-libraies', o1);
+          
           localStorage.setItem(o1.meta_key, o1.meta_value);
           var valueData = [];
           // values.push(JSON.parse(localStorage.getItem(o1.meta_key)));
@@ -645,10 +703,15 @@ export class CustomizerComponent implements OnInit {
           valueData.push(o1.id);
           valueData.push(o1.guid);
           valueData.push(o1.keywords.split(","));
+          const selectedOption = productOP.filter(opt => parseInt(opt.id, 10) === parseInt(o1.canvas_size, 10));
+          
+          const label = selectedOption[0].label;
+          
+          valueData.push( label );
           values.push(valueData);
         });
         this.savedLibraries = values;
-        console.log(this.savedLibraries)
+        
         return res.data;
       }
     }, error => {
@@ -679,7 +742,7 @@ export class CustomizerComponent implements OnInit {
     this.saveLocalData.fabricatorImage = this.canvas.getCanvasSvg();
     this.addUserLibraryData(this.saveLocalData, this.selectedOptionId);
 
-    console.log('userSVG: ', this.saveLocalData);
+    
 
 
     this.closeModal("save-local");
@@ -736,7 +799,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   loadCanvas(json, size) {
-    console.log("size is define as:", size);
+    
     this.selectedOptionId = size;
     this.sizeChangeHandler();
     this.canvas.loadCanvas(json);
@@ -744,7 +807,7 @@ export class CustomizerComponent implements OnInit {
 
   addUserImageLibraryData(data: any, option_id) {
     this.apiService.addUserImageLibraryData(data, option_id).subscribe((res) => {
-      console.log('res', res);
+      
     }, error => {
       console.error('error', error);
     });
@@ -791,7 +854,7 @@ export class CustomizerComponent implements OnInit {
           values.push(o1);
         });
         this.savedImageLibraries = values;
-        console.log(this.savedLibraries)
+        
         return res.data;
       }
     }, error => {
@@ -800,7 +863,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   deleteCanvasFn(id) {
-    console.log('entryId', id);
+    
     if (confirm("Are you sure to delete Canvas")) {
       this.deleteCanvas(id);
     }
@@ -816,7 +879,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   deleteImageFn(id) {
-    console.log('entryId', id);
+    
     if (confirm("Are you sure to delete Image")) {
       this.deleteImage(id);
     }
@@ -846,15 +909,15 @@ export class CustomizerComponent implements OnInit {
 
   zoom(e) {
     // this.canvas.zoomCanvas(this.zoom_value);
-    console.log('zoom current  ', this.zoom_current );
-    console.log('zoom value  ', this.zoom_value );
+    
+    
     if(this.zoom_value == '100'){
       var zoomLevel = 1;
     }else{
       var zoomLevel = (this.zoom_current - this.zoom_value) / 100;
     }
     var zoomLevelCan = this.zoom_value / 100;
-    console.log('zoom level can ', zoomLevelCan );
+    
 
     
     if(zoomLevel > 1){
@@ -884,7 +947,7 @@ export class CustomizerComponent implements OnInit {
   }
 
   addGrid(){
-    console.log('grid status',this.showGrid);
+    
     if(this.showGrid == false){
       this.canvas.addGrid();
       this.showGrid = true;

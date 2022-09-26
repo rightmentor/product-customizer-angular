@@ -25,6 +25,7 @@
                             <div>
                                 <h4>{{item[0].name}}</h4>
                                 <p>{{item[0].description}}</p>
+                                <p>{{item[6]}}</p>
                                 <div class="tags" *ngIf="(item[5] | json) != '{}'">
                                     <a *ngFor="let key of item[5] | keyvalue" href="https://customizer.simonstamp.com/library/search/{{key.value}}">{{key.value}}, </a>
                                 </div>

@@ -266,3 +266,14 @@ a.add-image-button.list-group-item.list-group-item-action.bg-dark {
      -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
           filter: brightness(1.2) grayscale(.5) opacity(.9);
 }
+.max-600-custom{
+  max-width: 600px !important;
+}
+.card-custom-body{
+  padding: 0.5rem !important;
+}
+@media (max-width:426px){
+  .title-product{ 
+    font-size:15px;
+  }
+}
