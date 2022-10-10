@@ -16,6 +16,7 @@ export class LibraryComponent{
   @ViewChildren('myCanvas') myCanvas: FabricjsEditorComponent;
   @ViewChild('canvas', { static: false }) canvas: FabricjsEditorComponent;
 
+  title = '';
   dbUserID = '1';
   guestUserID = '';
   currentProductID: any = 0;
@@ -47,6 +48,7 @@ export class LibraryComponent{
       this.dbUserID = localStorage.getItem('DBUSERID');
     }
     console.log(this.currentProductID);
+    this.getProductdetails(this.currentProductID);
     this.getProductOptions(this.currentProductID);
     
   }
@@ -59,6 +61,14 @@ export class LibraryComponent{
       stringArr.push(S4);
     }
     return stringArr.join('-');
+  }
+
+  getProductdetails(productID) {
+    this.apiService.getProductdetails(productID).subscribe((res) => {
+      this.title = res.data.name;
+    }, error => {
+      console.error('error', error);
+    });
   }
 
   addCurrentUserCookie(productID, guestId: string) {
