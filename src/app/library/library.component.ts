@@ -26,15 +26,17 @@ export class LibraryComponent{
   someParameterValue = null;
   filterText = '';
   searchString = '';
-  productOptionID = '';
+  productOptionID = '946';
   productOptions: any = [];
 
   constructor(private apiService: ApiService, private activateRoute: ActivatedRoute, private router: Router, private cookieService: CookieService) {
+    this.currentProductID = '946';
     activateRoute.params.subscribe(params => {
-      this.currentProductID = params['id'];
-      this.setupComponent(params['id']);
+      // this.currentProductID = params['id'];
+      this.currentProductID = '946';
+      this.setupComponent(this.currentProductID);
     });
-
+    this.currentProductID = 946;
     if (activateRoute.queryParams['_value'].search !== undefined) {
       this.searchString = activateRoute.queryParams['_value'].search;
     }
@@ -65,7 +67,8 @@ export class LibraryComponent{
 
   getProductdetails(productID) {
     this.apiService.getProductdetails(productID).subscribe((res) => {
-      this.title = res.data.name;
+      console.log(res);
+      this.title = res[0].product_title;
     }, error => {
       console.error('error', error);
     });
@@ -100,7 +103,7 @@ export class LibraryComponent{
       var values = []; 
       var productID = this.currentProductID; 
       var productOP = this.productOptions; 
-      console.log('before: ',productOP);
+      console.log('before: ',productID);
       if (res.data.length > 0) {
         res.data.map(function(o1:any) {
           localStorage.setItem( o1.meta_key, o1.meta_value );
@@ -111,9 +114,9 @@ export class LibraryComponent{
           valueData.push( o1.id );
           valueData.push( o1.guid );
           valueData.push( o1.keywords.split(",") );
-          const selectedOption = productOP.filter(opt => parseInt(opt.id, 10) === parseInt(o1.canvas_size, 10));
           console.log(o1.canvas_size);
-          const label = selectedOption[0].label;
+          const selectedOption = productOP.filter(opt => parseInt(opt.id, 10) === parseInt(o1.canvas_size, 10));
+          const label = productOP[0].label;
           
           valueData.push( label );
           values.push( valueData );
@@ -177,12 +180,16 @@ export class LibraryComponent{
 
   loadCanvas($myParam: string = '',$myParam2: string = ''): void {
     const navigationDetails: string[] = ['/customizer'];
-    if($myParam.length) {
+    console.log('myParam',$myParam);
+    console.log('myParam2',$myParam2);
+    
+    if($myParam) {
       navigationDetails.push($myParam);
     }
     if($myParam2.length) {
       navigationDetails.push($myParam2);
     }
+    console.log('navigationDetails',navigationDetails);
     this.router.navigate(navigationDetails);
   }
  

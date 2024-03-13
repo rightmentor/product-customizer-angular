@@ -130,8 +130,8 @@ export class CustomizerComponent implements OnInit {
       this.guestUserID = this.cookieService.get('SIMON_GUID');
       this.dbUserID = localStorage.getItem('DBUSERID');
     }
-
     this.libraryLink = '/library/'+this.currentProductID;
+    console.log(this.libraryLink);
 
   }
 
@@ -452,7 +452,7 @@ export class CustomizerComponent implements OnInit {
   getProductOptions(productID) {
     
     this.apiService.getProductOptions(productID).subscribe((res: any) => {
-      
+      console.log('productOption',res);
       this.productOptionID = res.data[0].id;
       this.productOptions = res.data[0].option_values;
       this.selectedOptionId = this.productOptions[0].id;
@@ -477,28 +477,14 @@ export class CustomizerComponent implements OnInit {
   sizeChangeHandler() {
     this.productOptionValue = this.selectedOptionId;
     const selectedOption = this.productOptions.filter(opt => parseInt(opt.id, 10) === parseInt(this.selectedOptionId, 10));
-    
-
-    
-    const label = selectedOption[0].label;
-
-    var iHeight = 190*selectedOption[0].width;
-    var iWidth = 190*selectedOption[0].height;
-
-    // 1mm =  3.779527559px
-    /*let s = label.substring(label.indexOf("(") + 1);
-    s = s.substring(0, s.indexOf(")"));
-    const height = s.substring(0, s.indexOf("mm"));
-    if (height) {
-      this.canvas.size.height = Math.round((height * 3.779527559) * 10) / 10;
+    let width = 2, height = 1;
+    if(selectedOption.length > 0){
+      width = selectedOption[0].width;
+      height = selectedOption[0].height;
     }
-    let width = s.substring(s.indexOf("x") + 1);
-    if (width) {
-      width = width.substring(0, width.indexOf("mm"));
-      if (width) {
-        this.canvas.size.width = Math.round((width * 3.779527559) * 10) / 10;
-      }
-    }*/
+    // const label = selectedOption[0].label;
+    var iHeight = 190*height;
+    var iWidth = 190*width;
 
     if (iHeight) {
       this.canvas.size.height = Math.round(iHeight);
@@ -513,8 +499,9 @@ export class CustomizerComponent implements OnInit {
 
   getProductdetails(productID) {
     this.apiService.getProductdetails(productID).subscribe((res) => {
-      this.title = res.data.name;
-      this.productURL = 'https://simonstampcom.mybigcommerce.com'+res.data.custom_url.url;
+      console.log('product', res[0] );
+      this.title = res[0].product_title;
+      this.productURL = 'https://simonstamp.projectsofar.us/'+res[0].product_title;
     }, error => {
       console.error('error', error);
     });
@@ -531,14 +518,14 @@ export class CustomizerComponent implements OnInit {
   }
 
   getProductModifiersOptions(productID) {
-    this.apiService.getProductModifiersSwatch(productID, 'NULL').subscribe((res) => {
+    /* this.apiService.getProductModifiersSwatch(productID, 'NULL').subscribe((res) => {
       // 
       this.customizedProduct = res[0].customized_product;
       this.customizedProductValue = res[0].customized_product_value;
       this.customizedImageId = res[0].customized_image_id;
     }, error => {
       console.error('error', error);
-    });
+    }); */
   }
 
   getProductOptionsColor(productID) {
@@ -560,19 +547,17 @@ export class CustomizerComponent implements OnInit {
   }
   
   getProductOptionsMountingColor(productID) {
-    this.apiService.getProductOptionsMountingColor(productID).subscribe((res) => {
+    this.apiService.getProductOptionsColor(productID).subscribe((res) => {
+
+      console.log('getProductOptionsColor ', res);
       
       for (const [key, value] of Object.entries(res)) {
-        if(value['name'] == 'Mounting Options'){
-          this.mountingOptionsID = key;
-          this.mounting = value['data'];
-        }else if(value['name'] == 'Color' || value['name'] == 'Ink Color' || value['name'] == 'Custom rubber stamps'){
+
           this.colorOptionsID = key;
-          this.colors = value['data'];
-        }else if(value['name'] == 'Background Color'){
+          this.colors = value[key];
+        
           this.bgcolorOptionsID = key;
-          this.bgcolors = value['data'];
-        }
+          this.bgcolors = value[key];
         
       }
 
@@ -626,15 +611,15 @@ export class CustomizerComponent implements OnInit {
       return false;
     }
 
-    if (this.colors.length > 0) {
+    /* if (this.colors.length > 0) {
       if (this.colorID === undefined || this.colorOptionsID === undefined) {
         alert('Please select Ink Color');
         return false;
       }
-    } else {
+    } else { */
       this.colorID = '0';
       this.colorOptionsID = '0';
-    }
+    // }
 
     
     this.saveLocalData.productid = this.currentProductID;
@@ -664,13 +649,13 @@ export class CustomizerComponent implements OnInit {
     }
 
     
-
-    this.apiService.addToCartData(attributes).subscribe((res: any) => {
+    window.location = `https://simonstamp.projectsofar.info/cart/?product_id=${this.currentProductID}`;
+   /*  this.apiService.addToCartData(attributes).subscribe((res: any) => {
       
       window.location = res.cart_url;
     }, error => {
       console.error('error', error);
-    });
+    }); */
   }
 
   cancel() {

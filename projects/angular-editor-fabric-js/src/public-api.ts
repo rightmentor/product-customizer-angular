@@ -13,13 +13,13 @@ export * from './lib/angular-editor-fabric-js.module';
     providedIn: 'root'
 })
 export class ApiServiceFabric {
-    api_site_url = 'https://webspeedo.com/simonstamp/api/'
+    api_site_url = 'https://simonstamp.projectsofar.info/wp-json/simonstamp/v1/';
     constructor(
         private http: HttpClient
     ) { }
 
     addUserLibraryDataFabric(canvasId:string): Observable<any> {
-        const url = this.api_site_url+`product_options.php`;
+        const url = this.api_site_url+`product_options`;
 
         const apiHeaders = new HttpHeaders({
             'Accept': 'application/json',

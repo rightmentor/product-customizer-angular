@@ -9,7 +9,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class ApiService {
     // api_site_url = 'https://webspeedo.com/simonstamp/api/';
     // api_site_url = 'https://simonstamp.webspeedo.com/api/';
-    api_site_url = 'https://customizer.simonstamp.com/api/';
+    api_site_url = 'https://simonstamp.projectsofar.info/wp-json/simonstamp/v1/';
+    api_site_url_direct = 'https://simonstamp.projectsofar.info/api/';
     @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
     constructor(
         private http: HttpClient
@@ -29,7 +30,7 @@ export class ApiService {
 
     //Login function start
     userlogin(username, password) {
-        const url = this.api_site_url+`login.php`;
+        const url = this.api_site_url+`login`;
         return this.http.post<any>(url, { username, password }).pipe(tap(Usermodule => {
                 this.setToken(Usermodule[0].guid);
                 this.getLoggedInName.emit(true);
@@ -59,7 +60,7 @@ export class ApiService {
     //login function end
 
     getProductdetails(productId): Observable<any>  {
-        const url = this.api_site_url+`product_details.php?product_id=${productId}`;
+        const url = this.api_site_url+`product_details/?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
         });
@@ -69,7 +70,7 @@ export class ApiService {
     }
 
     getProductOptions(productId): Observable<any> {
-        const url = this.api_site_url+`product_options.php?product_id=${productId}`;
+        const url = this.api_site_url+`product_options/?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
         });
@@ -78,7 +79,7 @@ export class ApiService {
     }
 
     getProductOptionsColor(productId): Observable<any> {
-        const url = this.api_site_url+`get_all_color_swatch.php?product_id=${productId}`;
+        const url = this.api_site_url+`get_all_color_swatch/?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
         });
@@ -87,7 +88,7 @@ export class ApiService {
     }
 
     getProductOptionsbgColor(productId): Observable<any> {
-        const url = this.api_site_url+`get_all_bg_color_swatch.php?product_id=${productId}`;
+        const url = this.api_site_url+`get_all_bg_color_swatch/?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
         });
@@ -97,7 +98,7 @@ export class ApiService {
 
 
     getProductOptionsMountingColor(productId): Observable<any> {
-        const url = this.api_site_url+`get_all_mounting_swatch.php?product_id=${productId}`;
+        const url = this.api_site_url+`get_all_mounting_swatch/?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
         });
@@ -106,7 +107,7 @@ export class ApiService {
     }
 
     getProductModifiers(productId): Observable<any> {
-        const url = this.api_site_url+`product_modifiers.php?product_id=${productId}`;
+        const url = this.api_site_url+`product_modifiers/?product_id=${productId}`;
 
         const apiHeaders = new HttpHeaders({
         });
@@ -116,7 +117,7 @@ export class ApiService {
 
     getProductModifiersSwatch(productId, colorCode:string) {
         console.log('checl code', colorCode);
-        const url = this.api_site_url+`product_modifiers_colors.php?product_id=${productId}&color_code=${colorCode}`;
+        const url = this.api_site_url+`product_modifiers_colors/?product_id=${productId}&color_code=${colorCode}`;
         console.log('checl url', url);
         const apiHeaders = new HttpHeaders({
         });
@@ -131,7 +132,7 @@ export class ApiService {
             id = 1;
             console.log("loggedin");
         }
-        const url = this.api_site_url+`get_library_data.php?guid=${id}&product_id=${productid}&auid=1`;
+        const url = this.api_site_url+`get_library_data/?guid=${id}&product_id=${productid}&auid=1`;
         const apiHeaders = new HttpHeaders({
         });
         
@@ -145,7 +146,7 @@ export class ApiService {
             id = 1;
             console.log("loggedin");
         }
-        const url = this.api_site_url+`get_library_data_tab.php?guid=${id}&product_id=${productid}&auid=${auid}`;
+        const url = this.api_site_url+`get_library_data_tab/?guid=${id}&product_id=${productid}&auid=${auid}`;
         const apiHeaders = new HttpHeaders({
         });
         
@@ -159,7 +160,7 @@ export class ApiService {
             id = 1;
             console.log("loggedin");
         }
-        const url = this.api_site_url+`get_image_library_data_tab.php?guid=${id}&product_id=${productid}&auid=${auid}`;
+        const url = this.api_site_url+`get_image_library_data_tab/?guid=${id}&product_id=${productid}&auid=${auid}`;
         const apiHeaders = new HttpHeaders({
         });
         
@@ -169,7 +170,7 @@ export class ApiService {
     getAllLibraries( id ): Observable<any>  {
         //console.log('search', id);
 
-        const url = this.api_site_url+`get_all_library_data.php?search=${id}`;
+        const url = this.api_site_url+`get_all_library_data/?search=${id}`;
         const apiHeaders = new HttpHeaders({
         });
         
@@ -177,7 +178,7 @@ export class ApiService {
     }
 
     deleteCanvas( id ): Observable<any> {
-        const url = this.api_site_url+`delete_canvas_data.php`;
+        const url = this.api_site_url+`delete_canvas_data/`;
         const apiHeaders = new HttpHeaders({
             'cache-control': 'no-cache',
             'content-type': 'application/json',
@@ -193,7 +194,7 @@ export class ApiService {
 
 
     deleteImage( id ): Observable<any> {
-        const url = this.api_site_url+`delete_image_data.php`;
+        const url = this.api_site_url+`delete_image_data/`;
         const apiHeaders = new HttpHeaders({
             'cache-control': 'no-cache',
             'content-type': 'application/json',
@@ -209,7 +210,7 @@ export class ApiService {
 
     addCurrentUserCookie(productId, guestId:string): Observable<any> {
         console.log('checl code', guestId);
-        const url = this.api_site_url+`add_user_data.php?product_id=${productId}&api_token=availble&guid=${guestId}`;
+        const url = this.api_site_url_direct+`add_user_data.php?product_id=${productId}&api_token=availble&guid=${guestId}`;
         console.log('checl url', url);
         const apiHeaders = new HttpHeaders({
         });
@@ -218,7 +219,7 @@ export class ApiService {
     }
 
     addUserLibraryData(data: any, option_id): Observable<any> {
-        const url = this.api_site_url+`add_library_data.php`;
+        const url = this.api_site_url_direct+`add_library_data.php`;
         const lastname = data.name;
         const lastdesc = data.description;
         const lastkeyw = data.keyword;
@@ -255,7 +256,7 @@ export class ApiService {
     }
 
     addUserImageLibraryData(data: any, option_id): Observable<any> {
-        const url = this.api_site_url+`add_image_library_data.php`;
+        const url = this.api_site_url_direct+`add_image_library_data.php`;
         const lastname = data.name;
         const lastdesc = data.description;
         const lastkeyw = data.keyword;
@@ -290,7 +291,7 @@ export class ApiService {
     }
 
     addToCartData(data: any): Observable<any> {
-        const url = this.api_site_url+`get_product_variants.php`;
+        const url = this.api_site_url+`get_product_variants/`;
         const apiHeaders = new HttpHeaders({
             'cache-control': 'no-cache',
             'content-type': 'application/json',
